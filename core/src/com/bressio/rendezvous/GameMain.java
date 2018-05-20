@@ -14,6 +14,7 @@ public class GameMain extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+        System.out.println("Testing GPG key");
 	}
 
 	@Override
