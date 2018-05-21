@@ -8,8 +8,8 @@ import com.bressio.rendezvous.helpers.PhysicsManager;
 public class Barrier extends Sprite {
 
     private World world;
-    private Body rigidbody;
-    private final int PPM;
+    private Body body;
+    private final float PPM;
 
     public Barrier(World world) {
         PPM = PhysicsManager.PPM;
