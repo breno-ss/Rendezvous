@@ -2,11 +2,15 @@ package com.bressio.rendezvous.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.bressio.rendezvous.GameMain;
+import com.bressio.rendezvous.Rendezvous;
+import com.bressio.rendezvous.helpers.PlayerSettings;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new GameMain(), config);
+		config.width = PlayerSettings.GAME_WIDTH;
+		config.height = PlayerSettings.GAME_HEIGHT;
+//		config.fullscreen = true;
+		new LwjglApplication(new Rendezvous(), config);
 	}
 }
