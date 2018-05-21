@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="200" height="200" tilewidth="32" tileheight="32" infinite="0" nextobjectid="6">
+ <tileset firstgid="1" source="tileset.tsx"/>
+ <layer name="ocean" width="200" height="200">
+  <data encoding="base64" compression="zlib">
+   eJztwwEJAAAMBKGD7995FRZAwVVTVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX08A+TU0A==
+  </data>
+ </layer>
+ <layer name="ground" width="200" height="200">
+  <data encoding="base64" compression="zlib">
+   eJzt00EKwkAABMHk/5/24EUhGxfBzGysgn5CbxsAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA9NhfAp72QfCPRj+cBXf2zRPe4e5++YU/WNEVT/iDVfkDjl39hj9YiT/gWOINf7AKf8CYP2DMHzDmDxjzBxxLveEP2iXf8Aet0l/4g2bpL/xBs/QX/qBZ+guP0Cz9hFdolv7AHzRLf+AP2qVf8AfN0i/4g3bpH/xBu/QT/qBd+gtvsAJ/wDxvwBxvwGe+gDnegHO+gDm+AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAePcAx64D2Q==
+  </data>
+ </layer>
+ <layer name="barriers" width="200" height="200">
+  <data encoding="base64" compression="zlib">
+   eJzt2ckJAAAIAzBx/6EdwyuZoA+hBSMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA5sjuAACcp2sAAAAAAICN/Dj4yu0DAMxlqwEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADAbwXoegAL
+  </data>
+ </layer>
+ <objectgroup name="objects">
+  <object id="1" x="3040" y="2880" width="32" height="32"/>
+  <object id="2" x="3392" y="2944" width="32" height="32"/>
+  <object id="3" x="3168" y="3200" width="32" height="32"/>
+  <object id="4" x="2880" y="3232" width="32" height="32"/>
+  <object id="5" x="3488" y="3328" width="32" height="32"/>
+ </objectgroup>
+</map>

@@ -2,7 +2,7 @@ package com.bressio.rendezvous;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.bressio.rendezvous.scenes.MainMenu;
+import com.bressio.rendezvous.scenes.Match;
 
 public class Rendezvous extends Game {
 
@@ -11,7 +11,7 @@ public class Rendezvous extends Game {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		setScreen(new MainMenu(this));
+		setScreen(new Match(this));
 	}
 
 	@Override
