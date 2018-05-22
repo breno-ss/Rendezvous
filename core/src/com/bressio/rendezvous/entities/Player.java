@@ -23,6 +23,7 @@ public class Player extends Sprite {
         position = new Vector2(x / PPM, y / PPM);
         start();
         idlePlayer = new TextureRegion(getTexture(), 0, 0, 64, 64);
+        setOrigin(32 / PPM, 32 / PPM);
         setBounds(0, 0, 64 / PPM, 64 / PPM);
         setRegion(idlePlayer);
     }

@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -21,7 +23,6 @@ import com.bressio.rendezvous.helpers.PhysicsManager;
 import com.bressio.rendezvous.helpers.PlayerSettings;
 import com.bressio.rendezvous.helpers.WorldBuilder;
 
-// TODO: remove PPM
 public class Match implements Screen {
 
     private final int WIDTH;
@@ -43,6 +44,9 @@ public class Match implements Screen {
     private Box2DDebugRenderer boxColliderRenderer;
 
     private Player player;
+
+    private final Vector2 mouseInWorld2D = new Vector2();
+    private final Vector3 mouseInWorld3D = new Vector3();
 
     public Match(Rendezvous game) {
         WIDTH = PlayerSettings.GAME_WIDTH;
@@ -86,6 +90,21 @@ public class Match implements Screen {
     }
 
     private void update(float delta) {
+
+        mouseInWorld3D.x = Gdx.input.getX();
+        mouseInWorld3D.y = Gdx.input.getY();
+        mouseInWorld3D.z = 0;
+        camera.unproject(mouseInWorld3D);
+        mouseInWorld2D.x = mouseInWorld3D.x;
+        mouseInWorld2D.y = mouseInWorld3D.y;
+
+        float angle = MathUtils.radiansToDegrees * MathUtils.atan2(mouseInWorld2D.y - (player.getY() + player.getHeight() / 2), mouseInWorld2D.x - (player.getX() + player.getWidth() / 2));
+
+        if(angle < 0){
+            angle += 360;
+        }
+        player.setRotation(angle - 90);
+
         handleInput(delta);
         world.step(1 / 60f, 6, 2);
         player.update(delta);
