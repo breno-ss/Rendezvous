@@ -75,17 +75,39 @@ public class Match implements Screen {
     }
 
     private void handleInput(float delta) {
-        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
-            player.getBody().applyForce(new Vector2(-6, 0), player.getBody().getWorldCenter(), true);
+
+        float directionX = 0;
+        float directionY = 0;
+        int directions = 0;
+        final int speed = 10;
+
+        if (Gdx.input.isKeyPressed(Input.Keys.A)){
+            directionX -= speed;
+            directions++;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
-            player.getBody().applyForce(new Vector2(6, 0), player.getBody().getWorldCenter(), true);
+
+        if(Gdx.input.isKeyPressed(Input.Keys.D)){
+            directionX += speed;
+            directions++;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
-            player.getBody().applyForce(new Vector2(0, -6), player.getBody().getWorldCenter(), true);
+
+        if (Gdx.input.isKeyPressed(Input.Keys.W)){
+            directionY += speed;
+            directions++;
         }
-        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
-            player.getBody().applyForce(new Vector2(0, 6), player.getBody().getWorldCenter(), true);
+
+        if(Gdx.input.isKeyPressed(Input.Keys.S)){
+            directionY -= speed;
+            directions++;
+        }
+
+        if (directionX != 0 || directionY != 0) {
+            if (directions == 1) {
+                player.getBody().applyForce(new Vector2(directionX, directionY), player.getBody().getWorldCenter(), true);
+            } else {
+                float a = (float)((speed + Math.pow(directions, 2)) / (speed * directions));
+                player.getBody().applyForce(new Vector2(directionX * a, directionY * a), player.getBody().getWorldCenter(), true);
+            }
         }
     }
 
@@ -127,11 +149,11 @@ public class Match implements Screen {
         update(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
 
         renderer.render();
 
-        boxColliderRenderer.render(world, camera.combined);
+//        boxColliderRenderer.render(world, camera.combined);
 
         game.getBatch().setProjectionMatrix(camera.combined);
 
