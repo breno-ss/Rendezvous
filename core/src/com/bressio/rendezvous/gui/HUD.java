@@ -10,22 +10,19 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.bressio.rendezvous.helpers.PlayerSettings;
+
+import static com.bressio.rendezvous.helpers.PlayerSettings.GAME_HEIGHT;
+import static com.bressio.rendezvous.helpers.PlayerSettings.GAME_WIDTH;
 
 public class HUD implements Disposable {
 
     public Stage stage;
     private Viewport viewport;
-    private final int WIDTH;
-    private final int HEIGHT;
 
     private Label label;
 
     public HUD(SpriteBatch spriteBatch) {
-        WIDTH = PlayerSettings.GAME_WIDTH;
-        HEIGHT = PlayerSettings.GAME_HEIGHT;
-
-        viewport = new FitViewport(WIDTH, HEIGHT, new OrthographicCamera());
+        viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
         Table table = new Table();

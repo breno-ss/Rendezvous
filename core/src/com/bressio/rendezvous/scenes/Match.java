@@ -23,11 +23,12 @@ import com.bressio.rendezvous.helpers.PhysicsManager;
 import com.bressio.rendezvous.helpers.PlayerSettings;
 import com.bressio.rendezvous.helpers.WorldBuilder;
 
+import static com.bressio.rendezvous.helpers.PhysicsManager.pScale;
+
 public class Match implements Screen {
 
     private final int WIDTH;
     private final int HEIGHT;
-    private final float PPM;
 
     private Rendezvous game;
     private TextureAtlas atlas;
@@ -51,22 +52,21 @@ public class Match implements Screen {
     public Match(Rendezvous game) {
         WIDTH = PlayerSettings.GAME_WIDTH;
         HEIGHT = PlayerSettings.GAME_HEIGHT;
-        PPM = PhysicsManager.PPM;
 
         atlas = new TextureAtlas("animations/entities.pack");
 
         this.game = game;
 
         camera = new OrthographicCamera();
-        viewport = new FitViewport(1366 / PPM, 768 / PPM, camera);
+        viewport = new FitViewport(pScale(1366), pScale(768), camera);
         hud = new HUD(game.getBatch());
 
         mapLoader = new TmxMapLoader();
         map = mapLoader.load("tiles/tilemap.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, 1 / PPM);
-        camera.position.set(3200 / PPM, 3200 / PPM, 0);
+        renderer = new OrthogonalTiledMapRenderer(map, pScale(1));
+        camera.position.set(pScale(3200), pScale(3200), 0);
 
-        world = new World(PhysicsManager.gravity, true);
+        world = new World(PhysicsManager.GRAVITY, true);
         boxColliderRenderer = new Box2DDebugRenderer();
 
         new WorldBuilder(world, map);
@@ -149,7 +149,7 @@ public class Match implements Screen {
         update(delta);
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT | (Gdx.graphics.getBufferFormat().coverageSampling?GL20.GL_COVERAGE_BUFFER_BIT_NV:0));
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         renderer.render();
 

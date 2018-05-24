@@ -21,7 +21,7 @@ public class Rendezvous extends Game {
 
     @Override
     public void dispose () {
-
+        batch.dispose();
     }
 
     public SpriteBatch getBatch() {
