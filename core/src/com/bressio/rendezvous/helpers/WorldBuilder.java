@@ -6,7 +6,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 
+import static com.bressio.rendezvous.helpers.PhysicsManager.pCenter;
 import static com.bressio.rendezvous.helpers.PhysicsManager.pScale;
+import static com.bressio.rendezvous.helpers.PhysicsManager.pScaleCenter;
 
 public class WorldBuilder {
 
@@ -20,10 +22,10 @@ public class WorldBuilder {
 
         for (MapObject object : map.getLayers().get(Layer.BARRIER.layer).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new BodyBuilder(world, pScale(rect.getX() + rect.getWidth() / 2, rect.getY() + rect.getHeight() / 2))
+            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
                     .withBodyType(BodyDef.BodyType.StaticBody)
-                    .withWidth(pScale(rect.getWidth() / 2))
-                    .withHeight(pScale(rect.getHeight() / 2))
+                    .withWidth(pScaleCenter(rect.getWidth()))
+                    .withHeight(pScaleCenter(rect.getHeight()))
                     .build();
         }
 

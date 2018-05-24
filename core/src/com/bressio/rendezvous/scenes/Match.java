@@ -22,7 +22,9 @@ import com.bressio.rendezvous.helpers.PhysicsManager;
 import com.bressio.rendezvous.helpers.PlayerSettings;
 import com.bressio.rendezvous.helpers.WorldBuilder;
 
+import static com.bressio.rendezvous.helpers.PhysicsManager.pCenter;
 import static com.bressio.rendezvous.helpers.PhysicsManager.pScale;
+import static com.bressio.rendezvous.helpers.PlayerSettings.DEBUG_MODE;
 
 public class Match implements Screen {
 
@@ -57,7 +59,7 @@ public class Match implements Screen {
 
         camera = new OrthographicCamera();
         viewport = new FitViewport(pScale(1366), pScale(768), camera);
-        hud = new HUD(game.getBatch());
+        hud = new HUD(game.getBatch(), resources);
 
         renderer = new OrthogonalTiledMapRenderer(resources.getMap(), pScale(1));
         camera.position.set(pScale(3200), pScale(3200), 0);
@@ -116,7 +118,7 @@ public class Match implements Screen {
         mouseInWorld2D.x = mouseInWorld3D.x;
         mouseInWorld2D.y = mouseInWorld3D.y;
 
-        float angle = MathUtils.radiansToDegrees * MathUtils.atan2(mouseInWorld2D.y - (player.getY() + player.getHeight() / 2), mouseInWorld2D.x - (player.getX() + player.getWidth() / 2));
+        float angle = MathUtils.radiansToDegrees * MathUtils.atan2(mouseInWorld2D.y - (player.getY() + pCenter(player.getHeight())), mouseInWorld2D.x - (player.getX() + pCenter(player.getWidth())));
 
         if(angle < 0){
             angle += 360;
@@ -149,7 +151,9 @@ public class Match implements Screen {
 
         renderer.render();
 
-//        boxColliderRenderer.render(world, camera.combined);
+        if (DEBUG_MODE) {
+            boxColliderRenderer.render(world, camera.combined);
+        }
 
         game.getBatch().setProjectionMatrix(camera.combined);
 

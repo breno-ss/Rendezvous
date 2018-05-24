@@ -7,7 +7,9 @@ import com.bressio.rendezvous.graphics.StateMachine;
 import com.bressio.rendezvous.helpers.BodyBuilder;
 import com.bressio.rendezvous.scenes.Match;
 
+import static com.bressio.rendezvous.helpers.PhysicsManager.pCenter;
 import static com.bressio.rendezvous.helpers.PhysicsManager.pScale;
+import static com.bressio.rendezvous.helpers.PhysicsManager.pScaleCenter;
 
 public abstract class Soldier extends Entity {
 
@@ -17,13 +19,16 @@ public abstract class Soldier extends Entity {
 
     Soldier(World world, Match match, float x, float y, float radius, float linearDamping, ResourceHandler.AnimationRegion animationRegion) {
         super(world, match, x, y, animationRegion.getRegion());
+
         this.radius = radius;
         this.linearDamping = linearDamping;
-        create();
         animation = new StateMachine(this, animationRegion);
-        setOrigin(pScale(32), pScale(32));
-        setBounds(0, 0, pScale(64), pScale(64));
+
+        setOrigin(pScaleCenter(animationRegion.getFrameSize()), pScaleCenter(animationRegion.getFrameSize()));
+        setBounds(0, 0, pScale(animationRegion.getFrameSize()), pScale(animationRegion.getFrameSize()));
         setRegion(animation.getIdleTexture());
+
+        create();
     }
 
     @Override
@@ -36,7 +41,7 @@ public abstract class Soldier extends Entity {
     }
 
     public void update(float delta) {
-        setPosition(getBody().getPosition().x - getWidth() / 2, getBody().getPosition().y - getHeight() / 2);
+        setPosition(getBody().getPosition().x - pCenter(getWidth()),getBody().getPosition().y - pCenter(getHeight()));
         setRegion(animation.getFrame(delta));
     }
 }

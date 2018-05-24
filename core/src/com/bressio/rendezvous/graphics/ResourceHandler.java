@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Disposable;
+import com.bressio.rendezvous.languages.Internationalization;
 
 public final class ResourceHandler implements Disposable {
 
@@ -60,11 +61,13 @@ public final class ResourceHandler implements Disposable {
         public int getIdleTextureHeight() { return idleTextureHeight; }
     }
 
+    private Internationalization i18n;
     private TextureAtlas atlas;
     private TmxMapLoader mapLoader;
     private TiledMap map;
 
     public ResourceHandler(AnimationAtlas animationAtlas, TileMap tileMap) {
+        i18n = new Internationalization();
         atlas = new TextureAtlas(animationAtlas.getPath());
         mapLoader = new TmxMapLoader();
         map = mapLoader.load(tileMap.getPath());
@@ -76,6 +79,10 @@ public final class ResourceHandler implements Disposable {
 
     public TextureAtlas getAtlas() {
         return atlas;
+    }
+
+    public Internationalization getI18n() {
+        return i18n;
     }
 
     @Override

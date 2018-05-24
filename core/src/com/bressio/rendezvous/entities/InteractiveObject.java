@@ -7,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.helpers.BodyBuilder;
 
-import static com.bressio.rendezvous.helpers.PhysicsManager.pScale;
+import static com.bressio.rendezvous.helpers.PhysicsManager.pScaleCenter;
 
 public class InteractiveObject {
 
@@ -22,9 +22,9 @@ public class InteractiveObject {
         this.map = map;
         this.bounds = bounds;
 
-        body = new BodyBuilder(this.world, pScale(bounds.getX() + bounds.getWidth() / 2, bounds.getY() + bounds.getHeight() / 2))
-                .withWidth(pScale(bounds.getWidth() / 2))
-                .withHeight(pScale(bounds.getHeight() / 2))
+        body = new BodyBuilder(this.world, pScaleCenter(bounds.getX() + bounds.getWidth(), bounds.getY() + bounds.getHeight()))
+                .withWidth(pScaleCenter(bounds.getWidth()))
+                .withHeight(pScaleCenter(bounds.getHeight()))
                 .build();
     }
 }
