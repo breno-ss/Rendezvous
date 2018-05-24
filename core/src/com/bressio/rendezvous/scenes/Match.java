@@ -6,8 +6,6 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -18,6 +16,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
 import com.bressio.rendezvous.entities.Player;
+import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.HUD;
 import com.bressio.rendezvous.helpers.PhysicsManager;
 import com.bressio.rendezvous.helpers.PlayerSettings;
@@ -31,14 +30,11 @@ public class Match implements Screen {
     private final int HEIGHT;
 
     private Rendezvous game;
-    private TextureAtlas atlas;
 
     private OrthographicCamera camera;
     private Viewport viewport;
     private HUD hud;
 
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
     private OrthogonalTiledMapRenderer renderer;
 
     private World world;
@@ -49,11 +45,13 @@ public class Match implements Screen {
     private final Vector2 mouseInWorld2D = new Vector2();
     private final Vector3 mouseInWorld3D = new Vector3();
 
+    private ResourceHandler resources;
+
     public Match(Rendezvous game) {
         WIDTH = PlayerSettings.GAME_WIDTH;
         HEIGHT = PlayerSettings.GAME_HEIGHT;
 
-        atlas = new TextureAtlas("animations/entities.pack");
+        resources = new ResourceHandler(ResourceHandler.AnimationAtlas.ENTITIES, ResourceHandler.TileMap.TILEMAP);
 
         this.game = game;
 
@@ -61,17 +59,15 @@ public class Match implements Screen {
         viewport = new FitViewport(pScale(1366), pScale(768), camera);
         hud = new HUD(game.getBatch());
 
-        mapLoader = new TmxMapLoader();
-        map = mapLoader.load("tiles/tilemap.tmx");
-        renderer = new OrthogonalTiledMapRenderer(map, pScale(1));
+        renderer = new OrthogonalTiledMapRenderer(resources.getMap(), pScale(1));
         camera.position.set(pScale(3200), pScale(3200), 0);
 
         world = new World(PhysicsManager.GRAVITY, true);
         boxColliderRenderer = new Box2DDebugRenderer();
 
-        new WorldBuilder(world, map);
+        new WorldBuilder(world, resources.getMap());
 
-        player = new Player(world, this,3200, 3200);
+        player = new Player(world, this, 32, 5, 3200, 3200);
     }
 
     private void handleInput(float delta) {
@@ -136,7 +132,7 @@ public class Match implements Screen {
     }
 
     public TextureAtlas getAtlas() {
-        return atlas;
+        return resources.getAtlas();
     }
 
     @Override
@@ -187,7 +183,6 @@ public class Match implements Screen {
 
     @Override
     public void dispose() {
-        map.dispose();
         renderer.dispose();
         world.dispose();
         boxColliderRenderer.dispose();
