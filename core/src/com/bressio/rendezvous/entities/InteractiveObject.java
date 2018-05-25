@@ -5,9 +5,9 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
-import com.bressio.rendezvous.helpers.BodyBuilder;
+import com.bressio.rendezvous.forge.BodyBuilder;
 
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pScaleCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScaleCenter;
 
 public class InteractiveObject {
 

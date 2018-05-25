@@ -4,12 +4,12 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.graphics.StateMachine;
-import com.bressio.rendezvous.helpers.BodyBuilder;
+import com.bressio.rendezvous.forge.BodyBuilder;
 import com.bressio.rendezvous.scenes.Match;
 
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pCenter;
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pScale;
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pScaleCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScale;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScaleCenter;
 
 public abstract class Soldier extends Entity {
 

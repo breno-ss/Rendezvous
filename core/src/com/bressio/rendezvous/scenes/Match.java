@@ -14,11 +14,11 @@ import com.bressio.rendezvous.entities.Player;
 import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.HUD;
-import com.bressio.rendezvous.helpers.PhysicalConstants;
-import com.bressio.rendezvous.helpers.WorldBuilder;
+import com.bressio.rendezvous.scheme.PhysicsAdapter;
+import com.bressio.rendezvous.forge.WorldBuilder;
 
-import static com.bressio.rendezvous.helpers.PhysicalConstants.*;
-import static com.bressio.rendezvous.helpers.PlayerSettings.*;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
+import static com.bressio.rendezvous.scheme.PlayerSettings.*;
 
 public class Match implements Screen {
 
@@ -47,7 +47,7 @@ public class Match implements Screen {
         viewport = new FitViewport(pScale(GAME_WIDTH), pScale(GAME_HEIGHT), camera);
         hud = new HUD(game.getBatch(), resources);
 
-        renderer = new OrthogonalTiledMapRenderer(resources.getMap(), PhysicalConstants.getScale());
+        renderer = new OrthogonalTiledMapRenderer(resources.getMap(), PhysicsAdapter.getScale());
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
 
         world = new World(GRAVITY, true);

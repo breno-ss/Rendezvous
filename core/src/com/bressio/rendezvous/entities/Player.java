@@ -7,7 +7,7 @@ import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
 
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 
 public class Player extends Soldier {
 

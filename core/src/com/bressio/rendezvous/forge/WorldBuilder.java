@@ -1,14 +1,13 @@
-package com.bressio.rendezvous.helpers;
+package com.bressio.rendezvous.forge;
 
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.World;
 
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pCenter;
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pScale;
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pScaleCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class WorldBuilder {
 

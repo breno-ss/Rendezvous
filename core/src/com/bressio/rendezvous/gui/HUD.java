@@ -13,8 +13,8 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 
-import static com.bressio.rendezvous.helpers.PlayerSettings.GAME_HEIGHT;
-import static com.bressio.rendezvous.helpers.PlayerSettings.GAME_WIDTH;
+import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
+import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_WIDTH;
 
 public class HUD implements Disposable {
 

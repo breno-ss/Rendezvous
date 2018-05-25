@@ -1,4 +1,4 @@
-package com.bressio.rendezvous.helpers;
+package com.bressio.rendezvous.forge;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;

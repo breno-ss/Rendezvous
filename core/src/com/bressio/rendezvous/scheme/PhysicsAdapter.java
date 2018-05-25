@@ -1,8 +1,12 @@
-package com.bressio.rendezvous.helpers;
+package com.bressio.rendezvous.scheme;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class PhysicalConstants {
+public final class PhysicsAdapter {
+
+    private PhysicsAdapter() {
+
+    }
 
     public static final Vector2 GRAVITY = new Vector2(0, 0);
     private static final float SCALE = 100;

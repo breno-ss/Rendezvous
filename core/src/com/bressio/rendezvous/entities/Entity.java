@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.scenes.Match;
 
-import static com.bressio.rendezvous.helpers.PhysicalConstants.pScale;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScale;
 
 public abstract class Entity extends Sprite {
 

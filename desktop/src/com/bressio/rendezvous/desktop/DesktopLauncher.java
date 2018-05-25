@@ -3,7 +3,7 @@ package com.bressio.rendezvous.desktop;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.bressio.rendezvous.Rendezvous;
-import com.bressio.rendezvous.helpers.PlayerSettings;
+import com.bressio.rendezvous.scheme.PlayerSettings;
 
 public class DesktopLauncher {
     public static void main (String[] arg) {

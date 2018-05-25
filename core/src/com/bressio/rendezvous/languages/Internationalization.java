@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.I18NBundle;
 
 import java.util.Locale;
 
-import static com.bressio.rendezvous.helpers.PlayerSettings.LANG;
+import static com.bressio.rendezvous.scheme.PlayerSettings.LANG;
 
 public class Internationalization {
 
