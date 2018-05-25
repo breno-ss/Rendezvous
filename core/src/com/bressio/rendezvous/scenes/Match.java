@@ -1,35 +1,26 @@
 package com.bressio.rendezvous.scenes;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
 import com.bressio.rendezvous.entities.Player;
+import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.HUD;
-import com.bressio.rendezvous.helpers.PhysicsManager;
-import com.bressio.rendezvous.helpers.PlayerSettings;
+import com.bressio.rendezvous.helpers.PhysicalConstants;
 import com.bressio.rendezvous.helpers.WorldBuilder;
 
-import static com.bressio.rendezvous.helpers.PhysicsManager.pCenter;
-import static com.bressio.rendezvous.helpers.PhysicsManager.pScale;
-import static com.bressio.rendezvous.helpers.PlayerSettings.DEBUG_MODE;
+import static com.bressio.rendezvous.helpers.PhysicalConstants.*;
+import static com.bressio.rendezvous.helpers.PlayerSettings.*;
 
 public class Match implements Screen {
-
-    private final int WIDTH;
-    private final int HEIGHT;
 
     private Rendezvous game;
 
@@ -43,98 +34,44 @@ public class Match implements Screen {
     private Box2DDebugRenderer boxColliderRenderer;
 
     private Player player;
-
-    private final Vector2 mouseInWorld2D = new Vector2();
-    private final Vector3 mouseInWorld3D = new Vector3();
+    private InputTracker input;
 
     private ResourceHandler resources;
 
     public Match(Rendezvous game) {
-        WIDTH = PlayerSettings.GAME_WIDTH;
-        HEIGHT = PlayerSettings.GAME_HEIGHT;
-
         resources = new ResourceHandler(ResourceHandler.AnimationAtlas.ENTITIES, ResourceHandler.TileMap.TILEMAP);
 
         this.game = game;
 
         camera = new OrthographicCamera();
-        viewport = new FitViewport(pScale(1366), pScale(768), camera);
+        viewport = new FitViewport(pScale(GAME_WIDTH), pScale(GAME_HEIGHT), camera);
         hud = new HUD(game.getBatch(), resources);
 
-        renderer = new OrthogonalTiledMapRenderer(resources.getMap(), pScale(1));
-        camera.position.set(pScale(3200), pScale(3200), 0);
+        renderer = new OrthogonalTiledMapRenderer(resources.getMap(), PhysicalConstants.getScale());
+        camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
 
-        world = new World(PhysicsManager.GRAVITY, true);
+        world = new World(GRAVITY, true);
+
         boxColliderRenderer = new Box2DDebugRenderer();
 
         new WorldBuilder(world, resources.getMap());
 
-        player = new Player(world, this, 32, 5, 3200, 3200);
-    }
-
-    private void handleInput(float delta) {
-
-        float directionX = 0;
-        float directionY = 0;
-        int directions = 0;
-        final int speed = 10;
-
-        if (Gdx.input.isKeyPressed(Input.Keys.A)){
-            directionX -= speed;
-            directions++;
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            directionX += speed;
-            directions++;
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.W)){
-            directionY += speed;
-            directions++;
-        }
-
-        if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            directionY -= speed;
-            directions++;
-        }
-
-        if (directionX != 0 || directionY != 0) {
-            if (directions == 1) {
-                player.getBody().applyForce(new Vector2(directionX, directionY), player.getBody().getWorldCenter(), true);
-            } else {
-                float a = (float)((speed + Math.pow(directions, 2)) / (speed * directions));
-                player.getBody().applyForce(new Vector2(directionX * a, directionY * a), player.getBody().getWorldCenter(), true);
-            }
-        }
+        player = new Player(world, this, 32, 5, 10, 3200, 3200);
+        input = new InputTracker(camera);
+        Gdx.input.setInputProcessor(input);
     }
 
     private void update(float delta) {
-
-        mouseInWorld3D.x = Gdx.input.getX();
-        mouseInWorld3D.y = Gdx.input.getY();
-        mouseInWorld3D.z = 0;
-        camera.unproject(mouseInWorld3D);
-        mouseInWorld2D.x = mouseInWorld3D.x;
-        mouseInWorld2D.y = mouseInWorld3D.y;
-
-        float angle = MathUtils.radiansToDegrees * MathUtils.atan2(mouseInWorld2D.y - (player.getY() + pCenter(player.getHeight())), mouseInWorld2D.x - (player.getX() + pCenter(player.getWidth())));
-
-        if(angle < 0){
-            angle += 360;
-        }
-        player.setRotation(angle - 90);
-
-        handleInput(delta);
         world.step(1 / 60f, 6, 2);
         player.update(delta);
         camera.position.set(player.getBody().getPosition(), 0);
         camera.update();
         renderer.setView(camera);
+        input.update();
     }
 
-    public TextureAtlas getAtlas() {
-        return resources.getAtlas();
+    public ResourceHandler getResources() {
+        return resources;
     }
 
     @Override

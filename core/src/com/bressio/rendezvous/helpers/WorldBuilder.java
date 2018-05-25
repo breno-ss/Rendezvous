@@ -6,9 +6,9 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.*;
 
-import static com.bressio.rendezvous.helpers.PhysicsManager.pCenter;
-import static com.bressio.rendezvous.helpers.PhysicsManager.pScale;
-import static com.bressio.rendezvous.helpers.PhysicsManager.pScaleCenter;
+import static com.bressio.rendezvous.helpers.PhysicalConstants.pCenter;
+import static com.bressio.rendezvous.helpers.PhysicalConstants.pScale;
+import static com.bressio.rendezvous.helpers.PhysicalConstants.pScaleCenter;
 
 public class WorldBuilder {
 

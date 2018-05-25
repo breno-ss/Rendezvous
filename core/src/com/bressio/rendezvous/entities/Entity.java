@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.scenes.Match;
 
-import static com.bressio.rendezvous.helpers.PhysicsManager.pScale;
+import static com.bressio.rendezvous.helpers.PhysicalConstants.pScale;
 
 public abstract class Entity extends Sprite {
 
@@ -15,7 +15,7 @@ public abstract class Entity extends Sprite {
     private Vector2 position;
 
     Entity(World world, Match match, float x, float y, String animationRegion) {
-        super(match.getAtlas().findRegion(animationRegion));
+        super(match.getResources().getAtlas().findRegion(animationRegion));
         this.world = world;
         position = pScale(x, y);
     }

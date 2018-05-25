@@ -2,10 +2,11 @@ package com.bressio.rendezvous.helpers;
 
 import com.badlogic.gdx.math.Vector2;
 
-public class PhysicsManager {
+public class PhysicalConstants {
 
     public static final Vector2 GRAVITY = new Vector2(0, 0);
     private static final float SCALE = 100;
+    public static final int MAP_AREA = 10240000;
 
     public static float pScale(float number) {
         return number / SCALE;
@@ -25,5 +26,9 @@ public class PhysicsManager {
 
     public static float pCenter(float number) {
         return number / 2;
+    }
+
+    public static float getScale() {
+        return 1 / SCALE;
     }
 }
