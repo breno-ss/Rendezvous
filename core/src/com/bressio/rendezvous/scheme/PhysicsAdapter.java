@@ -32,6 +32,10 @@ public final class PhysicsAdapter {
         return number / 2;
     }
 
+    public static int pCenter(int number) {
+        return number / 2;
+    }
+
     public static float getScale() {
         return 1 / SCALE;
     }

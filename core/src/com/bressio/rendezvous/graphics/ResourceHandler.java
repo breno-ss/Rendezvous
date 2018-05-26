@@ -22,6 +22,13 @@ public final class ResourceHandler implements Disposable {
         private String getPath() { return path; }
     }
 
+    public enum Cursor {
+        MATCH_CURSOR("textures/cursors/match-cursor.png");
+        Cursor(String path) { this.path = path; }
+        private String path;
+        private String getPath() { return path; }
+    }
+
     public enum AnimationRegion {
         PLAYER("player_animation", 0, 1, 64, 6, .1f, 0, 0, 64, 64);
         AnimationRegion(String region, int startRow, int startColumn, int frameSize, int amountFrames, float frameDuration,
@@ -83,6 +90,10 @@ public final class ResourceHandler implements Disposable {
 
     public Internationalization getI18n() {
         return i18n;
+    }
+
+    public static String getCursor(Cursor cursor) {
+        return cursor.getPath();
     }
 
     @Override
