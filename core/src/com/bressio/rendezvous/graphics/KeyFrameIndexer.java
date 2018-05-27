@@ -9,7 +9,7 @@ class KeyFrameIndexer {
 
     private Animation<TextureRegion> movingAnimation;
 
-    KeyFrameIndexer(Texture texture, ResourceHandler.AnimationRegion animationRegion) {
+    KeyFrameIndexer(Texture texture, AnimationRegion animationRegion) {
         Array<TextureRegion> frames = new Array<>();
         for (int i = animationRegion.getStartColumn(); i <= animationRegion.getAmountFrames(); i++) {
                 frames.add(new TextureRegion(texture, i * animationRegion.getFrameSize(), animationRegion.getStartRow(),

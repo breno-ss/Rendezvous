@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.events.InputTracker;
-import com.bressio.rendezvous.graphics.ResourceHandler;
+import com.bressio.rendezvous.graphics.AnimationRegion;
 import com.bressio.rendezvous.scenes.Match;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
@@ -12,7 +12,7 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 public class Player extends Soldier {
 
     public Player(World world, Match match, float radius, float linearDamping, int speed, float x, float y) {
-        super(world, match, x, y, radius, linearDamping, speed, ResourceHandler.AnimationRegion.PLAYER);
+        super(world, match, x, y, radius, linearDamping, speed, AnimationRegion.PLAYER);
     }
 
     @Override

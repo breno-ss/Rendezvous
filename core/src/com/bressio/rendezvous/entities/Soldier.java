@@ -2,34 +2,32 @@ package com.bressio.rendezvous.entities;
 
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.bressio.rendezvous.graphics.ResourceHandler;
-import com.bressio.rendezvous.graphics.StateMachine;
 import com.bressio.rendezvous.forge.BodyBuilder;
+import com.bressio.rendezvous.graphics.AnimationRegion;
+import com.bressio.rendezvous.graphics.Animator;
 import com.bressio.rendezvous.scenes.Match;
 
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScale;
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScaleCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public abstract class Soldier extends Entity {
 
     private final float radius;
     private final float linearDamping;
     private final int speed;
-    private final StateMachine animation;
+    private final Animator animator;
 
     Soldier(World world, Match match, float x, float y, float radius, float linearDamping, int speed,
-            ResourceHandler.AnimationRegion animationRegion) {
+            AnimationRegion animationRegion) {
         super(world, match, x, y, animationRegion.getRegion());
 
         this.radius = radius;
         this.linearDamping = linearDamping;
         this.speed = speed;
-        animation = new StateMachine(this, animationRegion);
+        animator = new Animator(this, animationRegion);
 
         setOrigin(pScaleCenter(animationRegion.getFrameSize()), pScaleCenter(animationRegion.getFrameSize()));
         setBounds(0, 0, pScale(animationRegion.getFrameSize()), pScale(animationRegion.getFrameSize()));
-        setRegion(animation.getIdleTexture());
+        setRegion(animator.getIdleTexture());
 
         create();
     }
@@ -45,7 +43,7 @@ public abstract class Soldier extends Entity {
 
     public void update(float delta) {
         setPosition(getBody().getPosition().x - pCenter(getWidth()),getBody().getPosition().y - pCenter(getHeight()));
-        setRegion(animation.getFrame(delta));
+        setRegion(animator.getFrame(delta));
     }
 
     int getSpeed() {

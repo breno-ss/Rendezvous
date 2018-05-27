@@ -1,105 +1,96 @@
 package com.bressio.rendezvous.graphics;
 
+import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.SkinLoader;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Disposable;
-import com.bressio.rendezvous.languages.Internationalization;
 
 public final class ResourceHandler implements Disposable {
 
-    public enum AnimationAtlas {
-        ENTITIES("textures/animations/entities.pack");
-        AnimationAtlas(String path) { this.path = path; }
+    public enum TexturePath {
+        MENU_BACKGROUND("textures/gui/backgrounds/menu-background.png"),
+        MENU_LOGO("textures/gui/logos/menu-logo.png");
         private String path;
-        private String getPath() { return path; }
+        TexturePath(String path) { this.path = path; }
     }
 
-    public enum TileMap {
+    public enum SkinPath {
+        BUTTON_SKIN("skins/button.json");
+        private String path;
+        SkinPath(String path) { this.path = path; }
+    }
+
+    public enum TextureAtlasPath {
+        BUTTON_ATLAS("textures/gui/buttons/buttons.pack"),
+        ENTITY_ATLAS("textures/animations/entities.pack");
+        private String path;
+        TextureAtlasPath(String path) { this.path = path; }
+    }
+
+    public enum PixmapPath {
+        MENU_CURSOR("textures/cursors/menu-cursor.png"),
+        MATCH_CURSOR("textures/cursors/match-cursor.png");
+        private String path;
+        PixmapPath(String path) { this.path = path; }
+    }
+
+    public enum TiledMapPath {
         TILEMAP("tiles/tilemap.tmx");
-        TileMap(String path) { this.path = path; }
         private String path;
-        private String getPath() { return path; }
+        TiledMapPath(String path) { this.path = path; }
     }
 
-    public enum Cursor {
-        MATCH_CURSOR("textures/cursors/match-cursor.png"),
-        MENU_CURSOR("textures/cursors/menu-cursor.png");
-        Cursor(String path) { this.path = path; }
-        private String path;
-        private String getPath() { return path; }
+    private AssetManager assetManager;
+
+    public ResourceHandler() {
+        assetManager = new AssetManager();
     }
 
-    public enum AnimationRegion {
-        PLAYER("player_animation", 0, 1, 64, 6, .1f, 0, 0, 64, 64);
-        AnimationRegion(String region, int startRow, int startColumn, int frameSize, int amountFrames, float frameDuration,
-                        int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
-            this.region = region;
-            this.startRow = startRow;
-            this.startColumn = startColumn;
-            this.frameSize = frameSize;
-            this.amountFrames = amountFrames;
-            this.frameDuration = frameDuration;
-            this.idleTextureX = idleTextureX;
-            this.idleTextureY = idleTextureY;
-            this.idleTextureWidth = idleTextureWidth;
-            this.idleTextureHeight = idleTextureHeight;
-        }
-
-        private String region;
-        private int startRow;
-        private int startColumn;
-        private int frameSize;
-        private int amountFrames;
-        private float frameDuration;
-        private int idleTextureX;
-        private int idleTextureY;
-        private int idleTextureWidth;
-        private int idleTextureHeight;
-
-        public String getRegion() { return region; }
-        public int getStartRow() { return startRow; }
-        public int getStartColumn() { return startColumn; }
-        public int getFrameSize() { return frameSize; }
-        public int getAmountFrames() { return amountFrames; }
-        public float getFrameDuration() { return frameDuration; }
-        public int getIdleTextureX() { return idleTextureX; }
-        public int getIdleTextureY() { return idleTextureY; }
-        public int getIdleTextureWidth() { return idleTextureWidth; }
-        public int getIdleTextureHeight() { return idleTextureHeight; }
+    public void loadMainMenuResources() {
+        assetManager.load(TexturePath.MENU_BACKGROUND.path, Texture.class);
+        assetManager.load(TexturePath.MENU_LOGO.path, Texture.class);
+        assetManager.load(SkinPath.BUTTON_SKIN.path, Skin.class,
+                new SkinLoader.SkinParameter(TextureAtlasPath.BUTTON_ATLAS.path));
+        assetManager.load(PixmapPath.MENU_CURSOR.path, Pixmap.class);
+        assetManager.finishLoading();
     }
 
-    private Internationalization i18n;
-    private TextureAtlas atlas;
-    private TmxMapLoader mapLoader;
-    private TiledMap map;
-
-    public ResourceHandler(AnimationAtlas animationAtlas, TileMap tileMap) {
-        i18n = new Internationalization();
-        atlas = new TextureAtlas(animationAtlas.getPath());
-        mapLoader = new TmxMapLoader();
-        map = mapLoader.load(tileMap.getPath());
+    public void loadMatchResources() {
+        assetManager.load(PixmapPath.MATCH_CURSOR.path, Pixmap.class);
+        assetManager.load(TextureAtlasPath.ENTITY_ATLAS.path, TextureAtlas.class);
+        assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
+        assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);
+        assetManager.finishLoading();
     }
 
-    public TiledMap getMap() {
-        return map;
+    public Texture getTexture(TexturePath texture) {
+        return assetManager.get(texture.path, Texture.class);
     }
 
-    public TextureAtlas getAtlas() {
-        return atlas;
+    public TextureAtlas getTextureAtlas(TextureAtlasPath textureAtlas) {
+        return assetManager.get(textureAtlas.path, TextureAtlas.class);
     }
 
-    public Internationalization getI18n() {
-        return i18n;
+    public Skin getSkin(SkinPath skin) {
+        return assetManager.get(skin.path, Skin.class);
     }
 
-    public static String getCursor(Cursor cursor) {
-        return cursor.getPath();
+    public Pixmap getPixmap(PixmapPath pixmap) {
+        return assetManager.get(pixmap.path, Pixmap.class);
+    }
+
+    public TiledMap getTiledMap(TiledMapPath tiledmap) {
+        return assetManager.get(tiledmap.path, TiledMap.class);
     }
 
     @Override
     public void dispose() {
-        map.dispose();
-        atlas.dispose();
+        assetManager.dispose();
     }
 }

@@ -1,13 +1,11 @@
 package com.bressio.rendezvous.scenes;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -28,9 +26,9 @@ public class MainMenu implements Screen {
 
     // game
     private Rendezvous game;
+    private ResourceHandler resources;
 
     // GUI
-    private TextureAtlas atlas;
     private Skin skin;
     private Stage stage;
     private Texture background;
@@ -42,52 +40,19 @@ public class MainMenu implements Screen {
 
     public MainMenu(Rendezvous game) {
         this.game = game;
-
-        background = new Texture("textures/gui/backgrounds/menu-background.png");
-        logo = new Texture("textures/gui/logos/menu-logo.png");
-
-        atlas = new TextureAtlas("textures/gui/buttons/buttons.pack");
-        skin = new Skin(Gdx.files.internal("skins/button.json"), atlas);
-        skin.getFont("default").getData();
+        loadResources();
         setupCamera();
         setupCursor();
-        stage = new Stage(viewport, game.getBatch());
+        forgeMenu();
+    }
 
-        Gdx.input.setInputProcessor(stage);
-
-        Table mainTable = new Table();
-        mainTable.setFillParent(true);
-        mainTable.left();
-
-        TextButton playButton = new TextButton("PLAY", skin, "white-button");
-        TextButton optionsButton = new TextButton("SETTINGS", skin, "white-button");
-        TextButton helpButton = new TextButton("HELP", skin, "white-button");
-        TextButton exitButton = new TextButton("QUIT", skin, "white-button");
-
-        playButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Game game = (Game)Gdx.app.getApplicationListener();
-                game.setScreen(new Match((Rendezvous) game));
-            }
-        });
-
-        exitButton.addListener(new ClickListener(){
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.exit();
-            }
-        });
-
-        mainTable.add(playButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(100);
-        mainTable.row();
-        mainTable.add(optionsButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
-        mainTable.row();
-        mainTable.add(helpButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
-        mainTable.row();
-        mainTable.add(exitButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
-
-        stage.addActor(mainTable);
+    private void loadResources() {
+        resources = new ResourceHandler();
+        resources.loadMainMenuResources();
+        background = resources.getTexture(ResourceHandler.TexturePath.MENU_BACKGROUND);
+        logo = resources.getTexture(ResourceHandler.TexturePath.MENU_LOGO);
+        skin = resources.getSkin(ResourceHandler.SkinPath.BUTTON_SKIN);
+        skin.getFont("default").getData();
     }
 
     private void setupCamera() {
@@ -99,9 +64,49 @@ public class MainMenu implements Screen {
     }
 
     private void setupCursor() {
-        Pixmap pixmap = new Pixmap(Gdx.files.internal(ResourceHandler.getCursor(ResourceHandler.Cursor.MENU_CURSOR)));
+        Pixmap pixmap = resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR);
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, 0, 0));
         pixmap.dispose();
+    }
+
+    private void forgeMenu() {
+        stage = new Stage(viewport, game.getBatch());
+
+        Gdx.input.setInputProcessor(stage);
+
+        Table table = new Table();
+        table.left();
+        table.setFillParent(true);
+
+        TextButton playButton = new TextButton("PLAY", skin, "white-button");
+        TextButton optionsButton = new TextButton("SETTINGS", skin, "white-button");
+        TextButton helpButton = new TextButton("HELP", skin, "white-button");
+        TextButton exitButton = new TextButton("QUIT", skin, "white-button");
+
+        playButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Rendezvous game = (Rendezvous)Gdx.app.getApplicationListener();
+                game.setScreen(new Match(game));
+            }
+        });
+
+        exitButton.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
+
+        table.add(playButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(100);
+        table.row();
+        table.add(optionsButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
+        table.row();
+        table.add(helpButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
+        table.row();
+        table.add(exitButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
+
+        stage.addActor(table);
     }
 
     private void update(float delta) {
@@ -156,6 +161,6 @@ public class MainMenu implements Screen {
     @Override
     public void dispose() {
         skin.dispose();
-        atlas.dispose();
+        resources.dispose();
     }
 }

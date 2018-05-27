@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.bressio.rendezvous.entities.Entity;
 
-public class StateMachine {
+public class Animator {
 
     private enum State {
         IDLE, MOVING
@@ -17,7 +17,7 @@ public class StateMachine {
     private TextureRegion idleTexture;
     private KeyFrameIndexer indexer;
 
-    public StateMachine(Entity entity, ResourceHandler.AnimationRegion animationRegion) {
+    public Animator(Entity entity, AnimationRegion animationRegion) {
         this.entity = entity;
 
         currentState = State.IDLE;
