@@ -1,7 +1,6 @@
 {
   com.badlogic.gdx.graphics.g2d.BitmapFont: {
     default: { file: fonts/Arial.fnt }
-    large: { file: fonts/Arial.fnt }
   },
   com.badlogic.gdx.graphics.Color: {
     white: { a: 1, r: 1, g: 1, b: 1 }
@@ -11,11 +10,11 @@
   },
   com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
     default: { font: default, fontColor: white }
-    orange-button: { background: orange-button, font: default, fontColor: green }
+    white-button: { background: white-button, font: default, fontColor: white }
   },
   com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
-    default: { font: large, fontColor: white }
-    orange-button: { down: orange-button, up: blue-button, disabled: orange-button, font: large, fontColor: green }
-    orange-button_small: { down: orange-button, up: blue-button, disabled: orange-button, font: default, fontColor: green }
+    default: { font: default, fontColor: white }
+    white-button: { down: gray-button, up: white-button, over: black-button, disabled: white-button, font: default, fontColor: black, overFontColor: white }
+    white-button_small: { down: gray-button, up: white-button, over: black-button, disabled: white-button, font: default, fontColor: black, overFontColor: white }
   },
 }

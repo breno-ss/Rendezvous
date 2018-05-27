@@ -23,7 +23,8 @@ public final class ResourceHandler implements Disposable {
     }
 
     public enum Cursor {
-        MATCH_CURSOR("textures/cursors/match-cursor.png");
+        MATCH_CURSOR("textures/cursors/match-cursor.png"),
+        MENU_CURSOR("textures/cursors/menu-cursor.png");
         Cursor(String path) { this.path = path; }
         private String path;
         private String getPath() { return path; }
