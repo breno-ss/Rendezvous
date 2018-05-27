@@ -9,7 +9,7 @@ import com.bressio.rendezvous.languages.Internationalization;
 public final class ResourceHandler implements Disposable {
 
     public enum AnimationAtlas {
-        ENTITIES("animations/entities.pack");
+        ENTITIES("textures/animations/entities.pack");
         AnimationAtlas(String path) { this.path = path; }
         private String path;
         private String getPath() { return path; }

@@ -43,7 +43,7 @@ public class Match implements Screen {
     // resources
     private ResourceHandler resources;
 
-    public Match(Rendezvous game) {
+    Match(Rendezvous game) {
         this.game = game;
         loadResources();
         setupCamera();
@@ -60,8 +60,10 @@ public class Match implements Screen {
     private void setupCamera() {
         camera = new OrthographicCamera();
         viewport = new FitViewport(pScale(GAME_WIDTH), pScale(GAME_HEIGHT), camera);
+        viewport.apply();
         hud = new HUD(game.getBatch(), resources);
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
+        camera.update();
     }
 
     private void setupRenderer() {

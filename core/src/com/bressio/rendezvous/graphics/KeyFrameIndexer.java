@@ -10,12 +10,12 @@ class KeyFrameIndexer {
     private Animation<TextureRegion> movingAnimation;
 
     KeyFrameIndexer(Texture texture, ResourceHandler.AnimationRegion animationRegion) {
-        Array<TextureRegion> frames = new Array<TextureRegion>();
+        Array<TextureRegion> frames = new Array<>();
         for (int i = animationRegion.getStartColumn(); i <= animationRegion.getAmountFrames(); i++) {
                 frames.add(new TextureRegion(texture, i * animationRegion.getFrameSize(), animationRegion.getStartRow(),
                         animationRegion.getFrameSize(), animationRegion.getFrameSize()));
         }
-        movingAnimation = new Animation<TextureRegion>(animationRegion.getFrameDuration(), frames);
+        movingAnimation = new Animation<>(animationRegion.getFrameDuration(), frames);
         frames.clear();
     }
 
