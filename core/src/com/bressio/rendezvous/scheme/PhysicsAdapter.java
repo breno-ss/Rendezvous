@@ -20,6 +20,14 @@ public final class PhysicsAdapter {
         return new Vector2(x / SCALE, y / SCALE);
     }
 
+    public static float[] pScale(float[] numbers) {
+        float[] scaledNumbers = new float[numbers.length];
+        for (int i = 0; i < numbers.length; i++) {
+            scaledNumbers[i] = numbers[i] / SCALE;
+        }
+        return scaledNumbers;
+    }
+
     public static float pScaleCenter(float number) {
         return number / 2 / SCALE;
     }

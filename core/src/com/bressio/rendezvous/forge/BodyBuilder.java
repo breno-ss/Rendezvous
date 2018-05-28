@@ -12,6 +12,7 @@ public class BodyBuilder{
     private float height;
     private float linearDamping;
     private float radius;
+    private float[] vertices;
     private boolean fixedRotation;
     private BodyDef.BodyType bodyType;
 
@@ -37,6 +38,11 @@ public class BodyBuilder{
 
     public BodyBuilder withRadius(float radius) {
         this.radius = radius;
+        return this;
+    }
+
+    public BodyBuilder withVertices(float[] vertices) {
+        this.vertices = vertices;
         return this;
     }
 
@@ -69,6 +75,10 @@ public class BodyBuilder{
         } else if (radius != 0) {
             CircleShape shape = new CircleShape();
             shape.setRadius(radius);
+            fixtureDef.shape = shape;
+        } else if (vertices.length > 0) {
+            PolygonShape shape = new PolygonShape();
+            shape.set(vertices);
             fixtureDef.shape = shape;
         }
 

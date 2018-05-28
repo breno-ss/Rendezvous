@@ -41,7 +41,7 @@ public final class ResourceHandler implements Disposable {
     }
 
     public enum TiledMapPath {
-        TILEMAP("tiles/tilemap.tmx");
+        TILEMAP("tiles/map.tmx");
         private String path;
         TiledMapPath(String path) { this.path = path; }
     }
