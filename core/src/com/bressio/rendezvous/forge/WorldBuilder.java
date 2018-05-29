@@ -16,9 +16,9 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScaleCenter;
 public class WorldBuilder {
 
     private enum Layer {
-        OCEAN(6),
-        ROCK(7),
-        TREE(8);
+        OCEAN(10),
+        ROCK(11),
+        TREE(12);
         Layer(int layer) { this.layer = layer; }
         private final int layer;
     }

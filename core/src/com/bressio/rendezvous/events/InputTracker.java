@@ -7,6 +7,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 
+import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
+import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_WIDTH;
+
 public final class InputTracker extends InputAdapter {
 
     public static final int UP = 0;
@@ -78,6 +81,14 @@ public final class InputTracker extends InputAdapter {
             }
         }
         return count;
+    }
+
+    public int getRelativeX() {
+        return (Gdx.input.getX() < GAME_WIDTH / 2 ? -((GAME_WIDTH / 2) - Gdx.input.getX()) : Gdx.input.getX() - (GAME_WIDTH / 2));
+    }
+
+    public int getRelativeY() {
+        return (Gdx.input.getY() < GAME_HEIGHT / 2 ? -((GAME_HEIGHT / 2) - Gdx.input.getY()) : Gdx.input.getY() - (GAME_HEIGHT / 2));
     }
 
     public static Vector2 getMousePos() {
