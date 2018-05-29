@@ -37,6 +37,7 @@ public class Match implements Screen {
     private Viewport viewport;
     private HUD hud;
     private OrthogonalTiledMapRenderer renderer;
+    private OrthogonalTiledMapRenderer overRenderer;
     private Box2DDebugRenderer collisionDebugRenderer;
 
     // world
@@ -44,6 +45,7 @@ public class Match implements Screen {
     private Player player;
     private TmxMapLoader mapLoader;
     private TiledMap map;
+    private TiledMap overMap;
     private TextureAtlas atlas;
 
     // events
@@ -65,6 +67,7 @@ public class Match implements Screen {
         atlas = resources.getTextureAtlas(ResourceHandler.TextureAtlasPath.ENTITY_ATLAS);
         mapLoader = new TmxMapLoader();
         map = resources.getTiledMap(ResourceHandler.TiledMapPath.TILEMAP);
+        overMap = resources.getTiledMap(ResourceHandler.TiledMapPath.OVER_TILEMAP);
         i18n = new Internationalization();
     }
 
@@ -79,6 +82,7 @@ public class Match implements Screen {
 
     private void setupRenderer() {
         renderer = new OrthogonalTiledMapRenderer(map, PhysicsAdapter.getScale());
+        overRenderer = new OrthogonalTiledMapRenderer(overMap, PhysicsAdapter.getScale());
         collisionDebugRenderer = new Box2DDebugRenderer();
     }
 
@@ -105,6 +109,7 @@ public class Match implements Screen {
         camera.position.set(player.getBody().getPosition(), 0);
         camera.update();
         renderer.setView(camera);
+        overRenderer.setView(camera);
         input.update();
     }
 
@@ -135,6 +140,8 @@ public class Match implements Screen {
         game.getBatch().begin();
         player.draw(game.getBatch());
         game.getBatch().end();
+
+        overRenderer.render();
 
         game.getBatch().setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();

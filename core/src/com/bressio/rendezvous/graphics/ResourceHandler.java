@@ -41,7 +41,8 @@ public final class ResourceHandler implements Disposable {
     }
 
     public enum TiledMapPath {
-        TILEMAP("tiles/map.tmx");
+        TILEMAP("tiles/map.tmx"),
+        OVER_TILEMAP("tiles/overmap.tmx");
         private String path;
         TiledMapPath(String path) { this.path = path; }
     }
@@ -66,6 +67,7 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TextureAtlasPath.ENTITY_ATLAS.path, TextureAtlas.class);
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);
+        assetManager.load(TiledMapPath.OVER_TILEMAP.path, TiledMap.class);
         assetManager.finishLoading();
     }
 

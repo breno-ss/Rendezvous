@@ -16,8 +16,9 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScaleCenter;
 public class WorldBuilder {
 
     private enum Layer {
-        OCEAN(2),
-        ROCK(5);
+        OCEAN(6),
+        ROCK(7),
+        TREE(8);
         Layer(int layer) { this.layer = layer; }
         private final int layer;
     }
@@ -35,6 +36,15 @@ public class WorldBuilder {
 
         // large rocks
         for (MapObject object : map.getLayers().get(Layer.ROCK.layer).getObjects().getByType(EllipseMapObject.class)) {
+            Ellipse rect = ((EllipseMapObject) object).getEllipse();
+            new BodyBuilder(world, pScale(rect.x + pCenter(rect.width), rect.y + pCenter(rect.width)))
+                    .withBodyType(BodyDef.BodyType.StaticBody)
+                    .withRadius(pScaleCenter(rect.width))
+                    .build();
+        }
+
+        // trees
+        for (MapObject object : map.getLayers().get(Layer.TREE.layer).getObjects().getByType(EllipseMapObject.class)) {
             Ellipse rect = ((EllipseMapObject) object).getEllipse();
             new BodyBuilder(world, pScale(rect.x + pCenter(rect.width), rect.y + pCenter(rect.width)))
                     .withBodyType(BodyDef.BodyType.StaticBody)
