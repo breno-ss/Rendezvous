@@ -84,11 +84,13 @@ public final class InputTracker extends InputAdapter {
     }
 
     public int getRelativeX() {
-        return (Gdx.input.getX() < GAME_WIDTH / 2 ? -((GAME_WIDTH / 2) - Gdx.input.getX()) : Gdx.input.getX() - (GAME_WIDTH / 2));
+        return (Gdx.input.getX() < GAME_WIDTH / 2 ?
+                -((GAME_WIDTH / 2) - Gdx.input.getX()) : Gdx.input.getX() - (GAME_WIDTH / 2));
     }
 
     public int getRelativeY() {
-        return (Gdx.input.getY() < GAME_HEIGHT / 2 ? -((GAME_HEIGHT / 2) - Gdx.input.getY()) : Gdx.input.getY() - (GAME_HEIGHT / 2));
+        return (Gdx.input.getY() < GAME_HEIGHT / 2 ?
+                -((GAME_HEIGHT / 2) - Gdx.input.getY()) : Gdx.input.getY() - (GAME_HEIGHT / 2));
     }
 
     public static Vector2 getMousePos() {
