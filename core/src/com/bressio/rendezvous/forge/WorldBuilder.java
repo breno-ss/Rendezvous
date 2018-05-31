@@ -3,22 +3,23 @@ package com.bressio.rendezvous.forge;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScale;
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScaleCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class WorldBuilder {
 
     private enum Layer {
         OCEAN(0),
         ROCK(1),
-        TREE(2);
+        TREE(2),
+        BUILDING(3);
         Layer(int layer) { this.layer = layer; }
         private final int layer;
     }
@@ -52,14 +53,15 @@ public class WorldBuilder {
                     .build();
         }
 
-//        for (MapObject object : map.getLayers().get(Layer.OCEAN.layer).getObjects().getByType(RectangleMapObject.class)) {
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
-//                    .withBodyType(BodyDef.BodyType.StaticBody)
-//                    .withWidth(pScaleCenter(rect.getWidth()))
-//                    .withHeight(pScaleCenter(rect.getHeight()))
-//                    .build();
-//        }
+        // buildings
+        for (MapObject object : map.getLayers().get(Layer.BUILDING.layer).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
+                    .withBodyType(BodyDef.BodyType.StaticBody)
+                    .withWidth(pScaleCenter(rect.getWidth()))
+                    .withHeight(pScaleCenter(rect.getHeight()))
+                    .build();
+        }
 
         // build weapons
 //        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
