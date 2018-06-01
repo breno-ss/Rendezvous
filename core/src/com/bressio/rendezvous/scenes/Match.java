@@ -20,6 +20,7 @@ import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.HUD;
+import com.bressio.rendezvous.gui.PauseMenu;
 import com.bressio.rendezvous.languages.Internationalization;
 import com.bressio.rendezvous.scheme.PhysicsAdapter;
 
@@ -37,6 +38,7 @@ public class Match implements Screen {
     private OrthographicCamera camera;
     private Viewport viewport;
     private HUD hud;
+    private PauseMenu pause;
     private OrthogonalTiledMapRenderer renderer;
     private OrthogonalTiledMapRenderer overRenderer;
     private Box2DDebugRenderer collisionDebugRenderer;
@@ -77,6 +79,7 @@ public class Match implements Screen {
         viewport = new FitViewport(pScale(GAME_WIDTH), pScale(GAME_HEIGHT), camera);
         viewport.apply();
         hud = new HUD(game.getBatch(), i18n);
+        pause = new PauseMenu(game.getBatch(), i18n, resources);
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
         camera.update();
     }
@@ -153,6 +156,9 @@ public class Match implements Screen {
 
         game.getBatch().setProjectionMatrix(hud.stage.getCamera().combined);
         hud.stage.draw();
+
+        game.getBatch().setProjectionMatrix(pause.stage.getCamera().combined);
+        pause.stage.draw();
     }
 
     @Override

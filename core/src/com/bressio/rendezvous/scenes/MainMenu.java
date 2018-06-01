@@ -98,13 +98,13 @@ public class MainMenu implements Screen {
             }
         });
 
-        table.add(playButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(100);
+        table.add(playButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth()) + 20).align(Align.left).padTop(100);
         table.row();
-        table.add(optionsButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
+        table.add(optionsButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth()) + 20).align(Align.left).padTop(-20);
         table.row();
-        table.add(helpButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
+        table.add(helpButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth()) + 20).align(Align.left).padTop(-20);
         table.row();
-        table.add(exitButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth())).align(Align.left).padTop(-20);
+        table.add(exitButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth()) + 20).align(Align.left).padTop(-20);
 
         stage.addActor(table);
     }

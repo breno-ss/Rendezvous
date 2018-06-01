@@ -21,14 +21,16 @@ public final class ResourceHandler implements Disposable {
     }
 
     public enum SkinPath {
-        BUTTON_SKIN("skins/button.json");
+        BUTTON_SKIN("skins/button.json"),
+        WINDOW_SKIN("skins/vis/skin/x2/uiskin.json");
         private String path;
         SkinPath(String path) { this.path = path; }
     }
 
     public enum TextureAtlasPath {
         BUTTON_ATLAS("textures/gui/buttons/buttons.pack"),
-        ENTITY_ATLAS("textures/animations/entities.pack");
+        ENTITY_ATLAS("textures/animations/entities.pack"),
+        WINDOW_ATLAS("skins/vis/skin/x2/uiskin.atlas");
         private String path;
         TextureAtlasPath(String path) { this.path = path; }
     }
@@ -68,6 +70,8 @@ public final class ResourceHandler implements Disposable {
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);
         assetManager.load(TiledMapPath.OVER_TILEMAP.path, TiledMap.class);
+        assetManager.load(SkinPath.WINDOW_SKIN.path, Skin.class,
+                new SkinLoader.SkinParameter(TextureAtlasPath.WINDOW_ATLAS.path));
         assetManager.finishLoading();
     }
 
