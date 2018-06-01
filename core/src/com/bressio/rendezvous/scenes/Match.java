@@ -104,7 +104,10 @@ public class Match implements Screen {
 
     private void setupInputTracker() {
         input = new InputTracker(camera);
-        Gdx.input.setInputProcessor(input);
+        // gameplay input
+//        Gdx.input.setInputProcessor(input);
+        // pause menu input
+        Gdx.input.setInputProcessor(pause.getStage());
     }
 
     private void update(float delta) {
@@ -154,11 +157,11 @@ public class Match implements Screen {
 
         overRenderer.render();
 
-        game.getBatch().setProjectionMatrix(hud.stage.getCamera().combined);
-        hud.stage.draw();
+        game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.getStage().draw();
 
-        game.getBatch().setProjectionMatrix(pause.stage.getCamera().combined);
-        pause.stage.draw();
+        game.getBatch().setProjectionMatrix(pause.getStage().getCamera().combined);
+        pause.getStage().draw();
     }
 
     @Override

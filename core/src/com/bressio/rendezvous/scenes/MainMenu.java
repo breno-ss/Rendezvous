@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
 import com.bressio.rendezvous.graphics.ResourceHandler;
+import com.bressio.rendezvous.languages.Internationalization;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
@@ -27,6 +28,7 @@ public class MainMenu implements Screen {
     // game
     private Rendezvous game;
     private ResourceHandler resources;
+    private Internationalization i18n;
 
     // GUI
     private Skin skin;
@@ -53,6 +55,7 @@ public class MainMenu implements Screen {
         logo = resources.getTexture(ResourceHandler.TexturePath.MENU_LOGO);
         skin = resources.getSkin(ResourceHandler.SkinPath.BUTTON_SKIN);
         skin.getFont("default").getData();
+        i18n = new Internationalization();
     }
 
     private void setupCamera() {
@@ -78,10 +81,10 @@ public class MainMenu implements Screen {
         table.left();
         table.setFillParent(true);
 
-        TextButton playButton = new TextButton("PLAY", skin, "white-button");
-        TextButton optionsButton = new TextButton("SETTINGS", skin, "white-button");
-        TextButton helpButton = new TextButton("HELP", skin, "white-button");
-        TextButton exitButton = new TextButton("QUIT", skin, "white-button");
+        TextButton playButton = new TextButton(i18n.getBundle().get("play"), skin, "white-button");
+        TextButton optionsButton = new TextButton(i18n.getBundle().get("settings"), skin, "white-button");
+        TextButton helpButton = new TextButton(i18n.getBundle().get("help"), skin, "white-button");
+        TextButton exitButton = new TextButton(i18n.getBundle().get("quit"), skin, "white-button");
 
         playButton.addListener(new ClickListener(){
             @Override

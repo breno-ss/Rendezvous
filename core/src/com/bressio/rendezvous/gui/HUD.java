@@ -17,7 +17,7 @@ import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_WIDTH;
 
 public class HUD implements Disposable {
 
-    public Stage stage;
+    private Stage stage;
     private Viewport viewport;
 
     private Label label;
@@ -41,5 +41,9 @@ public class HUD implements Disposable {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public Stage getStage() {
+        return stage;
     }
 }

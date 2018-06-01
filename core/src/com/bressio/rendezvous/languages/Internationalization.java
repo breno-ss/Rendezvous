@@ -28,4 +28,13 @@ public class Internationalization {
     public I18NBundle getBundle() {
         return bundle;
     }
+
+    public void setLanguage(Language language) {
+        FileHandle baseFileHandle = Gdx.files.internal("localization/Rendezvous");
+        Locale locale = new Locale("", "");
+        if (language == Language.BRAZILIAN_PORTUGUESE) {
+            locale = new Locale("pt", "BR");
+        }
+        bundle = I18NBundle.createBundle(baseFileHandle, locale);
+    }
 }
