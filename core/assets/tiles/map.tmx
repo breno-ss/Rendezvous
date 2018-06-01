@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="256" height="256" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1001">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="256" height="256" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1023">
  <tileset firstgid="1" source="tilemap.tsx"/>
  <objectgroup name="Ocean Collision">
   <object id="288" x="1472" y="3424">
@@ -1079,6 +1079,68 @@
   <object id="987" x="816.5" y="1899" width="46.5" height="9"/>
   <object id="988" x="714.5" y="1908.5" width="10" height="250"/>
   <object id="989" x="703" y="1898.5" width="32.5" height="10.5"/>
+ </objectgroup>
+ <objectgroup name="Player Spawn Points">
+  <object id="1001" x="1152" y="1472" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1002" x="4096" y="2016" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1003" x="5408" y="2880" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1004" x="6432" y="3200" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1005" x="7360" y="3840" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1006" x="6656" y="5056" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1007" x="6240" y="6176" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1008" x="4672" y="7136" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1009" x="4000" y="6240" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1010" x="2464" y="5856" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1011" x="1472" y="4512" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1012" x="2240" y="3072" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1013" x="3648" y="2912" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1015" x="5280" y="4000" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1016" x="5920" y="4832" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1017" x="5088" y="5312" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1019" x="4032" y="5600" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1020" x="3104" y="4352" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1021" x="4416" y="4224" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object id="1022" x="2368" y="352" width="32" height="32">
+   <ellipse/>
+  </object>
  </objectgroup>
  <layer name="Ocean" width="256" height="256">
   <data encoding="base64" compression="zlib">

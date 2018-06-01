@@ -66,6 +66,7 @@ public final class ResourceHandler implements Disposable {
 
     public void loadMatchResources() {
         assetManager.load(PixmapPath.MATCH_CURSOR.path, Pixmap.class);
+        assetManager.load(PixmapPath.MENU_CURSOR.path, Pixmap.class);
         assetManager.load(TextureAtlasPath.ENTITY_ATLAS.path, TextureAtlas.class);
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);

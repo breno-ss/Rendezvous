@@ -11,8 +11,8 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 
 public class Player extends Soldier {
 
-    public Player(World world, Match match, float radius, float linearDamping, int speed, float x, float y) {
-        super(world, match, x, y, radius, linearDamping, speed, AnimationRegion.PLAYER);
+    public Player(World world, Match match, float radius, float linearDamping, int speed, Vector2 position) {
+        super(world, match, position.x, position.y, radius, linearDamping, speed, AnimationRegion.PLAYER);
     }
 
     @Override

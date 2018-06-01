@@ -59,6 +59,7 @@ public class PauseMenu implements Disposable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 match.delegateInputProcessor();
+                match.setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
                 match.setState(Match.GameState.RUNNING);
             }
         });

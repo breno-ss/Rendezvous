@@ -49,6 +49,7 @@ public class Match implements Screen {
 
     // world
     private World world;
+    private WorldBuilder worldBuilder;
     private Player player;
     private TmxMapLoader mapLoader;
     private TiledMap map;
@@ -97,15 +98,13 @@ public class Match implements Screen {
     }
 
     private void setupCursor() {
-        Pixmap pixmap = resources.getPixmap(ResourceHandler.PixmapPath.MATCH_CURSOR);
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, pCenter(pixmap.getWidth()), pCenter(pixmap.getHeight())));
-        pixmap.dispose();
+        setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
     }
 
     private void forgeWorld() {
         world = new World(GRAVITY, true);
-        new WorldBuilder(world, map);
-        player = new Player(world, this, 32, 5, 10, 3200, 3200);
+        worldBuilder = new WorldBuilder(world, map);
+        player = new Player(world, this, 32, 5, 10, worldBuilder.getPlayerSpawnPoint());
     }
 
     private void setupInputTracker() {
@@ -134,6 +133,7 @@ public class Match implements Screen {
             if (state == GameState.RUNNING) {
                 input.reset();
                 Gdx.input.setInputProcessor(pause.getStage());
+                setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
                 setState(GameState.PAUSED);
             }
         }
@@ -154,6 +154,13 @@ public class Match implements Screen {
 
     public void delegateInputProcessor() {
         Gdx.input.setInputProcessor(input);
+    }
+
+    public void setCursor(ResourceHandler.PixmapPath pixmapPath, boolean isCentered) {
+        Pixmap pixmap = resources.getPixmap(pixmapPath);
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap,
+                isCentered ? pCenter(pixmap.getWidth()) : 0,
+                isCentered ? pCenter(pixmap.getHeight()) : 0));
     }
 
     @Override
