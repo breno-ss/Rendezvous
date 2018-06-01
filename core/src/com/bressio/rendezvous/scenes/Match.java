@@ -29,6 +29,10 @@ import static com.bressio.rendezvous.scheme.PlayerSettings.*;
 
 public class Match implements Screen {
 
+    public enum GameState {
+        RUNNING, PAUSED
+    }
+
     // game
     private Rendezvous game;
     private Internationalization i18n;
@@ -53,6 +57,7 @@ public class Match implements Screen {
 
     // events
     private InputTracker input;
+    private GameState state;
 
     Match(Rendezvous game) {
         this.game = game;
@@ -79,7 +84,7 @@ public class Match implements Screen {
         viewport = new FitViewport(pScale(GAME_WIDTH), pScale(GAME_HEIGHT), camera);
         viewport.apply();
         hud = new HUD(game.getBatch(), i18n);
-        pause = new PauseMenu(game.getBatch(), i18n, resources);
+        pause = new PauseMenu(game.getBatch(), i18n, resources, this);
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
         camera.update();
     }
@@ -88,6 +93,7 @@ public class Match implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, PhysicsAdapter.getScale());
         overRenderer = new OrthogonalTiledMapRenderer(overMap, PhysicsAdapter.getScale());
         collisionDebugRenderer = new Box2DDebugRenderer();
+        state = GameState.RUNNING;
     }
 
     private void setupCursor() {
@@ -104,10 +110,7 @@ public class Match implements Screen {
 
     private void setupInputTracker() {
         input = new InputTracker(camera);
-        // gameplay input
-//        Gdx.input.setInputProcessor(input);
-        // pause menu input
-        Gdx.input.setInputProcessor(pause.getStage());
+        Gdx.input.setInputProcessor(input);
     }
 
     private void update(float delta) {
@@ -124,11 +127,33 @@ public class Match implements Screen {
         camera.update();
         renderer.setView(camera);
         overRenderer.setView(camera);
-        input.update();
+    }
+
+    private void handlePauseMenu(float delta) {
+        if (InputTracker.isPressed(InputTracker.ESC)){
+            if (state == GameState.RUNNING) {
+                input.reset();
+                Gdx.input.setInputProcessor(pause.getStage());
+                setState(GameState.PAUSED);
+            }
+        }
     }
 
     public TextureAtlas getAtlas() {
         return atlas;
+    }
+
+    private void pausedRender(float delta) {
+        game.getBatch().setProjectionMatrix(pause.getStage().getCamera().combined);
+        pause.getStage().draw();
+    }
+
+    public void setState(GameState state) {
+        this.state = state;
+    }
+
+    public void delegateInputProcessor() {
+        Gdx.input.setInputProcessor(input);
     }
 
     @Override
@@ -138,8 +163,9 @@ public class Match implements Screen {
 
     @Override
     public void render(float delta) {
-        update(delta);
-
+        if (state == GameState.RUNNING) {
+            update(delta);
+        }
         Gdx.gl.glClearColor((float)111 / 255, (float)186 / 255, (float)203 / 255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -160,8 +186,12 @@ public class Match implements Screen {
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
 
-        game.getBatch().setProjectionMatrix(pause.getStage().getCamera().combined);
-        pause.getStage().draw();
+        if (state == GameState.PAUSED) {
+            pausedRender(delta);
+        }
+
+        input.update();
+        handlePauseMenu(delta);
     }
 
     @Override

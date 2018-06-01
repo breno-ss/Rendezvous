@@ -17,6 +17,7 @@ import com.bressio.rendezvous.Rendezvous;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.languages.Internationalization;
 import com.bressio.rendezvous.scenes.MainMenu;
+import com.bressio.rendezvous.scenes.Match;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
@@ -29,11 +30,13 @@ public class PauseMenu implements Disposable {
     private Skin skin;
 
     private Window window;
+    private Match match;
 
     private int width = 400;
     private int height = 250;
 
-    public PauseMenu(SpriteBatch spriteBatch, Internationalization i18n, ResourceHandler resources) {
+    public PauseMenu(SpriteBatch spriteBatch, Internationalization i18n, ResourceHandler resources, Match match) {
+        this.match = match;
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
 
@@ -55,7 +58,8 @@ public class PauseMenu implements Disposable {
         resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                window.setVisible(false);
+                match.delegateInputProcessor();
+                match.setState(Match.GameState.RUNNING);
             }
         });
 

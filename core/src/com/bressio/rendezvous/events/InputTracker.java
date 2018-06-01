@@ -16,7 +16,8 @@ public final class InputTracker extends InputAdapter {
     public static final int DOWN = 1;
     public static final int LEFT = 2;
     public static final int RIGHT = 3;
-    private static final int MAX = 4;
+    public static final int ESC = 4;
+    private static final int MAX = 5;
 
     private static boolean[] keyPresses;
 
@@ -46,6 +47,9 @@ public final class InputTracker extends InputAdapter {
             case Input.Keys.S:
                 keyPresses[DOWN] = true;
                 break;
+            case Input.Keys.ESCAPE:
+                keyPresses[ESC] = true;
+                break;
         }
         return true;
     }
@@ -64,6 +68,9 @@ public final class InputTracker extends InputAdapter {
                 break;
             case Input.Keys.S:
                 keyPresses[DOWN] = false;
+                break;
+            case Input.Keys.ESCAPE:
+                keyPresses[ESC] = false;
                 break;
         }
         return true;
@@ -104,5 +111,11 @@ public final class InputTracker extends InputAdapter {
         camera.unproject(mousePosition3D);
         mousePosition.x = mousePosition3D.x;
         mousePosition.y = mousePosition3D.y;
+    }
+
+    public void reset() {
+        for (int i = 0; i < MAX; i++) {
+            keyPresses[i] = false;
+        }
     }
 }
