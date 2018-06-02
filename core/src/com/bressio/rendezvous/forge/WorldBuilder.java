@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.bressio.rendezvous.entities.Building;
 
 import java.util.Random;
 
@@ -25,7 +26,8 @@ public class WorldBuilder {
         ROCK(1),
         TREE(2),
         BUILDING(3),
-        PLAYER_SPAWNPOINTS(4);
+        PLAYER_SPAWN_POINTS(4),
+        BUILDING_SENSOR(5);
         Layer(int layer) { this.layer = layer; }
         private final int layer;
     }
@@ -71,18 +73,18 @@ public class WorldBuilder {
                     .build();
         }
 
-        // build weapons
-//        for (MapObject object : map.getLayers().get(3).getObjects().getByType(RectangleMapObject.class)) {
-//            Rectangle rect = ((RectangleMapObject) object).getRectangle();
-//            new Weapon(world, map, rect);
-//        }
+        // building sensors
+        for (MapObject object : map.getLayers().get(Layer.BUILDING_SENSOR.layer).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            new Building(world, map, rect);
+        }
     }
 
     public Vector2 getPlayerSpawnPoint() {
         Vector2[] spawnPoints = new Vector2[20];
         int count = 0;
 
-        for (MapObject object : map.getLayers().get(Layer.PLAYER_SPAWNPOINTS.layer).getObjects().getByType(EllipseMapObject.class)) {
+        for (MapObject object : map.getLayers().get(Layer.PLAYER_SPAWN_POINTS.layer).getObjects().getByType(EllipseMapObject.class)) {
             Ellipse rect = ((EllipseMapObject) object).getEllipse();
             spawnPoints[count] = new Vector2(rect.x, rect.y);
             count++;

@@ -12,6 +12,11 @@ public final class PhysicsAdapter {
     private static final float SCALE = 100;
     public static final int MAP_AREA = 10240000;
 
+    public static final short DEFAULT_TAG = 1;
+    public static final short PLAYER_TAG = 2;
+    public static final short BUILDING_TAG = 4;
+    public static final short HIDDEN_TAG = 8;
+
     public static float pScale(float number) {
         return number / SCALE;
     }
@@ -46,5 +51,9 @@ public final class PhysicsAdapter {
 
     public static float getScale() {
         return 1 / SCALE;
+    }
+
+    public static float pUnscale(float number) {
+        return number * SCALE;
     }
 }

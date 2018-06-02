@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="256" height="256" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1023">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="256" height="256" tilewidth="32" tileheight="32" infinite="0" nextobjectid="1058">
  <tileset firstgid="1" source="tilemap.tsx"/>
  <objectgroup name="Ocean Collision">
   <object id="288" x="1472" y="3424">
@@ -1142,6 +1142,22 @@
    <ellipse/>
   </object>
  </objectgroup>
+ <objectgroup name="Building Sensors">
+  <object id="1040" x="1472" y="896" width="384" height="288"/>
+  <object id="1042" x="640" y="1824" width="800" height="320"/>
+  <object id="1043" x="3392" y="1408" width="512" height="384"/>
+  <object id="1044" x="1952" y="2624" width="224" height="160"/>
+  <object id="1045" x="5696" y="2592" width="288" height="192"/>
+  <object id="1047" x="4704" y="3520" width="448" height="352"/>
+  <object id="1048" x="2624" y="3936" width="384" height="352"/>
+  <object id="1049" x="2240" y="5408" width="704" height="224"/>
+  <object id="1050" x="3712" y="5408" width="224" height="288"/>
+  <object id="1051" x="4640" y="5248" width="256" height="128"/>
+  <object id="1052" x="4608" y="5952" width="768" height="448"/>
+  <object id="1053" x="5792" y="5600" width="448" height="160"/>
+  <object id="1056" x="6912" y="4320" width="608" height="256"/>
+  <object id="1057" x="7200" y="3040" width="192" height="192"/>
+ </objectgroup>
  <layer name="Ocean" width="256" height="256">
   <data encoding="base64" compression="zlib">
    eJztw8EJAAAMA6GD7L9zvx1CwVVTVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVX0PBdwALg==
@@ -1210,6 +1226,11 @@
  <layer name="Buildings" width="256" height="256">
   <data encoding="base64" compression="zlib">
    eJzt3Qtu2koUBuBZqqOm0LuMqA1JdkHUlujugqXdgYDuYBnbCeHhOd8nHdXGpHVj/x6PnykBAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA1m6W0vPtg5Z9ZX3u+gdPlPKdvH6w7+YcqyD/EJf8Ql/xDXPNc9ykth+pHrn3+5/IPVdD+Q1zyD3F9NPvyD/WQf4irletmTM1yXXeuAQAAAAAA/rdKafm6q7di+CO1cv4TJinnN/0+sV7lHyZJ/iGuMv9/c/3J+/MfrTf5h0nS/kNc8g9xyT/E1er/N/r/EIf2H+KSf4jL/j/Epf2HuOSfKVjk/cyHC9Qi2Lq8Stv8Nl3VkfPO7608/4wzy9lMPy9QD8Hy36fcNsg41yT/EFeZ/5e8n74ffs7t0qnjj8X4bhsA3JAy/7/SYZv91ePyD7dF/iEu+Ye4LpV/x//g9sg/xCX/EJf8Q1yLtM1ms6mn3Z/nGF+4zg0AAAAAAAAAAAAAAABgEmYpLe9G1Mx9o+ENrSvWkenJyy19G1F3lm14Q+uKdWR65J8xNsvfOlKfea77vO+2qXJZ/tMan1u2ocl/nY61//et5W3Zxib/dZJ/xtL/r4/8M9YsbdeD5ljNPFtwcvbLtJX1Zm7ZQhjledxrzwsAAAAAABDXIqXlw5FauF4Bqla+M7dd3nMLdevL/24bAFRK/iEu+Ye49P8hLvmHuBZpm/OmqxbuVwQAAAAAAADgwvruYx0q97nCtA1dxz5wjfv68nMMfBX5h7jK/D8Ww88pNS95H79v/En+YdLK/P9Kh+370Lj2H6Zrk9+P5F3+oR7yD3HJP8Sm/w9xtY7/Nznjy329DIw7/g/T5vw/xCX/EFffc+yGynPumLJV7sO+7uqtGO6rlTYPqpDznH7v6k8x3Fev8g9VkH+Iq8z/v2m7DViWWd+Mb+pv8bn8Qx3Gtv/7bcOf9+ME6+vMLfCV7P9DXGX+x5b8Qx3kH+Iam/+ybyD/UIe+/v/fdHD8fy3/UJe+/B87Hij/UAf5h7hWaZvnZlN5uClzXk4ra+Wel+qtxt0HcnBPiHtGpq9cZteeF65nzHHh18Ph9cB315f9HwCfJf8Ql/xDXPIPcck/xPWZ68LlH+og/xCX/ENcx679atVBvvu+65oxqEv7Gr9rzw8AAAAAAAAAAAAAAAAAAAAAAAC3resdl2/eWwnV2z2vctl+Tm37neeeWwv1Ofa+GvmH+g29r0r+oV7759XLPzVZ5D7tQ6ueOj4bO72ctjhjFmb5778rat4an53h3x7zjgvvrWBKck7Tz1b96vhs7PRy2sMZ858znr4Vdd8av9MOwyD5h7jkH+KSf4jrKW0zu3zOtc/tS0rN5rOy+qaX0x5z7i6R/1k6zPv3PE8/8nzIP4zX1f5/VZ0r/5tsl9nvqgj5n/Wc/xiqc5wfYXrkf7rKPlC7/+P3wxiLtM1pU24HNrndfXZSLc50Llz+38k/X6V9Hc+152fIrOjrRz3+V+b/R8c28XtrPH+nyb+n5f17f2F9nbmG022O/+X1v9nXvBje1CzAdXjtcyDt6tsniLB9hJrJP8TV2gc6yHbXPlG0/SOIon1+79rzAwAAUbSvg7j2/ACn6XpOyrHnn7Svgxx6nsq+zvm8FODzxl4n3XVv5ND9lOe+Xho4jfxDXPIPcZ3zPkn5h9sm/xDX/jlJQ/XYcfz/ceTPPsk/3KSx7f9z8fyzvs+0/zAd9v8hLvmHuJz/g7g2x//K55wfO4b30tHXf+n5fnGMoHH8D26T9h/ikn+IS/4hruI9Cb2V+/BNO9dPV35fAnA5U3uXAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA8Hn/AYXLsaA=
+  </data>
+ </layer>
+ <layer name="Build Ceilings" width="256" height="256">
+  <data encoding="base64" compression="zlib">
+   eJzt3UFuwjAARUHufyug5VxVd1WLwARSYb8Z6R8A4rdBCTkcAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAlR03Dpif/qFL/9Clf+jSP3TpH7pOGwfMT//QpX/o0j906R8AAAAAAJjd58AuAwPmo3/o0j906R+69A9d+ocu/UOX/qFL/9Clf+jSP3TpH7r0zwzO/7gS/TMD/UOX/qFL/9Clf+jSP3R9/OOA96J/6NI/dOkfuvQPXfoHAAAAAAAAAAAAAAAA4KfjA6PNGVmP/hnljKxH/4xyRtajf0adBsZcRq6pa8s3Z2Q9+meUM7Ie/TPKGVmP/gEAAAAAAIB3cL4zYF36hy79Q5f+oct77qFL/9Clf+jSPwAAAAAAAADv5N597O5zh3XpH7r0D136hy79Q5f+oevec2yec4N16R+69A9d+ocu/UOX/qFL/1R93tjlxoD56R+69A9d+ocu/UOX/qFL/9Clf+jSP3TpH7r0D136hy79c82tc7F1wBz0D136hy79Q5f+oevWb79bB8xB/9Clf+jSP3TpHwAAAAAAAAAAAAAAAAAAAAAAAIBX8d4K6NI/dOkfuvxvNXTpn9Wcd95ejld2+rVX0z+r0T906R+69A9dHztvL/qH5+kfuvQ/r2vfwSMD/c9L/zxL//PSP1X6//t5Hx3MSv/6hzL9Q5f+AQAAAOA1tjz7+E73SwHb6R+69A9d+ocu/UOX/qFL/9Clf+jSP3TpH7r0D136hy79Q5f+oUv/0KV/AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA4KcvQGZPbg==
   </data>
  </layer>
 </map>

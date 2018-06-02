@@ -3,6 +3,9 @@ package com.bressio.rendezvous.forge;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.DEFAULT_TAG;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.PLAYER_TAG;
+
 public class BodyBuilder{
 
     private World world;
@@ -14,11 +17,19 @@ public class BodyBuilder{
     private float radius;
     private float[] vertices;
     private boolean fixedRotation;
+    private boolean sensor;
     private BodyDef.BodyType bodyType;
+    private short categoryBits;
+    private short maskBits;
+    private Object userData;
 
     public BodyBuilder(World world, Vector2 position){
         this.world = world;
         this.position = position;
+
+        // by default, all objects have a default tag and can collide with other default objects or the player
+        this.categoryBits = DEFAULT_TAG;
+        this.maskBits = DEFAULT_TAG | PLAYER_TAG;
     }
 
     public BodyBuilder withWidth(float width) {
@@ -46,8 +57,8 @@ public class BodyBuilder{
         return this;
     }
 
-    public BodyBuilder withFixedRotation() {
-        this.fixedRotation = true;
+    public BodyBuilder withFixedRotation(boolean hasFixedRotation) {
+        this.fixedRotation = hasFixedRotation;
         return this;
     }
 
@@ -56,17 +67,40 @@ public class BodyBuilder{
         return this;
     }
 
+    public BodyBuilder withSensor(boolean isSensor) {
+        this.sensor = isSensor;
+        return this;
+    }
+
+    public BodyBuilder withCategoryBits(short categoryBits) {
+        this.categoryBits = categoryBits;
+        return this;
+    }
+
+    public BodyBuilder withMaskBits(short maskBits) {
+        this.maskBits = maskBits;
+        return this;
+    }
+
+    public BodyBuilder withUserData(Object userData) {
+        this.userData = userData;
+        return this;
+    }
+
     public Body build(){
         Body body;
         BodyDef bodyDef = new BodyDef();
         FixtureDef fixtureDef = new FixtureDef();
-
+        fixtureDef.filter.categoryBits = categoryBits;
+        fixtureDef.filter.maskBits = maskBits;
 
         bodyDef.linearDamping = linearDamping;
         bodyDef.fixedRotation = fixedRotation;
         bodyDef.type = bodyType;
         bodyDef.position.set(position);
         body = world.createBody(bodyDef);
+
+        fixtureDef.isSensor = sensor;
 
         if (width != 0 && height != 0) {
             PolygonShape shape = new PolygonShape();
@@ -82,7 +116,8 @@ public class BodyBuilder{
             fixtureDef.shape = shape;
         }
 
-        body.createFixture(fixtureDef);
+        body.createFixture(fixtureDef).setUserData(userData);
+
         return body;
     }
 

@@ -15,15 +15,21 @@ public abstract class Soldier extends Entity {
     private final float linearDamping;
     private final int speed;
     private final Animator animator;
+    private final short categoryBits;
+    private final short maskBits;
+    private final Object userData;
 
     Soldier(World world, Match match, float x, float y, float radius, float linearDamping, int speed,
-            AnimationRegion animationRegion) {
+            AnimationRegion animationRegion, short categoryBits, short maskBits, Object userData) {
         super(world, match, x, y, animationRegion.getRegion());
 
         this.radius = radius;
         this.linearDamping = linearDamping;
         this.speed = speed;
         animator = new Animator(this, animationRegion);
+        this.categoryBits = categoryBits;
+        this.userData = userData;
+        this.maskBits = maskBits;
 
         setOrigin(pScaleCenter(animationRegion.getFrameSize()), pScaleCenter(animationRegion.getFrameSize()));
         setBounds(0, 0, pScale(animationRegion.getFrameSize()), pScale(animationRegion.getFrameSize()));
@@ -38,6 +44,9 @@ public abstract class Soldier extends Entity {
                 .withBodyType(BodyDef.BodyType.DynamicBody)
                 .withRadius(pScale(radius))
                 .withLinearDamping(linearDamping)
+                .withCategoryBits(categoryBits)
+                .withMaskBits(maskBits)
+                .withUserData(userData)
                 .build());
     }
 

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
 import com.bressio.rendezvous.entities.Player;
 import com.bressio.rendezvous.events.InputTracker;
+import com.bressio.rendezvous.events.WorldContactListener;
 import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.HUD;
@@ -105,6 +106,7 @@ public class Match implements Screen {
         world = new World(GRAVITY, true);
         worldBuilder = new WorldBuilder(world, map);
         player = new Player(world, this, 32, 5, 10, worldBuilder.getPlayerSpawnPoint());
+        world.setContactListener(new WorldContactListener());
     }
 
     private void setupInputTracker() {
@@ -173,7 +175,7 @@ public class Match implements Screen {
         if (state == GameState.RUNNING) {
             update(delta);
         }
-        Gdx.gl.glClearColor((float)111 / 255, (float)186 / 255, (float)203 / 255, 1);
+        Gdx.gl.glClearColor((float)130 / 255, (float)241 / 255, (float)241 / 255, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         renderer.render();

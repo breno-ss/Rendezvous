@@ -7,12 +7,13 @@ import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.graphics.AnimationRegion;
 import com.bressio.rendezvous.scenes.Match;
 
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class Player extends Soldier {
 
     public Player(World world, Match match, float radius, float linearDamping, int speed, Vector2 position) {
-        super(world, match, position.x, position.y, radius, linearDamping, speed, AnimationRegion.PLAYER);
+        super(world, match, position.x, position.y, radius, linearDamping, speed, AnimationRegion.PLAYER, PLAYER_TAG,
+                (short) (DEFAULT_TAG | BUILDING_TAG), "player");
     }
 
     @Override
