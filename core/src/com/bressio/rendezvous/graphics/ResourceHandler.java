@@ -15,7 +15,12 @@ public final class ResourceHandler implements Disposable {
 
     public enum TexturePath {
         MENU_BACKGROUND("textures/gui/backgrounds/menu-background.png"),
-        MENU_LOGO("textures/gui/logos/menu-logo.png");
+        MENU_LOGO("textures/gui/logos/menu-logo.png"),
+        MATCH_MAP("textures/gui/maps/map-expanded.png"),
+        MATCH_MINIMAP("textures/gui/maps/minimap.png"),
+        MATCH_MINIMAP_FRAME("textures/gui/maps/minimap-frame.png"),
+        PLAYER_MARK("textures/gui/maps/player-mark.png"),
+        BLACK_BACKGROUND("textures/gui/backgrounds/black-background.png");
         private String path;
         TexturePath(String path) { this.path = path; }
     }
@@ -73,6 +78,11 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TiledMapPath.OVER_TILEMAP.path, TiledMap.class);
         assetManager.load(SkinPath.WINDOW_SKIN.path, Skin.class,
                 new SkinLoader.SkinParameter(TextureAtlasPath.WINDOW_ATLAS.path));
+        assetManager.load(TexturePath.BLACK_BACKGROUND.path, Texture.class);
+        assetManager.load(TexturePath.MATCH_MAP.path, Texture.class);
+        assetManager.load(TexturePath.MATCH_MINIMAP.path, Texture.class);
+        assetManager.load(TexturePath.MATCH_MINIMAP_FRAME.path, Texture.class);
+        assetManager.load(TexturePath.PLAYER_MARK.path, Texture.class);
         assetManager.finishLoading();
     }
 

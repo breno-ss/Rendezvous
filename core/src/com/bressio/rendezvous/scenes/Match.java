@@ -5,13 +5,16 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
@@ -32,7 +35,7 @@ import static com.bressio.rendezvous.scheme.PlayerSettings.*;
 public class Match implements Screen {
 
     public enum GameState {
-        RUNNING, PAUSED
+        RUNNING, PAUSED, TACTICAL
     }
 
     // game
@@ -63,6 +66,13 @@ public class Match implements Screen {
     private InputTracker input;
     private GameState state;
 
+    // minimap
+    private Texture minimap;
+    private Texture minimapFrame;
+    private Texture minimapPlayerMark;
+    private Rectangle minimapMask;
+    private int minimapOffset = 10;
+
     Match(Rendezvous game) {
         this.game = game;
         loadResources();
@@ -81,6 +91,9 @@ public class Match implements Screen {
         map = resources.getTiledMap(ResourceHandler.TiledMapPath.TILEMAP);
         overMap = resources.getTiledMap(ResourceHandler.TiledMapPath.OVER_TILEMAP);
         i18n = new Internationalization();
+        minimap = resources.getTexture(ResourceHandler.TexturePath.MATCH_MINIMAP);
+        minimapFrame = resources.getTexture(ResourceHandler.TexturePath.MATCH_MINIMAP_FRAME);
+        minimapPlayerMark = resources.getTexture(ResourceHandler.TexturePath.PLAYER_MARK);
     }
 
     private void setupCamera() {
@@ -92,6 +105,7 @@ public class Match implements Screen {
         matchMap = new MatchMap(game.getBatch(), i18n, resources);
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
         camera.update();
+        minimapMask = new Rectangle( minimapOffset, minimapOffset, 200, 200);
     }
 
     private void setupRenderer() {
@@ -136,11 +150,25 @@ public class Match implements Screen {
 
     private void handlePauseMenu(float delta) {
         if (InputTracker.isPressed(InputTracker.ESC)){
-            if (state == GameState.RUNNING) {
-                input.reset();
+            if (state == GameState.RUNNING || state == GameState.TACTICAL) {
+                input.resetAllKeys();
                 Gdx.input.setInputProcessor(pause.getStage());
                 setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
                 setState(GameState.PAUSED);
+            }
+        }
+    }
+
+    private void handleMatchMap(float delta) {
+        if (InputTracker.isPressed(InputTracker.M)){
+            if (state == GameState.RUNNING) {
+                input.resetSecondaryKeys();
+                setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
+                setState(GameState.TACTICAL);
+            } else if (state == GameState.TACTICAL) {
+                input.resetSecondaryKeys();
+                setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
+                setState(GameState.RUNNING);
             }
         }
     }
@@ -152,6 +180,11 @@ public class Match implements Screen {
     private void pausedRender(float delta) {
         game.getBatch().setProjectionMatrix(pause.getStage().getCamera().combined);
         pause.getStage().draw();
+    }
+
+    private void mapRender(float delta) {
+        game.getBatch().setProjectionMatrix(matchMap.getStage().getCamera().combined);
+        matchMap.getStage().draw();
     }
 
     public void setState(GameState state) {
@@ -169,6 +202,21 @@ public class Match implements Screen {
                 isCentered ? pCenter(pixmap.getHeight()) : 0));
     }
 
+    private void drawMinimap(float delta) {
+        game.getBatch().begin();
+        game.getBatch().flush();
+        ScissorStack.pushScissors(minimapMask);
+        game.getBatch().draw(minimap, - player.getBody().getPosition().x * 7.2f - 77 + minimapOffset,
+                - player.getBody().getPosition().y * 7.2f - 77 + minimapOffset);
+        game.getBatch().draw(minimapFrame, minimapOffset, minimapOffset);
+        game.getBatch().draw(minimapPlayerMark,
+                pCenter(minimapMask.width) - pCenter(minimapPlayerMark.getWidth()) + 5 + minimapOffset,
+                pCenter(minimapMask.height) - pCenter(minimapPlayerMark.getHeight()) + 5 + minimapOffset);
+        game.getBatch().flush();
+        ScissorStack.popScissors();
+        game.getBatch().end();
+    }
+
     @Override
     public void show() {
 
@@ -176,7 +224,7 @@ public class Match implements Screen {
 
     @Override
     public void render(float delta) {
-        if (state == GameState.RUNNING) {
+        if (state == GameState.RUNNING || state == GameState.TACTICAL) {
             update(delta);
         }
         Gdx.gl.glClearColor((float)19 / 255, (float)174 / 255, (float)147 / 255, 1);
@@ -199,15 +247,19 @@ public class Match implements Screen {
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
 
-        game.getBatch().setProjectionMatrix(matchMap.getStage().getCamera().combined);
-        matchMap.getStage().draw();
+        if (state != GameState.TACTICAL) {
+            drawMinimap(delta);
+        }
 
         if (state == GameState.PAUSED) {
             pausedRender(delta);
+        } else if (state == GameState.TACTICAL) {
+            mapRender(delta);
         }
 
         input.update();
         handlePauseMenu(delta);
+        handleMatchMap(delta);
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.bressio.rendezvous.gui;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -20,18 +19,22 @@ public class MatchMap implements Disposable {
 
     private Stage stage;
     private Viewport viewport;
+    private Image background;
     private Image map;
     private Image playerMark;
 
-    public MatchMap(SpriteBatch spriteBatch, Internationalization i18n, ResourceHandler resources) {
+    public MatchMap(SpriteBatch batch, Internationalization i18n, ResourceHandler resources) {
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, spriteBatch);
+        stage = new Stage(viewport, batch);
 
-        map = new Image(new Texture("textures/gui/maps/map-expanded.png"));
+        background = new Image(resources.getTexture(ResourceHandler.TexturePath.BLACK_BACKGROUND));
+        background.setScale(GAME_WIDTH, GAME_HEIGHT);
+        map = new Image(resources.getTexture(ResourceHandler.TexturePath.MATCH_MAP));
         map.setPosition(pCenter(GAME_WIDTH) - pCenter( map.getWidth()),
                 pCenter(GAME_HEIGHT) - pCenter(map.getHeight()));
-        playerMark = new Image(new Texture("textures/gui/maps/player-mark.png"));
+        playerMark = new Image(resources.getTexture(ResourceHandler.TexturePath.PLAYER_MARK));
 
+        stage.addActor(background);
         stage.addActor(map);
         stage.addActor(playerMark);
     }
