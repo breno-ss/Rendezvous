@@ -56,4 +56,16 @@ public final class PhysicsAdapter {
     public static float pUnscale(float number) {
         return number * SCALE;
     }
+
+    public static String formatSeconds(int timeInSeconds, boolean hasHours){
+        int seconds = timeInSeconds % 3600 % 60;
+        int minutes = timeInSeconds % 3600 / 60;
+        int hours = timeInSeconds / 3600;
+
+        String HH = hours < 10 ? "0" + hours : String.valueOf(hours);
+        String MM = minutes < 10 ? "0" + minutes : String.valueOf(minutes);
+        String SS = seconds < 10 ? "0" + seconds : String.valueOf(seconds);
+
+        return (hasHours ? HH + ":" : "" ) + MM + ":" + SS;
+    }
 }

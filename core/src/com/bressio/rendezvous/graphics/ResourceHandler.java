@@ -20,7 +20,8 @@ public final class ResourceHandler implements Disposable {
         MATCH_MINIMAP("textures/gui/maps/minimap.png"),
         MATCH_MINIMAP_FRAME("textures/gui/maps/minimap-frame.png"),
         PLAYER_MARK("textures/gui/maps/player-mark.png"),
-        BLACK_BACKGROUND("textures/gui/backgrounds/black-background.png");
+        BLACK_BACKGROUND("textures/gui/backgrounds/black-background.png"),
+        EVENT_BACKGROUND("textures/gui/backgrounds/event-background.png");
         private String path;
         TexturePath(String path) { this.path = path; }
     }
@@ -95,6 +96,7 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.MATCH_MINIMAP.path, Texture.class);
         assetManager.load(TexturePath.MATCH_MINIMAP_FRAME.path, Texture.class);
         assetManager.load(TexturePath.PLAYER_MARK.path, Texture.class);
+        assetManager.load(TexturePath.EVENT_BACKGROUND.path, Texture.class);
         assetManager.finishLoading();
     }
 
@@ -108,7 +110,7 @@ public final class ResourceHandler implements Disposable {
 
     public Skin getSkin(SkinPaths skinPaths) {
         Skin skin = new Skin();
-        skin.add(skinPaths.fontName, FontGenerator.generate(skinPaths.fontPath, skinPaths.fontSize));
+        skin.add(skinPaths.fontName, FontGenerator.generate(skinPaths.fontPath, skinPaths.fontSize, false));
         skin.addRegions(new TextureAtlas(Gdx.files.internal(skinPaths.atlasPath.path)));
         skin.load(Gdx.files.internal(skinPaths.path));
         return skin;

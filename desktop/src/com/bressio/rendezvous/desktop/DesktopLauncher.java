@@ -11,6 +11,7 @@ public class DesktopLauncher {
         config.width = PlayerSettings.GAME_WIDTH;
         config.height = PlayerSettings.GAME_HEIGHT;
         config.fullscreen = PlayerSettings.FULLSCREEN;
+        config.resizable = false;
         new LwjglApplication(new Rendezvous(), config);
     }
 }

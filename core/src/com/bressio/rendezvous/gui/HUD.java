@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
@@ -15,7 +16,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
-import com.bressio.rendezvous.languages.Internationalization;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
@@ -26,7 +26,7 @@ public class HUD implements Disposable {
     private Stage stage;
     private Viewport viewport;
 
-    private Label nextEvent;
+    private Label event;
     private Label timeToNextEvent;
 
     private SpriteBatch batch;
@@ -37,25 +37,32 @@ public class HUD implements Disposable {
     private Rectangle minimapMask;
     private int minimapOffset = 10;
 
-    public HUD(SpriteBatch batch, Internationalization i18n, ResourceHandler resources) {
+    private Image eventBackground;
+
+    public HUD(SpriteBatch batch, ResourceHandler resources) {
         this.batch = batch;
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
 
         minimap = resources.getTexture(ResourceHandler.TexturePath.MATCH_MINIMAP);
 
+        eventBackground = new Image(resources.getTexture(ResourceHandler.TexturePath.EVENT_BACKGROUND));
+        eventBackground.setPosition(pCenter(GAME_WIDTH) - pCenter( eventBackground.getWidth()),
+                GAME_HEIGHT - eventBackground.getHeight());
+
         Table table = new Table();
         table.top();
         table.setFillParent(true);
 
-        nextEvent = new Label(i18n.getBundle().get("firstRendezvous"),
-                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 16), Color.WHITE));
-        table.add(nextEvent).fillX().padTop(10).row();
+        event = new Label("",
+                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 12, false), Color.WHITE));
+        table.add(event).fillX().padTop(3).row();
 
-        timeToNextEvent = new Label("00:59",
-                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 28), Color.WHITE));
-        table.add(timeToNextEvent).padTop(5).row();
+        timeToNextEvent = new Label("",
+                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 22, false), Color.WHITE));
+        table.add(timeToNextEvent).padTop(1).row();
 
+        stage.addActor(eventBackground);
         stage.addActor(table);
 
         minimap = resources.getTexture(ResourceHandler.TexturePath.MATCH_MINIMAP);
@@ -78,6 +85,21 @@ public class HUD implements Disposable {
         batch.flush();
         ScissorStack.popScissors();
         batch.end();
+    }
+
+    public void updateTimeLabel(String time) {
+        timeToNextEvent.setText(time);
+    }
+
+    public void updateEventLabel(String eventLabel, boolean isInRendezvous) {
+        event.setText(eventLabel);
+        if (isInRendezvous) {
+            timeToNextEvent.setVisible(false);
+            event.setStyle(new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 26, false), Color.WHITE));
+        } else {
+            timeToNextEvent.setVisible(true);
+            event.setStyle(new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 12, false), Color.WHITE));
+        }
     }
 
     @Override
