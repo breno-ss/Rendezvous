@@ -1,7 +1,7 @@
 package com.bressio.rendezvous.graphics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
@@ -25,11 +25,21 @@ public final class ResourceHandler implements Disposable {
         TexturePath(String path) { this.path = path; }
     }
 
-    public enum SkinPath {
-        BUTTON_SKIN("skins/button.json"),
-        WINDOW_SKIN("skins/vis/skin/x2/uiskin.json");
+    public enum SkinPaths {
+        BUTTON_SKIN("skins/button.json", "bombard", FontPath.BOMBARD, 36, TextureAtlasPath.BUTTON_ATLAS),
+        WINDOW_SKIN("skins/vis/skin/x2/uiskin.json", "bombard", FontPath.BOMBARD, 26, TextureAtlasPath.WINDOW_ATLAS);
         private String path;
-        SkinPath(String path) { this.path = path; }
+        private String fontName;
+        private FontPath fontPath;
+        private int fontSize;
+        private TextureAtlasPath atlasPath;
+        SkinPaths(String path, String fontName, FontPath fontPath, int fontSize, TextureAtlasPath atlasPath) {
+            this.path = path;
+            this.fontName = fontName;
+            this.fontPath = fontPath;
+            this.fontSize = fontSize;
+            this.atlasPath = atlasPath;
+        }
     }
 
     public enum TextureAtlasPath {
@@ -54,6 +64,12 @@ public final class ResourceHandler implements Disposable {
         TiledMapPath(String path) { this.path = path; }
     }
 
+    public enum FontPath {
+        BOMBARD("fonts/BOMBARD.ttf");
+        public String path;
+        FontPath(String path) { this.path = path; }
+    }
+
     private AssetManager assetManager;
 
     public ResourceHandler() {
@@ -63,8 +79,6 @@ public final class ResourceHandler implements Disposable {
     public void loadMainMenuResources() {
         assetManager.load(TexturePath.MENU_BACKGROUND.path, Texture.class);
         assetManager.load(TexturePath.MENU_LOGO.path, Texture.class);
-        assetManager.load(SkinPath.BUTTON_SKIN.path, Skin.class,
-                new SkinLoader.SkinParameter(TextureAtlasPath.BUTTON_ATLAS.path));
         assetManager.load(PixmapPath.MENU_CURSOR.path, Pixmap.class);
         assetManager.finishLoading();
     }
@@ -76,8 +90,6 @@ public final class ResourceHandler implements Disposable {
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);
         assetManager.load(TiledMapPath.OVER_TILEMAP.path, TiledMap.class);
-        assetManager.load(SkinPath.WINDOW_SKIN.path, Skin.class,
-                new SkinLoader.SkinParameter(TextureAtlasPath.WINDOW_ATLAS.path));
         assetManager.load(TexturePath.BLACK_BACKGROUND.path, Texture.class);
         assetManager.load(TexturePath.MATCH_MAP.path, Texture.class);
         assetManager.load(TexturePath.MATCH_MINIMAP.path, Texture.class);
@@ -94,8 +106,12 @@ public final class ResourceHandler implements Disposable {
         return assetManager.get(textureAtlas.path, TextureAtlas.class);
     }
 
-    public Skin getSkin(SkinPath skin) {
-        return assetManager.get(skin.path, Skin.class);
+    public Skin getSkin(SkinPaths skinPaths) {
+        Skin skin = new Skin();
+        skin.add(skinPaths.fontName, FontGenerator.generate(skinPaths.fontPath, skinPaths.fontSize));
+        skin.addRegions(new TextureAtlas(Gdx.files.internal(skinPaths.atlasPath.path)));
+        skin.load(Gdx.files.internal(skinPaths.path));
+        return skin;
     }
 
     public Pixmap getPixmap(PixmapPath pixmap) {

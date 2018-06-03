@@ -39,9 +39,7 @@ public class PauseMenu implements Disposable {
         this.match = match;
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
-
-        skin = resources.getSkin(ResourceHandler.SkinPath.WINDOW_SKIN);
-
+        skin = resources.getSkin(ResourceHandler.SkinPaths.WINDOW_SKIN);
         window = new Window("", skin);
         window.setSize(width, height);
         window.setPosition(pCenter(GAME_WIDTH) - pCenter(width), pCenter(GAME_HEIGHT) - pCenter(height));
@@ -54,7 +52,6 @@ public class PauseMenu implements Disposable {
         TextButton backButton = new TextButton(i18n.getBundle().get("pauseMenuBack"), skin);
         TextButton exitButton = new TextButton(i18n.getBundle().get("pauseMenuQuit"), skin);
 
-        resumeButton.getLabel().setFontScale(.7f);
         resumeButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -64,7 +61,6 @@ public class PauseMenu implements Disposable {
             }
         });
 
-        backButton.getLabel().setFontScale(.7f);
         backButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -73,7 +69,6 @@ public class PauseMenu implements Disposable {
             }
         });
 
-        exitButton.getLabel().setFontScale(.7f);
         exitButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {

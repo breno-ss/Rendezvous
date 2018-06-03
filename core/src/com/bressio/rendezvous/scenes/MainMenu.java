@@ -53,8 +53,7 @@ public class MainMenu implements Screen {
         resources.loadMainMenuResources();
         background = resources.getTexture(ResourceHandler.TexturePath.MENU_BACKGROUND);
         logo = resources.getTexture(ResourceHandler.TexturePath.MENU_LOGO);
-        skin = resources.getSkin(ResourceHandler.SkinPath.BUTTON_SKIN);
-        skin.getFont("default").getData();
+        skin = resources.getSkin(ResourceHandler.SkinPaths.BUTTON_SKIN);
         i18n = new Internationalization();
     }
 
