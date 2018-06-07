@@ -21,7 +21,9 @@ public final class ResourceHandler implements Disposable {
         MATCH_MINIMAP_FRAME("textures/gui/maps/minimap-frame.png"),
         PLAYER_MARK("textures/gui/maps/player-mark.png"),
         BLACK_BACKGROUND("textures/gui/backgrounds/black-background.png"),
-        EVENT_BACKGROUND("textures/gui/backgrounds/event-background.png");
+        EVENT_BACKGROUND("textures/gui/backgrounds/event-background.png"),
+        SAFEZONE("textures/world/safezone.png"),
+        DANGER_ZONE("textures/world/danger-zone.png");
         private String path;
         TexturePath(String path) { this.path = path; }
     }
@@ -97,6 +99,8 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.MATCH_MINIMAP_FRAME.path, Texture.class);
         assetManager.load(TexturePath.PLAYER_MARK.path, Texture.class);
         assetManager.load(TexturePath.EVENT_BACKGROUND.path, Texture.class);
+        assetManager.load(TexturePath.SAFEZONE.path, Texture.class);
+        assetManager.load(TexturePath.DANGER_ZONE.path, Texture.class);
         assetManager.finishLoading();
     }
 

@@ -50,6 +50,7 @@ public class Match implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private OrthogonalTiledMapRenderer overRenderer;
     private Box2DDebugRenderer collisionDebugRenderer;
+    private int cameraZoom = 1;
 
     // world
     private World world;
@@ -87,7 +88,7 @@ public class Match implements Screen {
 
     private void setupCamera() {
         camera = new OrthographicCamera();
-        viewport = new FitViewport(pScale(GAME_WIDTH), pScale(GAME_HEIGHT), camera);
+        viewport = new FitViewport(pScale(GAME_WIDTH) * cameraZoom, pScale(GAME_HEIGHT) * cameraZoom, camera);
         viewport.apply();
         hud = new HUD(game.getBatch(), resources);
         pause = new PauseMenu(game.getBatch(), i18n, resources, this);
@@ -112,7 +113,7 @@ public class Match implements Screen {
         worldBuilder = new WorldBuilder(world, map);
         player = new Player(world, this, 32, 5, 10, worldBuilder.getPlayerSpawnPoint());
         world.setContactListener(new WorldContactListener());
-        rendezvousController = new RendezvousController(i18n , hud);
+        rendezvousController = new RendezvousController(game.getBatch(), i18n , hud, resources);
     }
 
     private void setupInputTracker() {
@@ -218,6 +219,8 @@ public class Match implements Screen {
         game.getBatch().end();
 
         overRenderer.render();
+
+        rendezvousController.updateGraphics(delta);
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.getStage().draw();
