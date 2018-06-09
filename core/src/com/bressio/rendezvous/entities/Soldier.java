@@ -19,6 +19,9 @@ public abstract class Soldier extends Entity {
     private final short maskBits;
     private final Object userData;
 
+    private int health = 100;
+    private int armor = 10;
+
     Soldier(World world, Match match, float x, float y, float radius, float linearDamping, int speed,
             AnimationRegion animationRegion, short categoryBits, short maskBits, Object userData) {
         super(world, match, x, y, animationRegion.getRegion());
@@ -57,5 +60,13 @@ public abstract class Soldier extends Entity {
 
     int getSpeed() {
         return speed;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getArmor() {
+        return armor;
     }
 }

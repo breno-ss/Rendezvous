@@ -23,7 +23,12 @@ public final class ResourceHandler implements Disposable {
         BLACK_BACKGROUND("textures/gui/backgrounds/black-background.png"),
         EVENT_BACKGROUND("textures/gui/backgrounds/event-background.png"),
         SAFEZONE("textures/world/safezone.png"),
-        DANGER_ZONE("textures/world/danger-zone.png");
+        DANGER_ZONE("textures/world/danger-zone.png"),
+        EMPTY_BAR("textures/gui/health/empty-bar.png"),
+        HEALTH_BAR("textures/gui/health/health-bar.png"),
+        ARMOR_BAR("textures/gui/health/armor-bar.png"),
+        HEALTH_ICON("textures/gui/health/health-icon.png"),
+        ARMOR_ICON("textures/gui/health/armor-icon.png");
         private String path;
         TexturePath(String path) { this.path = path; }
     }
@@ -101,6 +106,11 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.EVENT_BACKGROUND.path, Texture.class);
         assetManager.load(TexturePath.SAFEZONE.path, Texture.class);
         assetManager.load(TexturePath.DANGER_ZONE.path, Texture.class);
+        assetManager.load(TexturePath.EMPTY_BAR.path, Texture.class);
+        assetManager.load(TexturePath.HEALTH_BAR.path, Texture.class);
+        assetManager.load(TexturePath.ARMOR_BAR.path, Texture.class);
+        assetManager.load(TexturePath.HEALTH_ICON.path, Texture.class);
+        assetManager.load(TexturePath.ARMOR_ICON.path, Texture.class);
         assetManager.finishLoading();
     }
 

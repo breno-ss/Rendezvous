@@ -113,7 +113,7 @@ public class Match implements Screen {
         worldBuilder = new WorldBuilder(world, map);
         player = new Player(world, this, 32, 5, 10, worldBuilder.getPlayerSpawnPoint());
         world.setContactListener(new WorldContactListener());
-        rendezvousController = new RendezvousController(game.getBatch(), i18n , hud, resources);
+        rendezvousController = new RendezvousController(game.getBatch(), i18n , hud, resources, player);
     }
 
     private void setupInputTracker() {
@@ -223,7 +223,11 @@ public class Match implements Screen {
         rendezvousController.updateGraphics(delta);
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.drawHealthBars(delta, player.getHealth(), player.getArmor());
         hud.getStage().draw();
+
+        hud.updateHealthBars(delta, player.getHealth(), player.getArmor());
+
 
         if (state != GameState.TACTICAL) {
             hud.drawMinimap(delta, player.getBody().getPosition());

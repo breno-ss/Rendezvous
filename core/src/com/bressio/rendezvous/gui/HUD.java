@@ -39,12 +39,18 @@ public class HUD implements Disposable {
 
     private Image eventBackground;
 
+    private Texture emptyBar;
+    private Texture healthbar;
+    private Texture armorBar;
+    private Texture healthIcon;
+    private Texture armorIcon;
+    private Label healthPoints;
+    private Label armorPoints;
+
     public HUD(SpriteBatch batch, ResourceHandler resources) {
         this.batch = batch;
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, batch);
-
-        minimap = resources.getTexture(ResourceHandler.TexturePath.MATCH_MINIMAP);
 
         eventBackground = new Image(resources.getTexture(ResourceHandler.TexturePath.EVENT_BACKGROUND));
         eventBackground.setPosition(pCenter(GAME_WIDTH) - pCenter( eventBackground.getWidth()),
@@ -70,6 +76,26 @@ public class HUD implements Disposable {
         minimapPlayerMark = resources.getTexture(ResourceHandler.TexturePath.PLAYER_MARK);
 
         minimapMask = new Rectangle( minimapOffset, minimapOffset, 200, 200);
+
+        emptyBar = resources.getTexture(ResourceHandler.TexturePath.EMPTY_BAR);
+        healthbar = resources.getTexture(ResourceHandler.TexturePath.HEALTH_BAR);
+        armorBar = resources.getTexture(ResourceHandler.TexturePath.ARMOR_BAR);
+        healthIcon = resources.getTexture(ResourceHandler.TexturePath.HEALTH_ICON);
+        armorIcon = resources.getTexture(ResourceHandler.TexturePath.ARMOR_ICON);
+
+        table = new Table();
+        table.bottom();
+        table.setFillParent(true);
+
+        armorPoints = new Label("",
+                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 14, false), Color.WHITE));
+        table.add(armorPoints).padBottom(3).padLeft(-350).row();
+        healthPoints = new Label("",
+                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 14, false), Color.WHITE));
+        table.add(healthPoints).padBottom(15).padLeft(-350);
+
+
+        stage.addActor(table);
     }
 
     public void drawMinimap(float delta, Vector2 playerPosition) {
@@ -86,6 +112,36 @@ public class HUD implements Disposable {
         ScissorStack.popScissors();
         batch.end();
     }
+
+    public void drawHealthBars(float delta, int health, int armor) {
+        batch.begin();
+        batch.draw(emptyBar, pCenter(GAME_WIDTH) - pCenter(emptyBar.getWidth()), 33);
+        batch.draw(emptyBar, pCenter(GAME_WIDTH) - pCenter(emptyBar.getWidth()), 15);
+
+        batch.draw(armorBar,
+                pCenter(GAME_WIDTH) - pCenter(emptyBar.getWidth()),
+                33,
+                armor * 4,
+                15);
+        batch.draw(healthbar,
+                pCenter(GAME_WIDTH) - pCenter(emptyBar.getWidth()),
+                15,
+                health * 4,
+                15);
+
+        batch.draw(armorIcon,
+                pCenter(GAME_WIDTH) - pCenter(emptyBar.getWidth()) + 2, 35);
+        batch.draw(healthIcon,
+                pCenter(GAME_WIDTH) - pCenter(emptyBar.getWidth()) + 2, 17);
+
+        batch.end();
+    }
+
+    public void updateHealthBars(float delta, int health, int armor) {
+        armorPoints.setText(String.valueOf(armor));
+        healthPoints.setText(String.valueOf(health));
+    }
+
 
     public void updateTimeLabel(String time) {
         timeToNextEvent.setText(time);
