@@ -47,6 +47,8 @@ public class HUD implements Disposable {
     private Label healthPoints;
     private Label armorPoints;
 
+    private Texture vignette;
+
     public HUD(SpriteBatch batch, ResourceHandler resources) {
         this.batch = batch;
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
@@ -94,8 +96,15 @@ public class HUD implements Disposable {
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 14, false), Color.WHITE));
         table.add(healthPoints).padBottom(15).padLeft(-350);
 
-
         stage.addActor(table);
+
+        vignette = resources.getTexture(ResourceHandler.TexturePath.VIGNETTE);
+    }
+
+    public void drawVignette(float delta) {
+        batch.begin();
+        batch.draw(vignette, 0, 0);
+        batch.end();
     }
 
     public void drawMinimap(float delta, Vector2 playerPosition) {

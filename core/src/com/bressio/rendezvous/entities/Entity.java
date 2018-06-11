@@ -14,7 +14,7 @@ public abstract class Entity extends Sprite {
     private Body body;
     private Vector2 position;
 
-    Entity(World world, Match match, float x, float y, String animationRegion) {
+    protected Entity(World world, Match match, float x, float y, String animationRegion) {
         super(match.getAtlas().findRegion(animationRegion));
         this.world = world;
         position = pScale(x, y);

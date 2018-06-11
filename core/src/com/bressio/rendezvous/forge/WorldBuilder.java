@@ -27,7 +27,9 @@ public class WorldBuilder {
         TREE(2),
         BUILDING(3),
         PLAYER_SPAWN_POINTS(4),
-        BUILDING_SENSOR(5);
+        BUILDING_SENSOR(5),
+        CHEST(6),
+        CRATE(7);
         Layer(int layer) { this.layer = layer; }
         private final int layer;
     }
@@ -65,6 +67,26 @@ public class WorldBuilder {
 
         // buildings
         for (MapObject object : map.getLayers().get(Layer.BUILDING.layer).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
+                    .withBodyType(BodyDef.BodyType.StaticBody)
+                    .withWidth(pScaleCenter(rect.getWidth()))
+                    .withHeight(pScaleCenter(rect.getHeight()))
+                    .build();
+        }
+
+        // chests
+        for (MapObject object : map.getLayers().get(Layer.CHEST.layer).getObjects().getByType(RectangleMapObject.class)) {
+            Rectangle rect = ((RectangleMapObject) object).getRectangle();
+            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
+                    .withBodyType(BodyDef.BodyType.StaticBody)
+                    .withWidth(pScaleCenter(rect.getWidth()))
+                    .withHeight(pScaleCenter(rect.getHeight()))
+                    .build();
+        }
+
+        // crates
+        for (MapObject object : map.getLayers().get(Layer.CRATE.layer).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
             new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
                     .withBodyType(BodyDef.BodyType.StaticBody)

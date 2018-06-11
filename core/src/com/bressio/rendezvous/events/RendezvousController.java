@@ -16,7 +16,7 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScaleCenter;
 
 public class RendezvousController {
 
-    private float timeCount;
+    private float rendezvousTimeCount;
     private int secondsToNextEvent;
     private int event;
     private String rendezvousLabel;
@@ -31,6 +31,7 @@ public class RendezvousController {
     private Vector2[] safezoneOffsets;
 
     private Player player;
+    private float damageTimeCount;
 
     public RendezvousController(SpriteBatch batch, Internationalization i18n, HUD hud, ResourceHandler resources, Player player) {
         this.batch = batch;
@@ -62,7 +63,7 @@ public class RendezvousController {
 
     public void update(float delta) {
         if (event < 8) {
-            timeCount += delta;
+            rendezvousTimeCount += delta;
 
             if (secondsToNextEvent == -1) {
                 event++;
@@ -82,21 +83,25 @@ public class RendezvousController {
                 hud.updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent, false));
             }
 
-            if (timeCount >= 1) {
+            if (rendezvousTimeCount >= 1) {
                 hud.updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent - 1, false));
                 secondsToNextEvent--;
-                timeCount = 0;
+                rendezvousTimeCount = 0;
             }
         }
-        dealDamage();
+        dealDamage(delta);
     }
 
-    private void dealDamage() {
-        if (canDamagePlayer(8, 3, 7.5f) ||
-                canDamagePlayer(6, 2, 15.3f) ||
-                canDamagePlayer(4, 1, 22.8f) ||
-                canDamagePlayer(2, 0, 30.5f)) {
-            // player takes damage
+    private void dealDamage(float delta) {
+        damageTimeCount += delta;
+        if (damageTimeCount >= 1) {
+            if (canDamagePlayer(8, 3, 7.5f) ||
+                    canDamagePlayer(6, 2, 15.3f) ||
+                    canDamagePlayer(4, 1, 22.8f) ||
+                    canDamagePlayer(2, 0, 30.5f)) {
+                player.takeDangerZoneDamage();
+            }
+            damageTimeCount = 0;
         }
     }
 

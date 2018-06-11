@@ -28,7 +28,8 @@ public final class ResourceHandler implements Disposable {
         HEALTH_BAR("textures/gui/health/health-bar.png"),
         ARMOR_BAR("textures/gui/health/armor-bar.png"),
         HEALTH_ICON("textures/gui/health/health-icon.png"),
-        ARMOR_ICON("textures/gui/health/armor-icon.png");
+        ARMOR_ICON("textures/gui/health/armor-icon.png"),
+        VIGNETTE("textures/overlay/vignette.png");
         private String path;
         TexturePath(String path) { this.path = path; }
     }
@@ -111,6 +112,7 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.ARMOR_BAR.path, Texture.class);
         assetManager.load(TexturePath.HEALTH_ICON.path, Texture.class);
         assetManager.load(TexturePath.ARMOR_ICON.path, Texture.class);
+        assetManager.load(TexturePath.VIGNETTE.path, Texture.class);
         assetManager.finishLoading();
     }
 

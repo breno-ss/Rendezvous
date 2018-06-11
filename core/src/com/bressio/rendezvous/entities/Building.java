@@ -11,6 +11,7 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.pUnscale;
 public class Building extends InteractiveObject{
 
     private int[][] ceilingTileIds;
+    private final int CEILING_LAYER = 23;
 
     public Building(World world, TiledMap map, Rectangle bounds) {
         super(world, map, bounds, true, BUILDING_TAG);
@@ -20,7 +21,7 @@ public class Building extends InteractiveObject{
 
     private void storeCeilingTileIds() {
         ceilingTileIds = new int[31][31];
-        TiledMapTileLayer layer = (TiledMapTileLayer) getMap().getLayers().get(20);
+        TiledMapTileLayer layer = (TiledMapTileLayer) getMap().getLayers().get(CEILING_LAYER);
         for (int i = -15; i <= 15; i++) {
             for (int j = -15; j <= 15; j++) {
                 if (layer.getCell((int)((pUnscale(getBody().getPosition().x) / 32) - i),
@@ -33,7 +34,7 @@ public class Building extends InteractiveObject{
     }
 
     private void hideCeiling() {
-        TiledMapTileLayer layer = (TiledMapTileLayer) getMap().getLayers().get(20);
+        TiledMapTileLayer layer = (TiledMapTileLayer) getMap().getLayers().get(CEILING_LAYER);
         for (int i = -15; i <= 15; i++) {
             for (int j = -15; j <= 15; j++) {
                 if (layer.getCell((int)((pUnscale(getBody().getPosition().x) / 32) - i),
@@ -46,7 +47,7 @@ public class Building extends InteractiveObject{
     }
 
     private void showCeiling() {
-        TiledMapTileLayer layer = (TiledMapTileLayer) getMap().getLayers().get(20);
+        TiledMapTileLayer layer = (TiledMapTileLayer) getMap().getLayers().get(CEILING_LAYER);
         for (int i = -15; i <= 15; i++) {
             for (int j = -15; j <= 15; j++) {
                 if (layer.getCell((int)((pUnscale(getBody().getPosition().x) / 32) - i),

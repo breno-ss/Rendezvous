@@ -220,9 +220,10 @@ public class Match implements Screen {
 
         overRenderer.render();
 
-        rendezvousController.updateGraphics(delta);
+        //rendezvousController.updateGraphics(delta);
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
+        hud.drawVignette(delta);
         hud.drawHealthBars(delta, player.getHealth(), player.getArmor());
         hud.getStage().draw();
 
