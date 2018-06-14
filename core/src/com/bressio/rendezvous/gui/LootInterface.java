@@ -24,6 +24,7 @@ import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_WIDTH;
 public class LootInterface implements Disposable {
 
     private Stage stage;
+    private Stage upperStage;
     private Viewport viewport;
     private Skin skin;
 
@@ -44,6 +45,7 @@ public class LootInterface implements Disposable {
         this.i18n = i18n;
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
+        upperStage = new Stage(viewport, spriteBatch);
         skin = resources.getSkin(ResourceHandler.SkinPaths.WINDOW_SKIN);
 
         exchangeIcon = new Image(resources.getTexture(ResourceHandler.TexturePath.EXCHANGE_ICON));
@@ -53,7 +55,7 @@ public class LootInterface implements Disposable {
         forgeLootInterface();
         forgeInventoryInterface();
 
-        stage.addActor(exchangeIcon);
+        upperStage.addActor(exchangeIcon);
     }
 
     private void forgeLootInterface() {
@@ -167,7 +169,8 @@ public class LootInterface implements Disposable {
                 Gdx.app.getInput().isKeyJustPressed(Input.Keys.A) ||
                 Gdx.app.getInput().isKeyJustPressed(Input.Keys.S) ||
                 Gdx.app.getInput().isKeyJustPressed(Input.Keys.W) ||
-                Gdx.app.getInput().isKeyJustPressed(Input.Keys.D)){
+                Gdx.app.getInput().isKeyJustPressed(Input.Keys.D) ||
+                Gdx.app.getInput().isKeyJustPressed(Input.Keys.ESCAPE)){
             match.delegateInputProcessor();
             match.setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
             match.setState(Match.GameState.RUNNING);
@@ -181,5 +184,9 @@ public class LootInterface implements Disposable {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public Stage getUpperStage() {
+        return upperStage;
     }
 }

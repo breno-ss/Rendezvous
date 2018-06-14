@@ -6,7 +6,10 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.graphics.ResourceHandler;
+import com.bressio.rendezvous.objects.EntityObject;
 import com.bressio.rendezvous.scenes.Match;
+
+import java.util.ArrayList;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
@@ -17,10 +20,13 @@ public class Loot extends InteractiveObject {
     private boolean playerIsColliding;
     private Match match;
 
+    private ArrayList<EntityObject> items;
+
     Loot(World world, TiledMap map, Rectangle bounds, SpriteBatch batch, ResourceHandler resources, Match match) {
         super(world, map, bounds, false, LOOT_TAG);
         this.batch = batch;
         this.match = match;
+        items = new ArrayList<>();
         interactionButton = resources.getTexture(ResourceHandler.TexturePath.INTERACTION_BUTTON);
     }
 
@@ -40,6 +46,10 @@ public class Loot extends InteractiveObject {
         if (playerIsColliding) {
             match.handleLootInterface(delta);
         }
+    }
+
+    ArrayList<EntityObject> getItems() {
+        return items;
     }
 
     @Override

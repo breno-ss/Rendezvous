@@ -191,6 +191,7 @@ public class Match implements Screen {
     private void lootingRender(float delta) {
         game.getBatch().setProjectionMatrix(loot.getStage().getCamera().combined);
         loot.getStage().draw();
+        loot.getUpperStage().draw();
     }
 
     private void mapRender(float delta) {

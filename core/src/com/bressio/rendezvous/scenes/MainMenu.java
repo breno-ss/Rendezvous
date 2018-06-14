@@ -2,20 +2,20 @@ package com.bressio.rendezvous.scenes;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
+import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.languages.Internationalization;
 
@@ -29,12 +29,17 @@ public class MainMenu implements Screen {
     private Rendezvous game;
     private ResourceHandler resources;
     private Internationalization i18n;
+    private boolean isLoading;
 
     // GUI
     private Skin skin;
     private Stage stage;
+    private Stage loadingStage;
     private Texture background;
     private Texture logo;
+    private Texture loadingScreen;
+    private Label loadingLabel;
+    private Texture gameIcon;
 
     // rendering
     private OrthographicCamera camera;
@@ -46,6 +51,7 @@ public class MainMenu implements Screen {
         setupCamera();
         setupCursor();
         forgeMenu();
+        forgeLoadingScreen();
     }
 
     private void loadResources() {
@@ -54,6 +60,8 @@ public class MainMenu implements Screen {
         background = resources.getTexture(ResourceHandler.TexturePath.MENU_BACKGROUND);
         logo = resources.getTexture(ResourceHandler.TexturePath.MENU_LOGO);
         skin = resources.getSkin(ResourceHandler.SkinPaths.BUTTON_SKIN);
+        loadingScreen = resources.getTexture(ResourceHandler.TexturePath.LOADING_SCREEN);
+        gameIcon = resources.getTexture(ResourceHandler.TexturePath.GAME_ICON);
         i18n = new Internationalization();
     }
 
@@ -88,8 +96,14 @@ public class MainMenu implements Screen {
         playButton.addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Rendezvous game = (Rendezvous)Gdx.app.getApplicationListener();
-                game.setScreen(new Match(game));
+                isLoading = true;
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        Rendezvous game = (Rendezvous)Gdx.app.getApplicationListener();
+                        game.setScreen(new Match(game));
+                    }
+                }, 1);
             }
         });
 
@@ -109,6 +123,20 @@ public class MainMenu implements Screen {
         table.add(exitButton).padLeft(pCenter(GAME_WIDTH) - pCenter(logo.getWidth()) + 20).align(Align.left).padTop(-20);
 
         stage.addActor(table);
+    }
+
+    private void forgeLoadingScreen() {
+        loadingStage = new Stage(viewport, game.getBatch());
+
+        Table table = new Table();
+        table.bottom();
+        table.setFillParent(true);
+
+        loadingLabel = new Label(i18n.getBundle().get("loading"),
+                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 42, false), Color.WHITE));
+        table.add(loadingLabel).padBottom(70).padLeft(900).row();
+
+        loadingStage.addActor(table);
     }
 
     private void update(float delta) {
@@ -136,6 +164,18 @@ public class MainMenu implements Screen {
 
         stage.act();
         stage.draw();
+
+        if (isLoading) {
+            game.getBatch().begin();
+            game.getBatch().draw(loadingScreen, 0, 0);
+            if (i18n.getBundle().getLocale().getLanguage().equals("")) {
+                game.getBatch().draw(gameIcon, 1010, 75);
+            } else if (i18n.getBundle().getLocale().getLanguage().equals("pt")) {
+                game.getBatch().draw(gameIcon, 980, 75);
+            }
+            game.getBatch().end();
+            loadingStage.draw();
+        }
     }
 
     @Override
