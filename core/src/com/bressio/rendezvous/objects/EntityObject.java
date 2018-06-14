@@ -1,4 +1,4 @@
-package com.bressio.rendezvous.entities.object;
+package com.bressio.rendezvous.objects;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.entities.Entity;

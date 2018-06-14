@@ -11,11 +11,9 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class Player extends Soldier {
 
-    private boolean isTakingDamage;
-
     public Player(World world, Match match, float radius, float linearDamping, int speed, Vector2 position) {
         super(world, match, position.x, position.y, radius, linearDamping, speed, AnimationRegion.PLAYER, PLAYER_TAG,
-                (short) (DEFAULT_TAG | BUILDING_TAG), "player");
+                (short) (DEFAULT_TAG | BUILDING_TAG | LOOT_TAG), "player");
     }
 
     @Override

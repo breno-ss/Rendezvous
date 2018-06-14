@@ -1,6 +1,7 @@
 package com.bressio.rendezvous.gui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -81,6 +82,18 @@ public class PauseMenu implements Disposable {
         window.add(exitButton).padTop(10).row();
 
         stage.addActor(window);
+    }
+
+    public void update(float delta) {
+        handleInput(delta);
+    }
+
+    private void handleInput(float delta) {
+        if (Gdx.app.getInput().isKeyJustPressed(Input.Keys.ESCAPE)){
+            match.delegateInputProcessor();
+            match.setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
+            match.setState(Match.GameState.RUNNING);
+        }
     }
 
     @Override

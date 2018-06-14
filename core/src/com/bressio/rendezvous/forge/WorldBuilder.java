@@ -1,5 +1,6 @@
 package com.bressio.rendezvous.forge;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
@@ -12,7 +13,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.entities.Building;
+import com.bressio.rendezvous.entities.Chest;
+import com.bressio.rendezvous.entities.Crate;
+import com.bressio.rendezvous.entities.Loot;
+import com.bressio.rendezvous.graphics.ResourceHandler;
+import com.bressio.rendezvous.scenes.Match;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
@@ -34,7 +41,13 @@ public class WorldBuilder {
         private final int layer;
     }
 
-    public WorldBuilder(World world, TiledMap map) {
+    private ArrayList<Crate> crates;
+    private ArrayList<Chest> chests;
+
+    public WorldBuilder(World world, TiledMap map, SpriteBatch batch, ResourceHandler resources, Match match) {
+
+        chests = new ArrayList<>();
+        crates = new ArrayList<>();
 
         this.map = map;
 
@@ -78,21 +91,13 @@ public class WorldBuilder {
         // chests
         for (MapObject object : map.getLayers().get(Layer.CHEST.layer).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
-                    .withBodyType(BodyDef.BodyType.StaticBody)
-                    .withWidth(pScaleCenter(rect.getWidth()))
-                    .withHeight(pScaleCenter(rect.getHeight()))
-                    .build();
+            chests.add(new Chest(world, map, rect, batch, resources, match));
         }
 
         // crates
         for (MapObject object : map.getLayers().get(Layer.CRATE.layer).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
-                    .withBodyType(BodyDef.BodyType.StaticBody)
-                    .withWidth(pScaleCenter(rect.getWidth()))
-                    .withHeight(pScaleCenter(rect.getHeight()))
-                    .build();
+            crates.add(new Crate(world, map, rect, batch, resources, match));
         }
 
         // building sensors
@@ -114,5 +119,12 @@ public class WorldBuilder {
 
         int randomIndex = new Random().nextInt(spawnPoints.length);
         return spawnPoints[randomIndex];
+    }
+
+    public ArrayList<Loot> getLoot() {
+        ArrayList<Loot> loot = new ArrayList<>();
+        loot.addAll(crates);
+        loot.addAll(chests);
+        return loot;
     }
 }

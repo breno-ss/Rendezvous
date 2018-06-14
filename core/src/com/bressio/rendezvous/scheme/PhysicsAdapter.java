@@ -15,7 +15,7 @@ public final class PhysicsAdapter {
     public static final short DEFAULT_TAG = 1;
     public static final short PLAYER_TAG = 2;
     public static final short BUILDING_TAG = 4;
-    public static final short HIDDEN_TAG = 8;
+    public static final short LOOT_TAG = 8;
 
     public static float pScale(float number) {
         return number / SCALE;

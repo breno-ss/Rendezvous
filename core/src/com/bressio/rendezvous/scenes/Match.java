@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
+import com.bressio.rendezvous.entities.Loot;
 import com.bressio.rendezvous.entities.Player;
 import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.events.RendezvousController;
@@ -22,6 +23,7 @@ import com.bressio.rendezvous.events.WorldContactListener;
 import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.HUD;
+import com.bressio.rendezvous.gui.LootInterface;
 import com.bressio.rendezvous.gui.MatchMap;
 import com.bressio.rendezvous.gui.PauseMenu;
 import com.bressio.rendezvous.languages.Internationalization;
@@ -33,7 +35,7 @@ import static com.bressio.rendezvous.scheme.PlayerSettings.*;
 public class Match implements Screen {
 
     public enum GameState {
-        RUNNING, PAUSED, TACTICAL
+        RUNNING, PAUSED, TACTICAL, LOOTING
     }
 
     // game
@@ -46,6 +48,7 @@ public class Match implements Screen {
     private Viewport viewport;
     private HUD hud;
     private PauseMenu pause;
+    private LootInterface loot;
     private MatchMap matchMap;
     private OrthogonalTiledMapRenderer renderer;
     private OrthogonalTiledMapRenderer overRenderer;
@@ -92,6 +95,7 @@ public class Match implements Screen {
         viewport.apply();
         hud = new HUD(game.getBatch(), resources);
         pause = new PauseMenu(game.getBatch(), i18n, resources, this);
+        loot = new LootInterface(game.getBatch(), i18n, resources, this);
         matchMap = new MatchMap(game.getBatch(), i18n, resources);
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
         camera.update();
@@ -110,7 +114,7 @@ public class Match implements Screen {
 
     private void forgeWorld() {
         world = new World(GRAVITY, true);
-        worldBuilder = new WorldBuilder(world, map);
+        worldBuilder = new WorldBuilder(world, map, game.getBatch(), resources, this);
         player = new Player(world, this, 32, 5, 10, worldBuilder.getPlayerSpawnPoint());
         world.setContactListener(new WorldContactListener());
         rendezvousController = new RendezvousController(game.getBatch(), i18n , hud, resources, player);
@@ -141,11 +145,22 @@ public class Match implements Screen {
 
     private void handlePauseMenu(float delta) {
         if (InputTracker.isPressed(InputTracker.ESC)){
-            if (state == GameState.RUNNING || state == GameState.TACTICAL) {
+            if (state == GameState.RUNNING || state == GameState.TACTICAL || state == GameState.LOOTING) {
                 input.resetAllKeys();
                 Gdx.input.setInputProcessor(pause.getStage());
                 setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
                 setState(GameState.PAUSED);
+            }
+        }
+    }
+
+    public void handleLootInterface(float delta) {
+        if (InputTracker.isPressed(InputTracker.E)){
+            if (state == GameState.RUNNING || state == GameState.TACTICAL) {
+                input.resetAllKeys();
+                Gdx.input.setInputProcessor(loot.getStage());
+                setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
+                setState(GameState.LOOTING);
             }
         }
     }
@@ -173,6 +188,11 @@ public class Match implements Screen {
         pause.getStage().draw();
     }
 
+    private void lootingRender(float delta) {
+        game.getBatch().setProjectionMatrix(loot.getStage().getCamera().combined);
+        loot.getStage().draw();
+    }
+
     private void mapRender(float delta) {
         game.getBatch().setProjectionMatrix(matchMap.getStage().getCamera().combined);
         matchMap.getStage().draw();
@@ -193,6 +213,12 @@ public class Match implements Screen {
                 isCentered ? pCenter(pixmap.getHeight()) : 0));
     }
 
+    private void updateLoot(float delta) {
+        for (Loot loot : worldBuilder.getLoot()) {
+            loot.update(delta);
+        }
+    }
+
     @Override
     public void show() {
 
@@ -200,7 +226,7 @@ public class Match implements Screen {
 
     @Override
     public void render(float delta) {
-        if (state == GameState.RUNNING || state == GameState.TACTICAL) {
+        if (state == GameState.RUNNING || state == GameState.TACTICAL || state == GameState.LOOTING) {
             update(delta);
         }
         Gdx.gl.glClearColor((float)19 / 255, (float)174 / 255, (float)147 / 255, 1);
@@ -220,6 +246,10 @@ public class Match implements Screen {
 
         overRenderer.render();
 
+        for (Loot loot : worldBuilder.getLoot()) {
+            loot.drawInteractionButton();
+        }
+
         //rendezvousController.updateGraphics(delta);
 
         game.getBatch().setProjectionMatrix(hud.getStage().getCamera().combined);
@@ -236,13 +266,19 @@ public class Match implements Screen {
 
         if (state == GameState.PAUSED) {
             pausedRender(delta);
+            pause.update(delta);
         } else if (state == GameState.TACTICAL) {
             mapRender(delta);
+        } else if (state == GameState.LOOTING) {
+            lootingRender(delta);
+            loot.update(delta);
         }
 
         input.update();
         handlePauseMenu(delta);
         handleMatchMap(delta);
+
+        updateLoot(delta);
     }
 
     @Override
