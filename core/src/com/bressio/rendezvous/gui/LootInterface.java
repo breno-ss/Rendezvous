@@ -15,7 +15,10 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.languages.Internationalization;
+import com.bressio.rendezvous.objects.EntityObject;
 import com.bressio.rendezvous.scenes.Match;
+
+import java.util.ArrayList;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
@@ -39,10 +42,16 @@ public class LootInterface implements Disposable {
 
     private Image exchangeIcon;
 
-    public LootInterface(SpriteBatch spriteBatch, Internationalization i18n, ResourceHandler resources, Match match) {
+    private ArrayList<EntityObject> lootItems;
+    private ArrayList<EntityObject> inventoryItems;
+
+    public LootInterface(SpriteBatch spriteBatch, Internationalization i18n, ResourceHandler resources, Match match,
+                         ArrayList<EntityObject> lootItems, ArrayList<EntityObject> inventoryItems) {
         this.match = match;
         this.resources = resources;
         this.i18n = i18n;
+        this.lootItems = lootItems;
+        this.inventoryItems = inventoryItems;
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, spriteBatch);
         upperStage = new Stage(viewport, spriteBatch);
@@ -52,8 +61,8 @@ public class LootInterface implements Disposable {
         exchangeIcon.setPosition(pCenter(GAME_WIDTH) - pCenter(exchangeIcon.getWidth()),
                 pCenter(GAME_HEIGHT) - pCenter(exchangeIcon.getHeight()));
 
-        forgeLootInterface();
         forgeInventoryInterface();
+        forgeLootInterface();
 
         upperStage.addActor(exchangeIcon);
     }
@@ -66,45 +75,49 @@ public class LootInterface implements Disposable {
 
         window.add(new Label(i18n.getBundle().get("loot"), skin)).padTop(20).row();
 
-        TextureRegion myTextureRegion = new TextureRegion(resources.getTexture(ResourceHandler.TexturePath.INTERACTION_BUTTON));
-        TextureRegionDrawable myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        ImageButton item1, item2, item3, item4;
+        item3 = null;
+        item4 = null;
 
-        ImageButton item1 = new ImageButton(myTexRegionDrawable);
-        ImageButton item2 = new ImageButton(myTexRegionDrawable);
-        ImageButton item3 = new ImageButton(myTexRegionDrawable);
-        ImageButton item4 = new ImageButton(myTexRegionDrawable);
-        ImageButton item5 = new ImageButton(myTexRegionDrawable);
-        ImageButton item6 = new ImageButton(myTexRegionDrawable);
+        TextureRegion myTextureRegion = new TextureRegion(lootItems.get(0).getIcon());
+        TextureRegionDrawable myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        item1 = new ImageButton(myTexRegionDrawable);
+
+        myTextureRegion = new TextureRegion(lootItems.get(1).getIcon());
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        item2 = new ImageButton(myTexRegionDrawable);
+
+        if (lootItems.size() > 2) {
+            myTextureRegion = new TextureRegion(lootItems.get(2).getIcon());
+            myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+            item3 = new ImageButton(myTexRegionDrawable);
+
+            myTextureRegion = new TextureRegion(lootItems.get(3).getIcon());
+            myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+            item4 = new ImageButton(myTexRegionDrawable);
+        }
 
         window.add(item1).padTop(10).row();
-        window.add(new Label("EMPTY",
+        window.add(new Label(lootItems.get(0).getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
 
         window.add(item2).padTop(10).row();
-        window.add(new Label("EMPTY",
+        window.add(new Label(lootItems.get(1).getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
 
-        window.add(item3).padTop(10).row();
-        window.add(new Label("EMPTY",
-                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
-                        14, false), Color.WHITE))).row();
+        if (lootItems.size() > 2) {
+            window.add(item3).padTop(10).row();
+            window.add(new Label(lootItems.get(2).getName(),
+                    new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
+                            14, false), Color.WHITE))).row();
 
-        window.add(item4).padTop(10).row();
-        window.add(new Label("EMPTY",
-                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
-                        14, false), Color.WHITE))).row();
-
-        window.add(item5).padTop(10).row();
-        window.add(new Label("EMPTY",
-                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
-                        14, false), Color.WHITE))).row();
-
-        window.add(item6).padTop(10).row();
-        window.add(new Label("EMPTY",
-                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
-                        14, false), Color.WHITE))).row();
+            window.add(item4).padTop(10).row();
+            window.add(new Label(lootItems.get(3).getName(),
+                    new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
+                            14, false), Color.WHITE))).row();
+        }
 
         stage.addActor(window);
     }
@@ -117,43 +130,59 @@ public class LootInterface implements Disposable {
 
         window.add(new Label(i18n.getBundle().get("inventory"), skin)).padTop(20).row();
 
-        TextureRegion myTextureRegion = new TextureRegion(resources.getTexture(ResourceHandler.TexturePath.INTERACTION_BUTTON));
-        TextureRegionDrawable myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        ImageButton item1, item2, item3, item4, item5, item6;
 
-        ImageButton item1 = new ImageButton(myTexRegionDrawable);
-        ImageButton item2 = new ImageButton(myTexRegionDrawable);
-        ImageButton item3 = new ImageButton(myTexRegionDrawable);
-        ImageButton item4 = new ImageButton(myTexRegionDrawable);
-        ImageButton item5 = new ImageButton(myTexRegionDrawable);
-        ImageButton item6 = new ImageButton(myTexRegionDrawable);
+        TextureRegion myTextureRegion = new TextureRegion(inventoryItems.get(0).getIcon());
+        TextureRegionDrawable myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        item1 = new ImageButton(myTexRegionDrawable);
+
+        myTextureRegion = new TextureRegion(inventoryItems.get(1).getIcon());
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        item2 = new ImageButton(myTexRegionDrawable);
+
+        myTextureRegion = new TextureRegion(inventoryItems.get(2).getIcon());
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        item3 = new ImageButton(myTexRegionDrawable);
+
+        myTextureRegion = new TextureRegion(inventoryItems.get(3).getIcon());
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        item4 = new ImageButton(myTexRegionDrawable);
+
+        myTextureRegion = new TextureRegion(inventoryItems.get(4).getIcon());
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        item5 = new ImageButton(myTexRegionDrawable);
+
+        myTextureRegion = new TextureRegion(inventoryItems.get(5).getIcon());
+        myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
+        item6 = new ImageButton(myTexRegionDrawable);
 
         window.add(item1).padTop(10).row();
-        window.add(new Label("EMPTY",
+        window.add(new Label(inventoryItems.get(0).getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
 
         window.add(item2).padTop(10).row();
-        window.add(new Label("EMPTY",
+        window.add(new Label(inventoryItems.get(1).getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
 
         window.add(item3).padTop(10).row();
-        window.add(new Label("EMPTY",
+        window.add(new Label(inventoryItems.get(2).getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
 
         window.add(item4).padTop(10).row();
-        window.add(new Label("EMPTY",
+        window.add(new Label(inventoryItems.get(3).getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
 
         window.add(item5).padTop(10).row();
-        window.add(new Label("EMPTY",
+        window.add(new Label(inventoryItems.get(4).getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
 
         window.add(item6).padTop(10).row();
-        window.add(new Label("EMPTY",
+        window.add(new Label(inventoryItems.get(5).getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
 

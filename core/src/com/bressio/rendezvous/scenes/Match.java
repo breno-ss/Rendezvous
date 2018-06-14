@@ -27,7 +27,10 @@ import com.bressio.rendezvous.gui.LootInterface;
 import com.bressio.rendezvous.gui.MatchMap;
 import com.bressio.rendezvous.gui.PauseMenu;
 import com.bressio.rendezvous.languages.Internationalization;
+import com.bressio.rendezvous.objects.EntityObject;
 import com.bressio.rendezvous.scheme.PhysicsAdapter;
+
+import java.util.ArrayList;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 import static com.bressio.rendezvous.scheme.PlayerSettings.*;
@@ -95,7 +98,7 @@ public class Match implements Screen {
         viewport.apply();
         hud = new HUD(game.getBatch(), resources);
         pause = new PauseMenu(game.getBatch(), i18n, resources, this);
-        loot = new LootInterface(game.getBatch(), i18n, resources, this);
+//        loot = new LootInterface(game.getBatch(), i18n, resources, this);
         matchMap = new MatchMap(game.getBatch(), i18n, resources);
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
         camera.update();
@@ -154,9 +157,10 @@ public class Match implements Screen {
         }
     }
 
-    public void handleLootInterface(float delta) {
+    public void handleLootInterface(float delta, ArrayList<EntityObject> items) {
         if (InputTracker.isPressed(InputTracker.E)){
             if (state == GameState.RUNNING || state == GameState.TACTICAL) {
+                loot = new LootInterface(game.getBatch(), i18n, resources, this, items, player.getInventory().getItems());
                 input.resetAllKeys();
                 Gdx.input.setInputProcessor(loot.getStage());
                 setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
@@ -181,6 +185,10 @@ public class Match implements Screen {
 
     public TextureAtlas getAtlas() {
         return atlas;
+    }
+
+    public ResourceHandler getResources() {
+        return resources;
     }
 
     private void pausedRender(float delta) {

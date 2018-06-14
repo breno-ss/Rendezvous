@@ -34,7 +34,9 @@ public final class ResourceHandler implements Disposable {
         EXCHANGE_ICON("textures/gui/icons/exchange.png"),
         LOADING_SCREEN("textures/gui/backgrounds/loading-screen.png"),
         GAME_ICON("textures/gui/icons/game-icon.png"),
-        EMPTY_SLOT("textures/gui/items/empty-slot.png");
+        EMPTY_SLOT("textures/gui/items/empty-slot.png"),
+        MEDKIT_ICON("textures/gui/items/medkit.png"),
+        INVENTORY("textures/gui/items/inventory.png");
 
         private String path;
         TexturePath(String path) { this.path = path; }
@@ -124,6 +126,8 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.INTERACTION_BUTTON.path, Texture.class);
         assetManager.load(TexturePath.EXCHANGE_ICON.path, Texture.class);
         assetManager.load(TexturePath.EMPTY_SLOT.path, Texture.class);
+        assetManager.load(TexturePath.MEDKIT_ICON.path, Texture.class);
+        assetManager.load(TexturePath.INVENTORY.path, Texture.class);
         assetManager.finishLoading();
     }
 

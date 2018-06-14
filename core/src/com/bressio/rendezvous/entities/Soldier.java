@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.forge.BodyBuilder;
 import com.bressio.rendezvous.graphics.AnimationRegion;
 import com.bressio.rendezvous.graphics.Animator;
+import com.bressio.rendezvous.objects.Inventory;
 import com.bressio.rendezvous.scenes.Match;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
@@ -21,6 +22,7 @@ public abstract class Soldier extends Entity {
 
     private int health = 100;
     private int armor = 10;
+    private Inventory inventory;
 
     Soldier(World world, Match match, float x, float y, float radius, float linearDamping, int speed,
             AnimationRegion animationRegion, short categoryBits, short maskBits, Object userData) {
@@ -33,6 +35,8 @@ public abstract class Soldier extends Entity {
         this.categoryBits = categoryBits;
         this.userData = userData;
         this.maskBits = maskBits;
+
+        inventory = new Inventory(match.getResources());
 
         setOrigin(pScaleCenter(animationRegion.getFrameSize()), pScaleCenter(animationRegion.getFrameSize()));
         setBounds(0, 0, pScale(animationRegion.getFrameSize()), pScale(animationRegion.getFrameSize()));
@@ -70,7 +74,11 @@ public abstract class Soldier extends Entity {
         return armor;
     }
 
-    public void setHealth(int difference) {
+    void setHealth(int difference) {
         health = health + difference < 0 ? 0 : health + difference > 100 ? 100 : health + difference;
+    }
+
+    public Inventory getInventory() {
+        return inventory;
     }
 }

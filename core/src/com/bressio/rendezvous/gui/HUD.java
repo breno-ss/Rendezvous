@@ -47,6 +47,8 @@ public class HUD implements Disposable {
     private Label healthPoints;
     private Label armorPoints;
 
+    private Image inventoryBackground;
+
     private Texture vignette;
 
     public HUD(SpriteBatch batch, ResourceHandler resources) {
@@ -97,6 +99,11 @@ public class HUD implements Disposable {
         table.add(healthPoints).padBottom(15).padLeft(-350);
 
         stage.addActor(table);
+
+        inventoryBackground = new Image(resources.getTexture(ResourceHandler.TexturePath.INVENTORY));
+        inventoryBackground.setPosition(1000, 10);
+
+        stage.addActor(inventoryBackground);
 
         vignette = resources.getTexture(ResourceHandler.TexturePath.VIGNETTE);
     }

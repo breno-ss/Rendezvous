@@ -44,7 +44,7 @@ public class Loot extends InteractiveObject {
 
     public void update(float delta) {
         if (playerIsColliding) {
-            match.handleLootInterface(delta);
+            match.handleLootInterface(delta, items);
         }
     }
 
