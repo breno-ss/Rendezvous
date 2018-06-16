@@ -156,6 +156,7 @@ public class Match implements Screen {
         input.update();
         handlePauseMenu(delta);
         handleMatchMap(delta);
+        handleInventoryInput(delta);
         updateLoot(delta);
     }
 
@@ -193,6 +194,26 @@ public class Match implements Screen {
                 setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
                 setState(GameState.RUNNING);
             }
+        }
+    }
+
+    private void handleInventoryInput(float delta) {
+        if (InputTracker.isPressed(InputTracker.NUM_1)) {
+            hud.switchSelectedSlot(0);
+        } else if (InputTracker.isPressed(InputTracker.NUM_2)) {
+            hud.switchSelectedSlot(1);
+        } else if (InputTracker.isPressed(InputTracker.NUM_3)) {
+            hud.switchSelectedSlot(2);
+        } else if (InputTracker.isPressed(InputTracker.NUM_4)) {
+            hud.switchSelectedSlot(3);
+        } else if (InputTracker.isPressed(InputTracker.NUM_5)) {
+            hud.switchSelectedSlot(4);
+        } else if (InputTracker.isPressed(InputTracker.NUM_6)) {
+            hud.switchSelectedSlot(5);
+        }
+        if (input.isScrolling() != 0) {
+            hud.switchSelectedSlot(input.isScrolling() == 1);
+            input.resetScrollAmount();
         }
     }
 
@@ -299,6 +320,7 @@ public class Match implements Screen {
         hud.drawHealthBars(delta, player.getHealth(), player.getArmor());
         hud.getStage().draw();
         hud.updateHealthBars(delta, player.getHealth(), player.getArmor());
+        hud.updateInventory(delta);
         if (state != GameState.TACTICAL) {
             hud.drawMinimap(delta, player.getBody().getPosition());
         }

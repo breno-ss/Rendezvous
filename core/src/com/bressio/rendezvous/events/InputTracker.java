@@ -19,13 +19,21 @@ public final class InputTracker extends InputAdapter {
     public static final int ESC = 4;
     public static final int M = 5;
     public static final int E = 6;
-    private static final int MAX = 7;
+    public static final int NUM_1 = 7;
+    public static final int NUM_2 = 8;
+    public static final int NUM_3 = 9;
+    public static final int NUM_4 = 10;
+    public static final int NUM_5 = 11;
+    public static final int NUM_6 = 12;
+    private static final int MAX = 13;
 
     private static boolean[] keyPresses;
 
     private static Vector2 mousePosition;
     private Vector3 mousePosition3D;
     private final OrthographicCamera camera;
+
+    private int scrollAmount = 0;
 
     public InputTracker(OrthographicCamera camera) {
         this.camera = camera;
@@ -62,6 +70,24 @@ public final class InputTracker extends InputAdapter {
             case Input.Keys.E:
                 keyPresses[E] = true;
                 break;
+            case Input.Keys.NUM_1:
+                keyPresses[NUM_1] = true;
+                break;
+            case Input.Keys.NUM_2:
+                keyPresses[NUM_2] = true;
+                break;
+            case Input.Keys.NUM_3:
+                keyPresses[NUM_3] = true;
+                break;
+            case Input.Keys.NUM_4:
+                keyPresses[NUM_4] = true;
+                break;
+            case Input.Keys.NUM_5:
+                keyPresses[NUM_5] = true;
+                break;
+            case Input.Keys.NUM_6:
+                keyPresses[NUM_6] = true;
+                break;
         }
         return true;
     }
@@ -90,8 +116,40 @@ public final class InputTracker extends InputAdapter {
             case Input.Keys.E:
                 keyPresses[E] = false;
                 break;
+            case Input.Keys.NUM_1:
+                keyPresses[NUM_1] = false;
+                break;
+            case Input.Keys.NUM_2:
+                keyPresses[NUM_2] = false;
+                break;
+            case Input.Keys.NUM_3:
+                keyPresses[NUM_3] = false;
+                break;
+            case Input.Keys.NUM_4:
+                keyPresses[NUM_4] = false;
+                break;
+            case Input.Keys.NUM_5:
+                keyPresses[NUM_5] = false;
+                break;
+            case Input.Keys.NUM_6:
+                keyPresses[NUM_6] = false;
+                break;
         }
         return true;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        if(amount == 1 || amount == -1){
+            scrollAmount = amount;
+            return true;
+        }
+        scrollAmount = 0;
+        return false;
+    }
+
+    public int isScrolling() {
+        return scrollAmount;
     }
 
     public static boolean isPressed(int key) {
@@ -141,5 +199,9 @@ public final class InputTracker extends InputAdapter {
         for (int i = 0; i < MAX; i++) {
             keyPresses[i] = false;
         }
+    }
+
+    public void resetScrollAmount() {
+        scrollAmount = 0;
     }
 }

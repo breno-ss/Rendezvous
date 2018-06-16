@@ -3,23 +3,33 @@ package com.bressio.rendezvous.events;
 import com.badlogic.gdx.physics.box2d.*;
 import com.bressio.rendezvous.entities.tiles.InteractiveTile;
 
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
+
 public class WorldContactListener implements ContactListener {
 
-    private void sendContactMessage(Contact contact, boolean isLeave) {
+    private void sendContactMessage(Contact contact, boolean isEndingContact) {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
-        if (fixtureA.getUserData() == "player" || fixtureB.getUserData() == "player") {
-            Fixture player = fixtureA.getUserData() == "player" ? fixtureA : fixtureB;
-            Fixture object = player == fixtureA ? fixtureB : fixtureA;
+        int combination = fixtureA.getFilterData().categoryBits | fixtureB.getFilterData().categoryBits;
 
-            if (object.getUserData() instanceof InteractiveTile) {
-                if (!isLeave) {
-                    ((InteractiveTile) object.getUserData()).onPlayerEnter();
+        switch (combination){
+            case PLAYER_TAG | BUILDING_TAG:
+            case PLAYER_TAG | LOOT_TAG:
+                if(fixtureA.getFilterData().categoryBits == PLAYER_TAG) {
+                    if (!isEndingContact) {
+                        ((InteractiveTile) fixtureB.getUserData()).onPlayerEnter();
+                    } else {
+                        ((InteractiveTile) fixtureB.getUserData()).onPlayerLeave();
+                    }
                 } else {
-                    ((InteractiveTile) object.getUserData()).onPlayerLeave();
+                    if (!isEndingContact) {
+                        ((InteractiveTile) fixtureA.getUserData()).onPlayerEnter();
+                    } else {
+                        ((InteractiveTile) fixtureA.getUserData()).onPlayerLeave();
+                    }
                 }
-            }
+                break;
         }
     }
 

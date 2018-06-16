@@ -3,6 +3,7 @@ package com.bressio.rendezvous.gui;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -10,12 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
+import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
+
+import java.util.ArrayList;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
@@ -47,6 +51,9 @@ public class HUD implements Disposable {
     private Match match;
 
     private Image inventoryBackground;
+    private Image selectionMarker;
+    private ArrayList<Image> items;
+    private int selectedSlot;
 
     private Texture vignette;
 
@@ -129,9 +136,37 @@ public class HUD implements Disposable {
     }
 
     private void forgeInventory() {
+        items = new ArrayList<>();
         inventoryBackground = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.INVENTORY));
         inventoryBackground.setPosition(1000, 10);
         stage.addActor(inventoryBackground);
+
+        selectedSlot = 0;
+
+        selectionMarker = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.SELECTED_SLOT));
+        Vector2 markerPos = getSelectionMarkerPosition(selectedSlot);
+        selectionMarker.setPosition(markerPos.x, markerPos.y);
+        stage.addActor(selectionMarker);
+
+        float itemPos = 996;
+        for (int i = 0; i < 6; i++) {
+            items.add(new Image(match.getResources().getTexture(ResourceHandler.TexturePath.INVISIBLE_SLOT)));
+            items.get(i).setPosition(itemPos, 15);
+            itemPos += 55.5f;
+            stage.addActor(items.get(i));
+        }
+    }
+
+    private Vector2 getSelectionMarkerPosition(int index) {
+        switch (index) {
+            case 0: return new Vector2(996, 6);
+            case 1: return new Vector2(1051.5f, 6);
+            case 2: return new Vector2(1107, 6);
+            case 3: return new Vector2(1162.5f, 6);
+            case 4: return new Vector2(1218, 6);
+            case 5: return new Vector2(1273.5f, 6);
+            default: return new Vector2(1329, 6);
+        }
     }
 
     public void drawVignette(float delta) {
@@ -184,6 +219,39 @@ public class HUD implements Disposable {
         healthPoints.setText(String.valueOf(health));
     }
 
+    public void updateInventory(float delta) {
+        if (match.getPlayer() != null) {
+            for (int i = 0; i < 6; i++) {
+                items.get(i).setDrawable(
+                        new SpriteDrawable(new Sprite(
+                                match.getPlayer().getInventory().getItems().get(i).getIcon() ==
+                                        match.getResources().getTexture(ResourceHandler.TexturePath.EMPTY_SLOT) ?
+                                        match.getResources().getTexture(ResourceHandler.TexturePath.INVISIBLE_SLOT) :
+                                        match.getPlayer().getInventory().getItems().get(i).getIcon()
+                        ))
+                );
+            }
+        }
+    }
+
+    public void switchSelectedSlot(int slotIndex) {
+        Vector2 newPos = getSelectionMarkerPosition(slotIndex);
+        selectedSlot = slotIndex;
+        selectionMarker.setPosition(newPos.x, newPos.y);
+    }
+
+    public void switchSelectedSlot(boolean isGoingForward) {
+        if (!isGoingForward) {
+            Vector2 newPos = getSelectionMarkerPosition(selectedSlot - 1 < 0 ? 5 : selectedSlot - 1);
+            selectedSlot = selectedSlot - 1 < 0 ? 5 : selectedSlot - 1;
+            selectionMarker.setPosition(newPos.x, newPos.y);
+        } else {
+            Vector2 newPos = getSelectionMarkerPosition(selectedSlot + 1 > 5 ? 0 : selectedSlot + 1);
+            selectedSlot = selectedSlot + 1 > 5 ? 0 : selectedSlot + 1;
+            selectionMarker.setPosition(newPos.x, newPos.y);
+        }
+
+    }
 
     public void updateTimeLabel(String time) {
         timeToNextEvent.setText(time);

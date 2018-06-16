@@ -16,9 +16,9 @@ public class Inventory {
 
     private void addItems() {
         items = new ArrayList<>();
+        items.add(new Medkit(match));
         items.add(new Empty(match));
-        items.add(new Empty(match));
-        items.add(new Empty(match));
+        items.add(new Medkit(match));
         items.add(new Empty(match));
         items.add(new Empty(match));
         items.add(new Empty(match));

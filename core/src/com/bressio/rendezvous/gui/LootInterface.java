@@ -5,8 +5,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -66,8 +68,8 @@ public class LootInterface implements Disposable {
 
         window.add(new Label(match.getI18n().getBundle().get("inventory"), skin)).padTop(20).row();
 
-        for (EntityObject inventoryItem : inventoryItems) {
-            insertItemToWindow(window, inventoryItem);
+        for (int i = 0; i < inventoryItems.size(); i++) {
+            insertItemToWindow(window, i, true);
         }
 
         stage.addActor(window);
@@ -81,8 +83,8 @@ public class LootInterface implements Disposable {
 
         window.add(new Label(match.getI18n().getBundle().get("loot"), skin)).padTop(20).row();
 
-        for (EntityObject lootItem : lootItems) {
-            insertItemToWindow(window, lootItem);
+        for (int i = 0; i < lootItems.size(); i++) {
+            insertItemToWindow(window, i, false);
         }
 
         stage.addActor(window);
@@ -95,15 +97,35 @@ public class LootInterface implements Disposable {
         upperStage.addActor(exchangeIcon);
     }
 
-    private void insertItemToWindow(Window window, EntityObject item) {
+    private void insertItemToWindow(Window window, int index, boolean isInventoryItem) {
+        EntityObject item = isInventoryItem ? inventoryItems.get(index) : lootItems.get(index);
         TextureRegion myTextureRegion = new TextureRegion(item.getIcon());
         TextureRegionDrawable myTexRegionDrawable = new TextureRegionDrawable(myTextureRegion);
         ImageButton itemImage = new ImageButton(myTexRegionDrawable);
+
+        itemImage.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (isInventoryItem) {
+                    selectInventorySlot(index);
+                } else {
+                    selectLootSlot(index);
+                }
+            }
+        });
 
         window.add(itemImage).padTop(10).row();
         window.add(new Label(item.getName(),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
                         14, false), Color.WHITE))).row();
+    }
+
+    private void selectInventorySlot(int index) {
+        System.out.println("Select inventory #" + index);
+    }
+
+    private void selectLootSlot(int index) {
+        System.out.println("Select loot #" + index);
     }
 
     public void update(float delta) {
