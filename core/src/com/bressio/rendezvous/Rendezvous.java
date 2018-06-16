@@ -11,7 +11,7 @@ public class Rendezvous extends Game {
     @Override
     public void create () {
         batch = new SpriteBatch();
-        setScreen(new MainMenu(this));
+        setScreen(new MainMenu(batch));
     }
 
     @Override
@@ -22,9 +22,5 @@ public class Rendezvous extends Game {
     @Override
     public void dispose () {
         batch.dispose();
-    }
-
-    public SpriteBatch getBatch() {
-        return batch;
     }
 }

@@ -24,14 +24,18 @@ public final class InputTracker extends InputAdapter {
     private static boolean[] keyPresses;
 
     private static Vector2 mousePosition;
-    private final Vector3 mousePosition3D;
+    private Vector3 mousePosition3D;
     private final OrthographicCamera camera;
 
     public InputTracker(OrthographicCamera camera) {
+        this.camera = camera;
+        init();
+    }
+
+    private void init() {
         keyPresses = new boolean[InputTracker.MAX];
         mousePosition = new Vector2();
         mousePosition3D = new Vector3();
-        this.camera = camera;
     }
 
     @Override

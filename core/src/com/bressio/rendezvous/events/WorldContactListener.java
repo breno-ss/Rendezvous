@@ -1,11 +1,11 @@
 package com.bressio.rendezvous.events;
 
 import com.badlogic.gdx.physics.box2d.*;
-import com.bressio.rendezvous.entities.InteractiveObject;
+import com.bressio.rendezvous.entities.tiles.InteractiveTile;
 
 public class WorldContactListener implements ContactListener {
-    @Override
-    public void beginContact(Contact contact) {
+
+    private void sendContactMessage(Contact contact, boolean isLeave) {
         Fixture fixtureA = contact.getFixtureA();
         Fixture fixtureB = contact.getFixtureB();
 
@@ -13,25 +13,24 @@ public class WorldContactListener implements ContactListener {
             Fixture player = fixtureA.getUserData() == "player" ? fixtureA : fixtureB;
             Fixture object = player == fixtureA ? fixtureB : fixtureA;
 
-            if (object.getUserData() instanceof InteractiveObject) {
-               ((InteractiveObject) object.getUserData()).onPlayerEnter();
+            if (object.getUserData() instanceof InteractiveTile) {
+                if (!isLeave) {
+                    ((InteractiveTile) object.getUserData()).onPlayerEnter();
+                } else {
+                    ((InteractiveTile) object.getUserData()).onPlayerLeave();
+                }
             }
         }
     }
 
     @Override
+    public void beginContact(Contact contact) {
+        sendContactMessage(contact, false);
+    }
+
+    @Override
     public void endContact(Contact contact) {
-        Fixture fixtureA = contact.getFixtureA();
-        Fixture fixtureB = contact.getFixtureB();
-
-        if (fixtureA.getUserData() == "player" || fixtureB.getUserData() == "player") {
-            Fixture player = fixtureA.getUserData() == "player" ? fixtureA : fixtureB;
-            Fixture object = player == fixtureA ? fixtureB : fixtureA;
-
-            if (object.getUserData() instanceof InteractiveObject) {
-                ((InteractiveObject) object.getUserData()).onPlayerLeave();
-            }
-        }
+        sendContactMessage(contact, true);
     }
 
     @Override

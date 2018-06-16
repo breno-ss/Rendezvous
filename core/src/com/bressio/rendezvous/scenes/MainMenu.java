@@ -3,6 +3,7 @@ package com.bressio.rendezvous.scenes;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -26,7 +27,7 @@ import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_WIDTH;
 public class MainMenu implements Screen {
 
     // game
-    private Rendezvous game;
+    private SpriteBatch batch;
     private ResourceHandler resources;
     private Internationalization i18n;
     private boolean isLoading;
@@ -45,8 +46,8 @@ public class MainMenu implements Screen {
     private OrthographicCamera camera;
     private Viewport viewport;
 
-    public MainMenu(Rendezvous game) {
-        this.game = game;
+    public MainMenu(SpriteBatch batch) {
+        this.batch = batch;
         loadResources();
         setupCamera();
         setupCursor();
@@ -80,7 +81,7 @@ public class MainMenu implements Screen {
     }
 
     private void forgeMenu() {
-        stage = new Stage(viewport, game.getBatch());
+        stage = new Stage(viewport, batch);
 
         Gdx.input.setInputProcessor(stage);
 
@@ -101,7 +102,7 @@ public class MainMenu implements Screen {
                     @Override
                     public void run() {
                         Rendezvous game = (Rendezvous)Gdx.app.getApplicationListener();
-                        game.setScreen(new Match(game));
+                        game.setScreen(new Match(batch));
                     }
                 }, 1);
             }
@@ -126,7 +127,7 @@ public class MainMenu implements Screen {
     }
 
     private void forgeLoadingScreen() {
-        loadingStage = new Stage(viewport, game.getBatch());
+        loadingStage = new Stage(viewport, batch);
 
         Table table = new Table();
         table.bottom();
@@ -148,34 +149,46 @@ public class MainMenu implements Screen {
 
     }
 
+    private void renderBackgroundColor() {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+    }
+
+    private void renderBackground() {
+        batch.begin();
+        batch.draw(background, 0, 0);
+        batch.draw(logo,
+                pCenter(GAME_WIDTH) - pCenter(logo.getWidth()),
+                GAME_HEIGHT - 300);
+        batch.end();
+    }
+
+    private void renderMenu() {
+        stage.act();
+        stage.draw();
+    }
+
+    private void renderLoadingScreen() {
+        if (isLoading) {
+            batch.begin();
+            batch.draw(loadingScreen, 0, 0);
+            if (i18n.getBundle().getLocale().getLanguage().equals("")) {
+                batch.draw(gameIcon, 1010, 75);
+            } else if (i18n.getBundle().getLocale().getLanguage().equals("pt")) {
+                batch.draw(gameIcon, 980, 75);
+            }
+            batch.end();
+            loadingStage.draw();
+        }
+    }
+
     @Override
     public void render(float delta) {
         update(delta);
-
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        game.getBatch().begin();
-        game.getBatch().draw(background, 0, 0);
-        game.getBatch().draw(logo,
-                pCenter(GAME_WIDTH) - pCenter(logo.getWidth()),
-                GAME_HEIGHT - 300);
-        game.getBatch().end();
-
-        stage.act();
-        stage.draw();
-
-        if (isLoading) {
-            game.getBatch().begin();
-            game.getBatch().draw(loadingScreen, 0, 0);
-            if (i18n.getBundle().getLocale().getLanguage().equals("")) {
-                game.getBatch().draw(gameIcon, 1010, 75);
-            } else if (i18n.getBundle().getLocale().getLanguage().equals("pt")) {
-                game.getBatch().draw(gameIcon, 980, 75);
-            }
-            game.getBatch().end();
-            loadingStage.draw();
-        }
+        renderBackgroundColor();
+        renderBackground();
+        renderMenu();
+        renderLoadingScreen();
     }
 
     @Override

@@ -16,22 +16,28 @@ public class Animator {
     private State previousState;
     private TextureRegion idleTexture;
     private KeyFrameIndexer indexer;
+    private AnimationRegion animationRegion;
 
     public Animator(Entity entity, AnimationRegion animationRegion) {
         this.entity = entity;
+        this.animationRegion = animationRegion;
+        init();
+        setupIdleTexture();
+    }
 
+    private void init() {
         currentState = State.IDLE;
         previousState = State.IDLE;
         stateTimer = 0;
+        indexer = new KeyFrameIndexer(entity.getTexture(), animationRegion);
+    }
 
-        indexer = new KeyFrameIndexer(this.entity.getTexture(), animationRegion);
-
-        idleTexture = new TextureRegion(this.entity.getTexture(),
+    private void setupIdleTexture() {
+        idleTexture = new TextureRegion(entity.getTexture(),
                 animationRegion.getIdleTextureX(),
                 animationRegion.getIdleTextureY(),
                 animationRegion.getIdleTextureWidth(),
                 animationRegion.getIdleTextureHeight());
-
         idleTexture.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
     }
 
@@ -39,8 +45,8 @@ public class Animator {
         return idleTexture;
     }
 
-    public TextureRegion getFrame(float delta) {
-        currentState = getState();
+    public TextureRegion getFrame(float delta, float velocityThreshold) {
+        currentState = getState(velocityThreshold);
         TextureRegion region;
         switch (currentState) {
             case MOVING:
@@ -55,9 +61,11 @@ public class Animator {
         return region;
     }
 
-    private State getState() {
-        if (entity.getBody().getLinearVelocity().x > 1 || entity.getBody().getLinearVelocity().x < -1
-                || entity.getBody().getLinearVelocity().y > 1 || entity.getBody().getLinearVelocity().y < -1) {
+    private State getState(float velocityThreshold) {
+        if (entity.getBody().getLinearVelocity().x > velocityThreshold ||
+                entity.getBody().getLinearVelocity().x < -velocityThreshold ||
+                entity.getBody().getLinearVelocity().y > velocityThreshold ||
+                entity.getBody().getLinearVelocity().y < -velocityThreshold) {
             return State.MOVING;
         } else {
             return State.IDLE;

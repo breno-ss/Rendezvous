@@ -1,7 +1,6 @@
 package com.bressio.rendezvous.gui;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -9,7 +8,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.graphics.ResourceHandler;
-import com.bressio.rendezvous.languages.Internationalization;
+import com.bressio.rendezvous.scenes.Match;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.pCenter;
 import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
@@ -22,17 +21,27 @@ public class MatchMap implements Disposable {
     private Image background;
     private Image map;
     private Image playerMark;
+    private Match match;
 
-    public MatchMap(SpriteBatch batch, Internationalization i18n, ResourceHandler resources) {
+    public MatchMap(Match match) {
+        this.match = match;
+        setupStage();
+        forgeMap();
+    }
+
+    private void setupStage() {
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, batch);
+        stage = new Stage(viewport, match.getBatch());
 
-        background = new Image(resources.getTexture(ResourceHandler.TexturePath.BLACK_BACKGROUND));
+    }
+
+    private void forgeMap() {
+        background = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.BLACK_BACKGROUND));
         background.setScale(GAME_WIDTH, GAME_HEIGHT);
-        map = new Image(resources.getTexture(ResourceHandler.TexturePath.MATCH_MAP));
+        map = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.MATCH_MAP));
         map.setPosition(pCenter(GAME_WIDTH) - pCenter( map.getWidth()),
                 pCenter(GAME_HEIGHT) - pCenter(map.getHeight()));
-        playerMark = new Image(resources.getTexture(ResourceHandler.TexturePath.PLAYER_MARK));
+        playerMark = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.PLAYER_MARK));
 
         stage.addActor(background);
         stage.addActor(map);

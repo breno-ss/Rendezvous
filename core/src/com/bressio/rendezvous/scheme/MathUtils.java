@@ -4,7 +4,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.concurrent.ThreadLocalRandom;
 
-public class MathUtils {
+public final class MathUtils {
+
+    private MathUtils() { }
 
     public static int randomRange(int min, int max) {
         return ThreadLocalRandom.current().nextInt(min, max + 1);

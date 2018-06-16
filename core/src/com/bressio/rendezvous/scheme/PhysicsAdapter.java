@@ -4,9 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public final class PhysicsAdapter {
 
-    private PhysicsAdapter() {
-
-    }
+    private PhysicsAdapter() { }
 
     public static final Vector2 GRAVITY = new Vector2(0, 0);
     private static final float SCALE = 100;

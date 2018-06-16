@@ -16,7 +16,6 @@ public class BodyBuilder{
     private float linearDamping;
     private float radius;
     private float[] vertices;
-    private boolean fixedRotation;
     private boolean sensor;
     private BodyDef.BodyType bodyType;
     private short categoryBits;
@@ -26,7 +25,10 @@ public class BodyBuilder{
     public BodyBuilder(World world, Vector2 position){
         this.world = world;
         this.position = position;
+        init();
+    }
 
+    private void init() {
         // by default, all objects have a default tag and can collide with other default objects or the player
         this.categoryBits = DEFAULT_TAG;
         this.maskBits = DEFAULT_TAG | PLAYER_TAG;
@@ -54,11 +56,6 @@ public class BodyBuilder{
 
     public BodyBuilder withVertices(float[] vertices) {
         this.vertices = vertices;
-        return this;
-    }
-
-    public BodyBuilder withFixedRotation(boolean hasFixedRotation) {
-        this.fixedRotation = hasFixedRotation;
         return this;
     }
 
@@ -95,7 +92,6 @@ public class BodyBuilder{
         fixtureDef.filter.maskBits = maskBits;
 
         bodyDef.linearDamping = linearDamping;
-        bodyDef.fixedRotation = fixedRotation;
         bodyDef.type = bodyType;
         bodyDef.position.set(position);
         body = world.createBody(bodyDef);
@@ -120,5 +116,4 @@ public class BodyBuilder{
 
         return body;
     }
-
 }

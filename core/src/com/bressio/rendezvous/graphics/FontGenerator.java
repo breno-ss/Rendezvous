@@ -18,7 +18,6 @@ public class FontGenerator {
         }
         BitmapFont font = generator.generateFont(parameter);
         generator.dispose();
-
         return  font;
     }
 }

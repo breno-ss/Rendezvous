@@ -1,22 +1,18 @@
 package com.bressio.rendezvous.forge;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapObject;
 import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolygonMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.World;
-import com.bressio.rendezvous.entities.Building;
-import com.bressio.rendezvous.entities.Chest;
-import com.bressio.rendezvous.entities.Crate;
-import com.bressio.rendezvous.entities.Loot;
-import com.bressio.rendezvous.graphics.ResourceHandler;
+import com.bressio.rendezvous.entities.tiles.Building;
+import com.bressio.rendezvous.entities.tiles.Chest;
+import com.bressio.rendezvous.entities.tiles.Crate;
+import com.bressio.rendezvous.entities.tiles.Loot;
 import com.bressio.rendezvous.scenes.Match;
 
 import java.util.ArrayList;
@@ -25,8 +21,6 @@ import java.util.Random;
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class WorldBuilder {
-
-    private TiledMap map;
 
     private enum Layer {
         OCEAN(0),
@@ -37,73 +31,91 @@ public class WorldBuilder {
         BUILDING_SENSOR(5),
         CHEST(6),
         CRATE(7);
-        Layer(int layer) { this.layer = layer; }
-        private final int layer;
+        Layer(int index) { this.index = index; }
+        private final int index;
     }
 
     private ArrayList<Crate> crates;
     private ArrayList<Chest> chests;
+    private Match match;
 
-    public WorldBuilder(World world, TiledMap map, SpriteBatch batch, ResourceHandler resources, Match match) {
+    public WorldBuilder(Match match) {
+        this.match = match;
+        init();
+        buildPolygonalObject(Layer.OCEAN);
+        buildEllipticalObject(Layer.ROCK);
+        buildEllipticalObject(Layer.TREE);
+        buildRectangularObject(Layer.BUILDING);
+        buildChests();
+        buildCrates();
+        buildBuildingSensors();
+    }
 
+    private void init() {
         chests = new ArrayList<>();
         crates = new ArrayList<>();
+    }
 
-        this.map = map;
-
-        // ocean
-        for (MapObject object : map.getLayers().get(Layer.OCEAN.layer).getObjects().getByType(PolygonMapObject.class)) {
-            Polygon rect = ((PolygonMapObject) object).getPolygon();
-            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getOriginX()), rect.getY() + pCenter(rect.getOriginY())))
+    private void buildPolygonalObject(Layer layer) {
+        for (MapObject object :
+                match.getMap().getLayers().get(layer.index).getObjects().getByType(PolygonMapObject.class)) {
+            Polygon pol = ((PolygonMapObject) object).getPolygon();
+            new BodyBuilder(match.getWorld(), pScale(
+                    pol.getX() + pCenter(pol.getOriginX()),
+                    pol.getY() + pCenter(pol.getOriginY())))
                     .withBodyType(BodyDef.BodyType.StaticBody)
-                    .withVertices(pScale(rect.getVertices()))
+                    .withVertices(pScale(pol.getVertices()))
                     .build();
         }
+    }
 
-        // large rocks
-        for (MapObject object : map.getLayers().get(Layer.ROCK.layer).getObjects().getByType(EllipseMapObject.class)) {
-            Ellipse rect = ((EllipseMapObject) object).getEllipse();
-            new BodyBuilder(world, pScale(rect.x + pCenter(rect.width), rect.y + pCenter(rect.width)))
+    private void buildEllipticalObject(Layer layer) {
+        for (MapObject object :
+                match.getMap().getLayers().get(layer.index).getObjects().getByType(EllipseMapObject.class)) {
+            Ellipse ell = ((EllipseMapObject) object).getEllipse();
+            new BodyBuilder(match.getWorld(), pScale(ell.x + pCenter(ell.width), ell.y + pCenter(ell.width)))
                     .withBodyType(BodyDef.BodyType.StaticBody)
-                    .withRadius(pScaleCenter(rect.width))
+                    .withRadius(pScaleCenter(ell.width))
                     .build();
         }
+    }
 
-        // trees
-        for (MapObject object : map.getLayers().get(Layer.TREE.layer).getObjects().getByType(EllipseMapObject.class)) {
-            Ellipse rect = ((EllipseMapObject) object).getEllipse();
-            new BodyBuilder(world, pScale(rect.x + pCenter(rect.width), rect.y + pCenter(rect.width)))
-                    .withBodyType(BodyDef.BodyType.StaticBody)
-                    .withRadius(pScaleCenter(rect.width))
-                    .build();
-        }
-
-        // buildings
-        for (MapObject object : map.getLayers().get(Layer.BUILDING.layer).getObjects().getByType(RectangleMapObject.class)) {
+    private void buildRectangularObject(Layer layer) {
+        for (MapObject object :
+                match.getMap().getLayers().get(layer.index).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new BodyBuilder(world, pScale(rect.getX() + pCenter(rect.getWidth()), rect.getY() + pCenter(rect.getHeight())))
+            new BodyBuilder(match.getWorld(), pScale(
+                    rect.getX() + pCenter(rect.getWidth()),
+                    rect.getY() + pCenter(rect.getHeight())))
                     .withBodyType(BodyDef.BodyType.StaticBody)
                     .withWidth(pScaleCenter(rect.getWidth()))
                     .withHeight(pScaleCenter(rect.getHeight()))
                     .build();
         }
+    }
 
-        // chests
-        for (MapObject object : map.getLayers().get(Layer.CHEST.layer).getObjects().getByType(RectangleMapObject.class)) {
+    private void buildChests() {
+        for (MapObject object :
+                match.getMap().getLayers().get(Layer.CHEST.index).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            chests.add(new Chest(world, map, rect, batch, resources, match));
+            chests.add(new Chest(rect, match));
         }
+    }
 
-        // crates
-        for (MapObject object : map.getLayers().get(Layer.CRATE.layer).getObjects().getByType(RectangleMapObject.class)) {
+    private void buildCrates() {
+        for (MapObject object :
+                match.getMap().getLayers().get(Layer.CRATE.index).getObjects().getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            crates.add(new Crate(world, map, rect, batch, resources, match));
+            crates.add(new Crate(rect, match));
         }
+    }
 
-        // building sensors
-        for (MapObject object : map.getLayers().get(Layer.BUILDING_SENSOR.layer).getObjects().getByType(RectangleMapObject.class)) {
+    private void buildBuildingSensors() {
+        for (MapObject object :
+                match.getMap().getLayers().get(Layer.BUILDING_SENSOR.index).getObjects()
+                        .getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Building(world, map, rect);
+            new Building(rect, match);
         }
     }
 
@@ -111,7 +123,9 @@ public class WorldBuilder {
         Vector2[] spawnPoints = new Vector2[20];
         int count = 0;
 
-        for (MapObject object : map.getLayers().get(Layer.PLAYER_SPAWN_POINTS.layer).getObjects().getByType(EllipseMapObject.class)) {
+        for (MapObject object :
+                match.getMap().getLayers().get(Layer.PLAYER_SPAWN_POINTS.index).getObjects()
+                        .getByType(EllipseMapObject.class)) {
             Ellipse rect = ((EllipseMapObject) object).getEllipse();
             spawnPoints[count] = new Vector2(rect.x, rect.y);
             count++;

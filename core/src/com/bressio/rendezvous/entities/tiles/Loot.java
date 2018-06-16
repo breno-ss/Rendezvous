@@ -1,33 +1,33 @@
-package com.bressio.rendezvous.entities;
+package com.bressio.rendezvous.entities.tiles;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.physics.box2d.World;
 import com.bressio.rendezvous.graphics.ResourceHandler;
-import com.bressio.rendezvous.objects.EntityObject;
+import com.bressio.rendezvous.entities.objects.EntityObject;
 import com.bressio.rendezvous.scenes.Match;
 
 import java.util.ArrayList;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
-public class Loot extends InteractiveObject {
+public abstract class Loot extends InteractiveTile {
 
     private SpriteBatch batch;
     private Texture interactionButton;
     private boolean playerIsColliding;
-    private Match match;
 
     private ArrayList<EntityObject> items;
 
-    Loot(World world, TiledMap map, Rectangle bounds, SpriteBatch batch, ResourceHandler resources, Match match) {
-        super(world, map, bounds, false, LOOT_TAG);
-        this.batch = batch;
-        this.match = match;
+    Loot(Rectangle bounds, Match match) {
+        super(bounds, match, false, LOOT_TAG);
+        this.batch = match.getBatch();
+        init();
+    }
+
+    private void init() {
         items = new ArrayList<>();
-        interactionButton = resources.getTexture(ResourceHandler.TexturePath.INTERACTION_BUTTON);
+        interactionButton = getMatch().getResources().getTexture(ResourceHandler.TexturePath.INTERACTION_BUTTON);
     }
 
     public void drawInteractionButton() {
@@ -44,12 +44,16 @@ public class Loot extends InteractiveObject {
 
     public void update(float delta) {
         if (playerIsColliding) {
-            match.handleLootInterface(delta, items);
+            getMatch().handleLootInterface(delta, items);
         }
     }
 
     ArrayList<EntityObject> getItems() {
         return items;
+    }
+
+    public Match getMatch() {
+        return super.getMatch();
     }
 
     @Override

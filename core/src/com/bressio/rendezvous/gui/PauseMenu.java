@@ -3,7 +3,6 @@ package com.bressio.rendezvous.gui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -16,7 +15,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
 import com.bressio.rendezvous.graphics.ResourceHandler;
-import com.bressio.rendezvous.languages.Internationalization;
 import com.bressio.rendezvous.scenes.MainMenu;
 import com.bressio.rendezvous.scenes.Match;
 
@@ -36,22 +34,31 @@ public class PauseMenu implements Disposable {
     private int width = 400;
     private int height = 250;
 
-    public PauseMenu(SpriteBatch spriteBatch, Internationalization i18n, ResourceHandler resources, Match match) {
+    public PauseMenu(Match match) {
         this.match = match;
+        setupStage();
+        forgePauseMenu();
+    }
+
+    private void setupStage() {
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
-        stage = new Stage(viewport, spriteBatch);
-        skin = resources.getSkin(ResourceHandler.SkinPaths.WINDOW_SKIN);
+        stage = new Stage(viewport, match.getBatch());
+    }
+
+    private void forgePauseMenu() {
+        skin = match.getResources().getSkin(ResourceHandler.SkinPaths.WINDOW_SKIN);
+
         window = new Window("", skin);
         window.setSize(width, height);
         window.setPosition(pCenter(GAME_WIDTH) - pCenter(width), pCenter(GAME_HEIGHT) - pCenter(height));
         window.padTop(-20);
 
-        Label title = new Label(i18n.getBundle().get("paused"), skin);
+        Label title = new Label(match.getI18n().getBundle().get("paused"), skin);
         window.add(title).row();
 
-        TextButton resumeButton = new TextButton(i18n.getBundle().get("pauseMenuResume"), skin);
-        TextButton backButton = new TextButton(i18n.getBundle().get("pauseMenuBack"), skin);
-        TextButton exitButton = new TextButton(i18n.getBundle().get("pauseMenuQuit"), skin);
+        TextButton resumeButton = new TextButton(match.getI18n().getBundle().get("pauseMenuResume"), skin);
+        TextButton backButton = new TextButton(match.getI18n().getBundle().get("pauseMenuBack"), skin);
+        TextButton exitButton = new TextButton(match.getI18n().getBundle().get("pauseMenuQuit"), skin);
 
         resumeButton.addListener(new ClickListener(){
             @Override
@@ -66,7 +73,7 @@ public class PauseMenu implements Disposable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Rendezvous game = (Rendezvous)Gdx.app.getApplicationListener();
-                game.setScreen(new MainMenu(game));
+                game.setScreen(new MainMenu(match.getBatch()));
             }
         });
 

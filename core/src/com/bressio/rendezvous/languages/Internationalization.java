@@ -17,6 +17,10 @@ public class Internationalization {
     private I18NBundle bundle;
 
     public Internationalization() {
+        setupBundle();
+    }
+
+    private void setupBundle() {
         FileHandle baseFileHandle = Gdx.files.internal("localization/Rendezvous");
         Locale locale = new Locale("", "");
         if (LANG == Language.BRAZILIAN_PORTUGUESE) {

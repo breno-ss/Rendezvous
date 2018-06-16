@@ -7,6 +7,7 @@ import com.bressio.rendezvous.entities.Player;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.HUD;
 import com.bressio.rendezvous.languages.Internationalization;
+import com.bressio.rendezvous.scenes.Match;
 import com.bressio.rendezvous.scheme.PhysicsAdapter;
 
 import static com.bressio.rendezvous.scheme.MathUtils.distance;
@@ -24,6 +25,7 @@ public class RendezvousController {
     private Internationalization i18n;
     private HUD hud;
 
+    private ResourceHandler resources;
     private SpriteBatch batch;
     private Texture safezone;
     private Texture dangerZone;
@@ -33,31 +35,40 @@ public class RendezvousController {
     private Player player;
     private float damageTimeCount;
 
-    public RendezvousController(SpriteBatch batch, Internationalization i18n, HUD hud, ResourceHandler resources, Player player) {
-        this.batch = batch;
-        this.i18n = i18n;
-        this.hud = hud;
-        this.player = player;
-        secondsToNextEvent = 5;
+    private final int SAFEZONE_RANGE = 30;
+    private final int SECONDS_NEXT = 5;
+
+    public RendezvousController(Match match) {
+        this.batch = match.getBatch();
+        this.i18n = match.getI18n();
+        this.hud = match.getHud();
+        this.player = match.getPlayer();
+        this.resources = match.getResources();
+        init();
+        setupHud();
+    }
+
+    private void init() {
+        secondsToNextEvent = SECONDS_NEXT;
         event = 1;
-        rendezvousLabel = i18n.getBundle().get("nextRendezvous");
-
-        hud.updateEventLabel(rendezvousLabel, isInRendezvous());
-        hud.updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent, false));
-
         safezone = resources.getTexture(ResourceHandler.TexturePath.SAFEZONE);
         dangerZone = resources.getTexture(ResourceHandler.TexturePath.DANGER_ZONE);
-
         safezoneOffsets = generateSafezoneOffsets();
+    }
+
+    private void setupHud() {
+        rendezvousLabel = i18n.getBundle().get("nextRendezvous");
+        hud.updateEventLabel(rendezvousLabel, isInRendezvous());
+        hud.updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent, false));
     }
 
     private Vector2[] generateSafezoneOffsets() {
         Vector2[] offsets = new Vector2[4];
-
         for (int i = 0; i < offsets.length; i++) {
-            offsets[i] = new Vector2(randomRange(-30, 30), randomRange(-30, 30));
+            offsets[i] = new Vector2(
+                    randomRange(-SAFEZONE_RANGE, SAFEZONE_RANGE), randomRange(-SAFEZONE_RANGE, SAFEZONE_RANGE)
+            );
         }
-
         return offsets;
     }
 
@@ -79,7 +90,7 @@ public class RendezvousController {
                     rendezvousLabel = i18n.getBundle().get("nextRendezvous");
                 }
                 hud.updateEventLabel(rendezvousLabel, isInRendezvous());
-                secondsToNextEvent = 5;
+                secondsToNextEvent = SECONDS_NEXT;
                 hud.updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent, false));
             }
 
@@ -110,7 +121,7 @@ public class RendezvousController {
                 new Vector2(safezoneOffsets[offsetIndex].x + 41, safezoneOffsets[offsetIndex].y + 41)) > distance);
     }
 
-    public void updateGraphics(float delta) {
+    public void render(float delta) {
         batch.begin();
 
         switch (event) {

@@ -3,35 +3,35 @@ package com.bressio.rendezvous.entities;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.World;
+import com.bressio.rendezvous.graphics.AnimationRegion;
 import com.bressio.rendezvous.scenes.Match;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScale;
 
 public abstract class Entity extends Sprite {
 
-    private World world;
+    private Match match;
     private Body body;
     private Vector2 position;
 
-    protected Entity(World world, Match match, float x, float y, String animationRegion) {
-        super(match.getAtlas().findRegion(animationRegion));
-        this.world = world;
-        position = pScale(x, y);
+    Entity(Match match, Vector2 position, AnimationRegion animationRegion) {
+        super(match.getAtlas().findRegion(animationRegion.getRegion()));
+        this.match = match;
+        this.position = new Vector2(pScale(position.x), pScale(position.y));
     }
 
-    protected abstract void create();
-
-    public Body getBody() {
-        return body;
-    }
+    protected abstract void buildBody();
 
     void setBody(Body body) {
         this.body = body;
     }
 
-    World getWorld() {
-        return world;
+    public Match getMatch() {
+        return match;
+    }
+
+    public Body getBody() {
+        return body;
     }
 
     Vector2 getPosition() {
