@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -65,7 +64,6 @@ public class Match implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private TiledMap overMap;
-    private TextureAtlas atlas;
 
     // events
     private InputTracker input;
@@ -85,7 +83,6 @@ public class Match implements Screen {
     private void loadResources() {
         resources = new ResourceHandler();
         resources.loadMatchResources();
-        atlas = resources.getTextureAtlas(ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
         mapLoader = new TmxMapLoader();
         map = resources.getTiledMap(ResourceHandler.TiledMapPath.TILEMAP);
         overMap = resources.getTiledMap(ResourceHandler.TiledMapPath.OVER_TILEMAP);
@@ -215,10 +212,6 @@ public class Match implements Screen {
             hud.switchSelectedSlot(input.isScrolling() == 1);
             input.resetScrollAmount();
         }
-    }
-
-    public TextureAtlas getAtlas() {
-        return atlas;
     }
 
     public ResourceHandler getResources() {

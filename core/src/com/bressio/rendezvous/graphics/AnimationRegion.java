@@ -1,7 +1,8 @@
 package com.bressio.rendezvous.graphics;
 
 public enum AnimationRegion {
-    PLAYER("soldier", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79);
+    SOLDIER("soldier", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
+    SOLDIER_MEDKIT("soldier-medkit", 0, 0, 77, 77, 18, .04f, 0, 0, 77, 77);
     AnimationRegion(String region, int startRow, int startColumn, int frameWidth, int frameHeight, int amountFrames, float frameDuration,
                     int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
         this.region = region;

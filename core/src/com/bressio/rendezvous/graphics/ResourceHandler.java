@@ -64,6 +64,7 @@ public final class ResourceHandler implements Disposable {
     public enum TextureAtlasPath {
         BUTTON_ATLAS("textures/gui/buttons/buttons.pack"),
         SOLDIER_ATLAS("textures/animations/soldier-animation.pack"),
+        SOLDIER_MEDKIT_ATLAS("textures/animations/soldier-medkit-animation.pack"),
         WINDOW_ATLAS("skins/vis/skin/x2/uiskin.atlas");
         private String path;
         TextureAtlasPath(String path) { this.path = path; }
@@ -108,6 +109,7 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(PixmapPath.MATCH_CURSOR.path, Pixmap.class);
         assetManager.load(PixmapPath.MENU_CURSOR.path, Pixmap.class);
         assetManager.load(TextureAtlasPath.SOLDIER_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MEDKIT_ATLAS.path, TextureAtlas.class);
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);
         assetManager.load(TiledMapPath.OVER_TILEMAP.path, TiledMap.class);

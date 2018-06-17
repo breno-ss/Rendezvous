@@ -11,7 +11,7 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 public class Player extends Soldier {
 
     public Player(Match match, float radius, float linearDamping, int speed, Vector2 position) {
-        super(match, position, radius, linearDamping, speed, AnimationRegion.PLAYER, PLAYER_TAG,
+        super(match, position, radius, linearDamping, speed, AnimationRegion.SOLDIER, PLAYER_TAG,
                 (short) (DEFAULT_TAG | BUILDING_TAG | LOOT_TAG), "player");
     }
 

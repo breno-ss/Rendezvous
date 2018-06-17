@@ -27,4 +27,8 @@ public class Inventory {
     public ArrayList<EntityObject> getItems() {
         return items;
     }
+
+    public EntityObject getItem(int index) {
+        return items.get(index);
+    }
 }

@@ -250,7 +250,6 @@ public class HUD implements Disposable {
             selectedSlot = selectedSlot + 1 > 5 ? 0 : selectedSlot + 1;
             selectionMarker.setPosition(newPos.x, newPos.y);
         }
-
     }
 
     public void updateTimeLabel(String time) {
@@ -279,5 +278,9 @@ public class HUD implements Disposable {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public int getSelectedSlot() {
+        return selectedSlot;
     }
 }

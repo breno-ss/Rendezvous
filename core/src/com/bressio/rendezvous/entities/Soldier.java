@@ -2,10 +2,13 @@ package com.bressio.rendezvous.entities;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.bressio.rendezvous.entities.objects.Empty;
 import com.bressio.rendezvous.entities.objects.Inventory;
+import com.bressio.rendezvous.entities.objects.Medkit;
 import com.bressio.rendezvous.forge.BodyBuilder;
 import com.bressio.rendezvous.graphics.AnimationRegion;
 import com.bressio.rendezvous.graphics.Animator;
+import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
@@ -18,7 +21,8 @@ public abstract class Soldier extends Entity {
     private final short categoryBits;
     private final short maskBits;
     private final Object userData;
-    private final AnimationRegion animationRegion;
+    private AnimationRegion animationRegion;
+    private Object lastSelectedObjectClass;
 
     private Animator animator;
     private int health = 100;
@@ -65,6 +69,23 @@ public abstract class Soldier extends Entity {
                 getBody().getPosition().x - pCenter(getWidth()),
                 getBody().getPosition().y - pCenter(getHeight()));
         setRegion(animator.getFrame(delta, 1));
+        changeAnimation();
+    }
+
+    private void changeAnimation() {
+        Object selectedObjectClass = inventory.getItem(getMatch().getHud().getSelectedSlot()).getClass();
+        if (selectedObjectClass != lastSelectedObjectClass) {
+            if (selectedObjectClass == Medkit.class) {
+                animationRegion = AnimationRegion.SOLDIER_MEDKIT;
+                setRegion(getMatch().getResources().getTextureAtlas(ResourceHandler.TextureAtlasPath.SOLDIER_MEDKIT_ATLAS).findRegion(animationRegion.getRegion()));
+                animator = new Animator(this, AnimationRegion.SOLDIER_MEDKIT);
+            } else if (selectedObjectClass == Empty.class) {
+                animationRegion = AnimationRegion.SOLDIER;
+                setRegion(getMatch().getResources().getTextureAtlas(ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS).findRegion(animationRegion.getRegion()));
+                animator = new Animator(this, AnimationRegion.SOLDIER);
+            }
+            lastSelectedObjectClass = selectedObjectClass;
+        }
     }
 
     void changeHealth(int difference) {
