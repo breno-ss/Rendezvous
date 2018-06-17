@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bressio.rendezvous.entities.objects.Empty;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
@@ -224,8 +225,7 @@ public class HUD implements Disposable {
             for (int i = 0; i < 6; i++) {
                 items.get(i).setDrawable(
                         new SpriteDrawable(new Sprite(
-                                match.getPlayer().getInventory().getItems().get(i).getIcon() ==
-                                        match.getResources().getTexture(ResourceHandler.TexturePath.EMPTY_SLOT) ?
+                                match.getPlayer().getInventory().getItems().get(i).getClass() == Empty.class ?
                                         match.getResources().getTexture(ResourceHandler.TexturePath.INVISIBLE_SLOT) :
                                         match.getPlayer().getInventory().getItems().get(i).getIcon()
                         ))

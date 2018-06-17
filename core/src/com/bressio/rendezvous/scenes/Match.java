@@ -111,7 +111,7 @@ public class Match implements Screen {
     }
 
     private void setupCursor() {
-        setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
+        setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MATCH_CURSOR), true);
     }
 
     private void forgeWorld() {
@@ -165,7 +165,7 @@ public class Match implements Screen {
             if (state == GameState.RUNNING || state == GameState.TACTICAL || state == GameState.LOOTING) {
                 input.resetAllKeys();
                 Gdx.input.setInputProcessor(pause.getStage());
-                setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
+                setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
                 setState(GameState.PAUSED);
             }
         }
@@ -177,7 +177,7 @@ public class Match implements Screen {
                 loot = new LootInterface(this, items, player.getInventory().getItems());
                 input.resetAllKeys();
                 Gdx.input.setInputProcessor(loot.getStage());
-                setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
+                setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
                 setState(GameState.LOOTING);
             }
         }
@@ -187,11 +187,11 @@ public class Match implements Screen {
         if (InputTracker.isPressed(InputTracker.M)){
             if (state == GameState.RUNNING) {
                 input.resetSecondaryKeys();
-                setCursor(ResourceHandler.PixmapPath.MENU_CURSOR, false);
+                setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
                 setState(GameState.TACTICAL);
             } else if (state == GameState.TACTICAL) {
                 input.resetSecondaryKeys();
-                setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
+                setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MATCH_CURSOR), true);
                 setState(GameState.RUNNING);
             }
         }
@@ -273,8 +273,7 @@ public class Match implements Screen {
         Gdx.input.setInputProcessor(input);
     }
 
-    public void setCursor(ResourceHandler.PixmapPath pixmapPath, boolean isCentered) {
-        Pixmap pixmap = resources.getPixmap(pixmapPath);
+    public void setCursor(Pixmap pixmap, boolean isCentered) {
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap,
                 isCentered ? pCenter(pixmap.getWidth()) : 0,
                 isCentered ? pCenter(pixmap.getHeight()) : 0));

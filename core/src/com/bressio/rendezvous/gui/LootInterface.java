@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -13,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bressio.rendezvous.entities.objects.Empty;
 import com.bressio.rendezvous.entities.objects.EntityObject;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
@@ -31,25 +34,33 @@ public class LootInterface implements Disposable {
     private Viewport viewport;
     private Skin skin;
 
-    private Window window;
+    private Window inventoryWindow;
+    private Window lootWindow;
     private Match match;
 
     private int width = 300;
     private int height = 400;
 
-    private Image exchangeIcon;
-
     private ArrayList<EntityObject> lootItems;
     private ArrayList<EntityObject> inventoryItems;
+
+    private EntityObject selectedLootItem;
+    private EntityObject selectedInventoryItem;
 
     public LootInterface(Match match, ArrayList<EntityObject> lootItems, ArrayList<EntityObject> inventoryItems) {
         this.match = match;
         this.lootItems = lootItems;
         this.inventoryItems = inventoryItems;
+        init();
         setupStages();
         forgeInventoryInterface();
         forgeLootInterface();
         forgeUpperStage();
+    }
+
+    private void init() {
+        selectedInventoryItem = null;
+        selectedLootItem = null;
     }
 
     private void setupStages() {
@@ -61,40 +72,37 @@ public class LootInterface implements Disposable {
     private void forgeInventoryInterface() {
         skin = match.getResources().getSkin(ResourceHandler.SkinPaths.WINDOW_SKIN);
 
-        window = new Window("", skin);
-        window.setSize(width, height);
-        window.setPosition(pCenter(GAME_WIDTH) + 50, pCenter(GAME_HEIGHT) - pCenter(height));
-        window.padTop(-20);
+        inventoryWindow = new Window("", skin, "no-background");
+        inventoryWindow.setSize(width, height);
+        inventoryWindow.setPosition(pCenter(GAME_WIDTH) + 50, pCenter(GAME_HEIGHT) - pCenter(height));
+        inventoryWindow.padTop(-20);
 
-        window.add(new Label(match.getI18n().getBundle().get("inventory"), skin)).padTop(20).row();
+        inventoryWindow.add(new Label(match.getI18n().getBundle().get("inventory"), skin)).padTop(20).row();
 
         for (int i = 0; i < inventoryItems.size(); i++) {
-            insertItemToWindow(window, i, true);
+            insertItemToWindow(inventoryWindow, i, true);
         }
 
-        stage.addActor(window);
+        stage.addActor(inventoryWindow);
     }
 
     private void forgeLootInterface() {
-        window = new Window("", skin);
-        window.setSize(width, height);
-        window.setPosition(pCenter(GAME_WIDTH) - (width + 50), pCenter(GAME_HEIGHT) - pCenter(height));
-        window.padTop(-20);
+        lootWindow = new Window("", skin, "no-background");
+        lootWindow.setSize(width, height);
+        lootWindow.setPosition(pCenter(GAME_WIDTH) - (width + 50), pCenter(GAME_HEIGHT) - pCenter(height));
+        lootWindow.padTop(-20);
 
-        window.add(new Label(match.getI18n().getBundle().get("loot"), skin)).padTop(20).row();
+        lootWindow.add(new Label(match.getI18n().getBundle().get("loot"), skin)).padTop(20).row();
 
         for (int i = 0; i < lootItems.size(); i++) {
-            insertItemToWindow(window, i, false);
+            insertItemToWindow(lootWindow, i, false);
         }
 
-        stage.addActor(window);
+        stage.addActor(lootWindow);
     }
 
     private void forgeUpperStage() {
-        exchangeIcon = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.EXCHANGE_ICON));
-        exchangeIcon.setPosition(pCenter(GAME_WIDTH) - pCenter(exchangeIcon.getWidth()),
-                pCenter(GAME_HEIGHT) - pCenter(exchangeIcon.getHeight()));
-        upperStage.addActor(exchangeIcon);
+        // forge equipment interface
     }
 
     private void insertItemToWindow(Window window, int index, boolean isInventoryItem) {
@@ -105,12 +113,17 @@ public class LootInterface implements Disposable {
 
         itemImage.addListener(new ClickListener() {
             @Override
-            public void clicked(InputEvent event, float x, float y) {
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (isInventoryItem) {
-                    selectInventorySlot(index);
+                    if (!selectInventorySlot(index)) {
+                        dropOnInventorySlot(index);
+                    }
                 } else {
-                    selectLootSlot(index);
+                    if (!selectLootSlot(index)) {
+                        dropOnLootSlot(index);
+                    }
                 }
+                return super.touchDown(event, x, y, pointer, button);
             }
         });
 
@@ -120,12 +133,80 @@ public class LootInterface implements Disposable {
                         14, false), Color.WHITE))).row();
     }
 
-    private void selectInventorySlot(int index) {
-        System.out.println("Select inventory #" + index);
+    private boolean selectInventorySlot(int index) {
+        if (inventoryItems.get(index).getClass() != Empty.class && selectedLootItem == null && selectedInventoryItem == null) {
+            Texture icon = inventoryItems.get(index).getIcon();
+            if (!icon.getTextureData().isPrepared()) {
+                icon.getTextureData().prepare();
+            }
+            Pixmap cursor = icon.getTextureData().consumePixmap();
+            match.setCursor(cursor, true);
+            selectedInventoryItem = inventoryItems.get(index);
+            inventoryItems.set(index, new Empty(match));
+            updateWindows(false);
+            return true;
+        }
+        return false;
     }
 
-    private void selectLootSlot(int index) {
-        System.out.println("Select loot #" + index);
+    private boolean selectLootSlot(int index) {
+        if (lootItems.get(index).getClass() != Empty.class && selectedLootItem == null && selectedInventoryItem == null) {
+            Texture icon = lootItems.get(index).getIcon();
+            if (!icon.getTextureData().isPrepared()) {
+                icon.getTextureData().prepare();
+            }
+            Pixmap cursor = icon.getTextureData().consumePixmap();
+            match.setCursor(cursor, true);
+            selectedLootItem = lootItems.get(index);
+            lootItems.set(index, new Empty(match));
+            updateWindows(true);
+            return true;
+        }
+        return false;
+    }
+
+    private void dropOnInventorySlot(int index) {
+        if (inventoryItems.get(index).getClass() == Empty.class) {
+            if (selectedLootItem != null) {
+                match.setCursor(match.getResources().getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
+                inventoryItems.set(index, selectedLootItem);
+                selectedLootItem = null;
+                updateWindows(true);
+            } else if (selectedInventoryItem != null) {
+                match.setCursor(match.getResources().getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
+                inventoryItems.set(index, selectedInventoryItem);
+                selectedInventoryItem = null;
+                updateWindows(true);
+            }
+        }
+    }
+
+    private void dropOnLootSlot(int index) {
+        if (lootItems.get(index).getClass() == Empty.class) {
+            if (selectedInventoryItem != null) {
+                match.setCursor(match.getResources().getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
+                lootItems.set(index, selectedInventoryItem);
+                selectedInventoryItem = null;
+                updateWindows(false);
+            } else if (selectedLootItem != null) {
+                match.setCursor(match.getResources().getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
+                lootItems.set(index, selectedLootItem);
+                selectedLootItem = null;
+                updateWindows(false);
+            }
+        }
+    }
+
+    private void updateWindows(boolean inventoryIsFocused) {
+        lootWindow.remove();
+        inventoryWindow.remove();
+        if (inventoryIsFocused) {
+            forgeLootInterface();
+            forgeInventoryInterface();
+        } else {
+            forgeInventoryInterface();
+            forgeLootInterface();
+        }
     }
 
     public void update(float delta) {
@@ -133,14 +214,15 @@ public class LootInterface implements Disposable {
     }
 
     private void handleInput(float delta) {
-        if (Gdx.app.getInput().isKeyJustPressed(Input.Keys.E) ||
+        if ((Gdx.app.getInput().isKeyJustPressed(Input.Keys.E) ||
                 Gdx.app.getInput().isKeyJustPressed(Input.Keys.A) ||
                 Gdx.app.getInput().isKeyJustPressed(Input.Keys.S) ||
                 Gdx.app.getInput().isKeyJustPressed(Input.Keys.W) ||
                 Gdx.app.getInput().isKeyJustPressed(Input.Keys.D) ||
-                Gdx.app.getInput().isKeyJustPressed(Input.Keys.ESCAPE)){
+                Gdx.app.getInput().isKeyJustPressed(Input.Keys.ESCAPE)) &&
+                selectedInventoryItem == null && selectedLootItem == null){
             match.delegateInputProcessor();
-            match.setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
+            match.setCursor(match.getResources().getPixmap(ResourceHandler.PixmapPath.MATCH_CURSOR), true);
             match.setState(Match.GameState.RUNNING);
         }
     }

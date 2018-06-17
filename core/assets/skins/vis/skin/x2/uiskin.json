@@ -38,8 +38,8 @@ com.badlogic.gdx.scenes.scene2d.ui.SplitPane$SplitPaneStyle: {
 com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 	default: {titleFont: bombard, background: window-noborder, titleFontColor: white, stageBackground: window },
 	resizable: {background: window-resizable, titleFont: bombard, titleFontColor: white },
-	noborder: {background: window-noborder, titleFont: bombard, titleFontColor: white },
-	dialog: {stageBackground: dialogDim, titleFont: bombard, background: window, titleFontColor: white }
+	no-background: {titleFont: bombard, titleFontColor: white, stageBackground: window },
+	no-stage-background: {titleFont: bombard, background: window-noborder, titleFontColor: white}
 },
 com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 	default-horizontal: {background: progressbar, knob: progressbar-filled, knobBefore: progressbar-filled },

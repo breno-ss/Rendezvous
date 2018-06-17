@@ -5,10 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Window;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -31,6 +28,8 @@ public class PauseMenu implements Disposable {
     private Window window;
     private Match match;
 
+    private Image background;
+
     private int width = 400;
     private int height = 250;
 
@@ -46,9 +45,13 @@ public class PauseMenu implements Disposable {
     }
 
     private void forgePauseMenu() {
+        background = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.BLACK_BACKGROUND));
+        background.setScale(GAME_WIDTH, GAME_HEIGHT);
+        stage.addActor(background);
+
         skin = match.getResources().getSkin(ResourceHandler.SkinPaths.WINDOW_SKIN);
 
-        window = new Window("", skin);
+        window = new Window("", skin, "no-stage-background");
         window.setSize(width, height);
         window.setPosition(pCenter(GAME_WIDTH) - pCenter(width), pCenter(GAME_HEIGHT) - pCenter(height));
         window.padTop(-20);
@@ -64,7 +67,7 @@ public class PauseMenu implements Disposable {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 match.delegateInputProcessor();
-                match.setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
+                match.setCursor(match.getResources().getPixmap(ResourceHandler.PixmapPath.MATCH_CURSOR), true);
                 match.setState(Match.GameState.RUNNING);
             }
         });
@@ -98,7 +101,7 @@ public class PauseMenu implements Disposable {
     private void handleInput(float delta) {
         if (Gdx.app.getInput().isKeyJustPressed(Input.Keys.ESCAPE)){
             match.delegateInputProcessor();
-            match.setCursor(ResourceHandler.PixmapPath.MATCH_CURSOR, true);
+            match.setCursor(match.getResources().getPixmap(ResourceHandler.PixmapPath.MATCH_CURSOR), true);
             match.setState(Match.GameState.RUNNING);
         }
     }
