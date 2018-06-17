@@ -20,8 +20,8 @@ class KeyFrameIndexer {
     private void init() {
         Array<TextureRegion> frames = new Array<>();
         for (int i = animationRegion.getStartColumn(); i <= animationRegion.getAmountFrames(); i++) {
-            frames.add(new TextureRegion(texture, i * animationRegion.getFrameSize(), animationRegion.getStartRow(),
-                    animationRegion.getFrameSize(), animationRegion.getFrameSize()));
+            frames.add(new TextureRegion(texture, i * animationRegion.getFrameWidth(), animationRegion.getStartRow(),
+                    animationRegion.getFrameWidth(), animationRegion.getFrameHeight()));
         }
         movingAnimation = new Animation<>(animationRegion.getFrameDuration(), frames);
         frames.clear();

@@ -48,6 +48,7 @@ public class Animator {
     public TextureRegion getFrame(float delta, float velocityThreshold) {
         currentState = getState(velocityThreshold);
         TextureRegion region;
+        stateTimer = currentState == previousState ? stateTimer + delta : 0;
         switch (currentState) {
             case MOVING:
                 region = indexer.getMovingAnimation().getKeyFrame(stateTimer, true);
@@ -56,7 +57,6 @@ public class Animator {
                 region = idleTexture;
                 break;
         }
-        stateTimer = currentState == previousState ? stateTimer + delta : 0;
         previousState = currentState;
         return region;
     }

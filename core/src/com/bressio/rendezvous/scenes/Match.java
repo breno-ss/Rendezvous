@@ -56,7 +56,7 @@ public class Match implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private OrthogonalTiledMapRenderer overRenderer;
     private Box2DDebugRenderer collisionDebugRenderer;
-    private int cameraZoom = 1;
+    private float cameraZoom = 1;
 
     // world
     private World world;
@@ -85,7 +85,7 @@ public class Match implements Screen {
     private void loadResources() {
         resources = new ResourceHandler();
         resources.loadMatchResources();
-        atlas = resources.getTextureAtlas(ResourceHandler.TextureAtlasPath.ENTITY_ATLAS);
+        atlas = resources.getTextureAtlas(ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
         mapLoader = new TmxMapLoader();
         map = resources.getTiledMap(ResourceHandler.TiledMapPath.TILEMAP);
         overMap = resources.getTiledMap(ResourceHandler.TiledMapPath.OVER_TILEMAP);
@@ -117,7 +117,7 @@ public class Match implements Screen {
     private void forgeWorld() {
         world = new World(GRAVITY, true);
         worldBuilder = new WorldBuilder(this);
-        player = new Player(this, 32, 5, 10, worldBuilder.getPlayerSpawnPoint());
+        player = new Player(this, 35, 5, 8, worldBuilder.getPlayerSpawnPoint());
         world.setContactListener(new WorldContactListener());
         rendezvousController = new RendezvousController(this);
     }

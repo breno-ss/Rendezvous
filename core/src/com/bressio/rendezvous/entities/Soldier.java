@@ -43,8 +43,8 @@ public abstract class Soldier extends Entity {
     private void init() {
         animator = new Animator(this, animationRegion);
         inventory = new Inventory(getMatch());
-        setOrigin(pScaleCenter(animationRegion.getFrameSize()), pScaleCenter(animationRegion.getFrameSize()));
-        setBounds(0, 0, pScale(animationRegion.getFrameSize()), pScale(animationRegion.getFrameSize()));
+        setOrigin(pScaleCenter(animationRegion.getFrameWidth()), pScaleCenter(animationRegion.getFrameHeight()));
+        setBounds(0, 0, pScale(animationRegion.getFrameWidth()), pScale(animationRegion.getFrameHeight()));
         setRegion(animator.getIdleTexture());
     }
 

@@ -1,13 +1,14 @@
 package com.bressio.rendezvous.graphics;
 
 public enum AnimationRegion {
-    PLAYER("player_animation", 0, 1, 64, 6, .1f, 0, 0, 64, 64);
-    AnimationRegion(String region, int startRow, int startColumn, int frameSize, int amountFrames, float frameDuration,
+    PLAYER("soldier", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79);
+    AnimationRegion(String region, int startRow, int startColumn, int frameWidth, int frameHeight, int amountFrames, float frameDuration,
                     int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
         this.region = region;
         this.startRow = startRow;
         this.startColumn = startColumn;
-        this.frameSize = frameSize;
+        this.frameWidth = frameWidth;
+        this.frameHeight = frameHeight;
         this.amountFrames = amountFrames;
         this.frameDuration = frameDuration;
         this.idleTextureX = idleTextureX;
@@ -19,7 +20,8 @@ public enum AnimationRegion {
     private String region;
     private int startRow;
     private int startColumn;
-    private int frameSize;
+    private int frameWidth;
+    private int frameHeight;
     private int amountFrames;
     private float frameDuration;
     private int idleTextureX;
@@ -30,7 +32,8 @@ public enum AnimationRegion {
     public String getRegion() { return region; }
     public int getStartRow() { return startRow; }
     public int getStartColumn() { return startColumn; }
-    public int getFrameSize() { return frameSize; }
+    public int getFrameWidth() { return frameWidth; }
+    public int getFrameHeight() { return frameHeight; }
     public int getAmountFrames() { return amountFrames; }
     public float getFrameDuration() { return frameDuration; }
     public int getIdleTextureX() { return idleTextureX; }
