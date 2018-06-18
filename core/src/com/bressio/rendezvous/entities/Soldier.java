@@ -88,7 +88,7 @@ public abstract class Soldier extends Entity {
         }
     }
 
-    void changeHealth(int difference) {
+    public void changeHealth(int difference) {
         health = health + difference < 0 ? 0 : health + difference > 100 ? 100 : health + difference;
     }
 

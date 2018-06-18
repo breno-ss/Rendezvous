@@ -1,6 +1,7 @@
 package com.bressio.rendezvous.entities.objects;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.languages.Internationalization;
 import com.bressio.rendezvous.scenes.Match;
@@ -22,6 +23,8 @@ public abstract class EntityObject {
         resources = match.getResources();
         i18n = match.getI18n();
     }
+
+    public abstract boolean transformSoldier(Soldier soldier);
 
     void setName(String name) {
         this.name = name;

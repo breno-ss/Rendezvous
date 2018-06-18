@@ -32,7 +32,6 @@ public class MatchMap implements Disposable {
     private void setupStage() {
         viewport = new FitViewport(GAME_WIDTH, GAME_HEIGHT, new OrthographicCamera());
         stage = new Stage(viewport, match.getBatch());
-
     }
 
     private void forgeMap() {

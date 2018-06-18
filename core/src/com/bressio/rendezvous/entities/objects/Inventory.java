@@ -8,6 +8,7 @@ public class Inventory {
 
     private Match match;
     private ArrayList<EntityObject> items;
+    private boolean isSelectedBeingUsed;
 
     public Inventory(Match match) {
         this.match = match;
@@ -22,6 +23,27 @@ public class Inventory {
         items.add(new Empty(match));
         items.add(new Empty(match));
         items.add(new Empty(match));
+    }
+
+    public boolean isSelectedBeingUsed() {
+        return isSelectedBeingUsed;
+    }
+
+    public void setSelectedBeingUsed(boolean selectedBeingUsed) {
+        isSelectedBeingUsed = selectedBeingUsed;
+    }
+
+    public void useSelectedItem() {
+        if (getItem(match.getHud().getSelectedSlot()).getClass() == Medkit.class) {
+            isSelectedBeingUsed = true;
+            match.getPlayer().blockActions();
+            match.getProgress().setActivity("healing");
+        }
+    }
+
+    public void consumeSelectedItem(){
+        getItem(match.getHud().getSelectedSlot()).transformSoldier(match.getPlayer());
+        items.set(match.getHud().getSelectedSlot(), new Empty(match));
     }
 
     public ArrayList<EntityObject> getItems() {

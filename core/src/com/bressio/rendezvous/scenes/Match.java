@@ -22,10 +22,7 @@ import com.bressio.rendezvous.events.RendezvousController;
 import com.bressio.rendezvous.events.WorldContactListener;
 import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.graphics.ResourceHandler;
-import com.bressio.rendezvous.gui.HUD;
-import com.bressio.rendezvous.gui.LootInterface;
-import com.bressio.rendezvous.gui.MatchMap;
-import com.bressio.rendezvous.gui.PauseMenu;
+import com.bressio.rendezvous.gui.*;
 import com.bressio.rendezvous.languages.Internationalization;
 import com.bressio.rendezvous.scheme.PhysicsAdapter;
 
@@ -49,6 +46,7 @@ public class Match implements Screen {
     private OrthographicCamera camera;
     private Viewport viewport;
     private HUD hud;
+    private Progress progress;
     private PauseMenu pause;
     private LootInterface loot;
     private MatchMap matchMap;
@@ -94,6 +92,7 @@ public class Match implements Screen {
         viewport = new FitViewport(pScale(GAME_WIDTH) * cameraZoom, pScale(GAME_HEIGHT) * cameraZoom, camera);
         viewport.apply();
         hud = new HUD(this);
+        progress = new Progress(this);
         pause = new PauseMenu(this);
         matchMap = new MatchMap(this);
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
@@ -169,7 +168,7 @@ public class Match implements Screen {
     }
 
     public void handleLootInterface(float delta, ArrayList<EntityObject> items) {
-        if (InputTracker.isPressed(InputTracker.E)){
+        if (InputTracker.isPressed(InputTracker.E) && player.isActionsBlocked()){
             if (state == GameState.RUNNING || state == GameState.TACTICAL) {
                 loot = new LootInterface(this, items, player.getInventory().getItems());
                 input.resetAllKeys();
@@ -195,22 +194,24 @@ public class Match implements Screen {
     }
 
     private void handleInventoryInput(float delta) {
-        if (InputTracker.isPressed(InputTracker.NUM_1)) {
-            hud.switchSelectedSlot(0);
-        } else if (InputTracker.isPressed(InputTracker.NUM_2)) {
-            hud.switchSelectedSlot(1);
-        } else if (InputTracker.isPressed(InputTracker.NUM_3)) {
-            hud.switchSelectedSlot(2);
-        } else if (InputTracker.isPressed(InputTracker.NUM_4)) {
-            hud.switchSelectedSlot(3);
-        } else if (InputTracker.isPressed(InputTracker.NUM_5)) {
-            hud.switchSelectedSlot(4);
-        } else if (InputTracker.isPressed(InputTracker.NUM_6)) {
-            hud.switchSelectedSlot(5);
-        }
-        if (input.isScrolling() != 0) {
-            hud.switchSelectedSlot(input.isScrolling() == 1);
-            input.resetScrollAmount();
+        if (player.isActionsBlocked()) {
+            if (InputTracker.isPressed(InputTracker.NUM_1)) {
+                hud.switchSelectedSlot(0);
+            } else if (InputTracker.isPressed(InputTracker.NUM_2)) {
+                hud.switchSelectedSlot(1);
+            } else if (InputTracker.isPressed(InputTracker.NUM_3)) {
+                hud.switchSelectedSlot(2);
+            } else if (InputTracker.isPressed(InputTracker.NUM_4)) {
+                hud.switchSelectedSlot(3);
+            } else if (InputTracker.isPressed(InputTracker.NUM_5)) {
+                hud.switchSelectedSlot(4);
+            } else if (InputTracker.isPressed(InputTracker.NUM_6)) {
+                hud.switchSelectedSlot(5);
+            }
+            if (input.isScrolling() != 0) {
+                hud.switchSelectedSlot(input.isScrolling() == 1);
+                input.resetScrollAmount();
+            }
         }
     }
 
@@ -238,6 +239,10 @@ public class Match implements Screen {
         return hud;
     }
 
+    public Progress getProgress() {
+        return progress;
+    }
+
     public Player getPlayer() {
         return player;
     }
@@ -260,6 +265,10 @@ public class Match implements Screen {
 
     public void setState(GameState state) {
         this.state = state;
+    }
+
+    public GameState getState() {
+        return state;
     }
 
     public void delegateInputProcessor() {
@@ -318,6 +327,16 @@ public class Match implements Screen {
         }
     }
 
+    private void renderProgressDisplay(float delta) {
+        if (player.getInventory().isSelectedBeingUsed()) {
+            batch.setProjectionMatrix(progress.getStage().getCamera().combined);
+            progress.getStage().draw();
+            if (state != GameState.PAUSED) {
+                progress.fillProgressBar(delta);
+            }
+        }
+    }
+
     private void renderInterface(float delta) {
         if (state == GameState.PAUSED) {
             renderPauseMenu(delta);
@@ -342,6 +361,7 @@ public class Match implements Screen {
         renderLootInteractionButton();
 //        rendezvousController.render(delta);
         renderHud(delta);
+        renderProgressDisplay(delta);
         renderInterface(delta);
         lateUpdate(delta);
     }

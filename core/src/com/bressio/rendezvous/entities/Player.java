@@ -1,5 +1,7 @@
 package com.bressio.rendezvous.entities;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.bressio.rendezvous.events.InputTracker;
@@ -9,6 +11,8 @@ import com.bressio.rendezvous.scenes.Match;
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class Player extends Soldier {
+
+    private boolean actionsBlocked;
 
     public Player(Match match, float radius, float linearDamping, int speed, Vector2 position) {
         super(match, position, radius, linearDamping, speed, AnimationRegion.SOLDIER, PLAYER_TAG,
@@ -23,36 +27,37 @@ public class Player extends Soldier {
     }
 
     private void handleKeyboardInput(float delta) {
+        if (!actionsBlocked) {
+            float directionX = 0;
+            float directionY = 0;
 
-        float directionX = 0;
-        float directionY = 0;
+            if (InputTracker.isPressed(InputTracker.LEFT)){
+                directionX -= getSpeed();
+            }
 
-        if (InputTracker.isPressed(InputTracker.LEFT)){
-            directionX -= getSpeed();
-        }
+            if(InputTracker.isPressed(InputTracker.RIGHT)){
+                directionX += getSpeed();
+            }
 
-        if(InputTracker.isPressed(InputTracker.RIGHT)){
-            directionX += getSpeed();
-        }
+            if (InputTracker.isPressed(InputTracker.UP)){
+                directionY += getSpeed();
+            }
 
-        if (InputTracker.isPressed(InputTracker.UP)){
-            directionY += getSpeed();
-        }
+            if(InputTracker.isPressed(InputTracker.DOWN)){
+                directionY -= getSpeed();
+            }
 
-        if(InputTracker.isPressed(InputTracker.DOWN)){
-            directionY -= getSpeed();
-        }
-
-        if (directionX != 0 || directionY != 0) {
-            if (InputTracker.getButtonsPressed() == 1) {
-                getBody().applyForce(new Vector2(directionX, directionY), getBody().getWorldCenter(), true);
-            } else {
-                float normalization = (float) (
-                        (getSpeed() + Math.pow(InputTracker.getButtonsPressed(), 2)) /
-                        (getSpeed() * InputTracker.getButtonsPressed()));
-                getBody().applyForce(
-                        new Vector2(directionX * normalization, directionY * normalization),
-                        getBody().getWorldCenter(), true);
+            if (directionX != 0 || directionY != 0) {
+                if (InputTracker.getButtonsPressed() == 1) {
+                    getBody().applyForce(new Vector2(directionX, directionY), getBody().getWorldCenter(), true);
+                } else {
+                    float normalization = (float) (
+                            (getSpeed() + Math.pow(InputTracker.getButtonsPressed(), 2)) /
+                                    (getSpeed() * InputTracker.getButtonsPressed()));
+                    getBody().applyForce(
+                            new Vector2(directionX * normalization, directionY * normalization),
+                            getBody().getWorldCenter(), true);
+                }
             }
         }
     }
@@ -66,6 +71,24 @@ public class Player extends Soldier {
             angle += 360;
         }
         setRotation(angle - 90);
+
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) &&
+                (getMatch().getState() == Match.GameState.RUNNING ||
+                getMatch().getState() == Match.GameState.TACTICAL)) {
+            getInventory().useSelectedItem();
+        }
+    }
+
+    public void blockActions() {
+        actionsBlocked = true;
+    }
+
+    public void unblockActions() {
+        actionsBlocked = false;
+    }
+
+    public boolean isActionsBlocked() {
+        return !actionsBlocked;
     }
 
     public void takeDangerZoneDamage() {
