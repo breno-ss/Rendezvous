@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -113,7 +114,7 @@ public class Match implements Screen {
     private void forgeWorld() {
         world = new World(GRAVITY, true);
         worldBuilder = new WorldBuilder(this);
-        player = new Player(this, 35, 5, 8, worldBuilder.getPlayerSpawnPoint());
+        player = new Player(this, 35, 5, 8, new Vector2(3800, 3800));//worldBuilder.getPlayerSpawnPoint());
         world.setContactListener(new WorldContactListener());
         rendezvousController = new RendezvousController(this);
     }
@@ -170,7 +171,8 @@ public class Match implements Screen {
     public void handleLootInterface(float delta, ArrayList<EntityObject> items) {
         if (InputTracker.isPressed(InputTracker.E) && player.isActionsBlocked()){
             if (state == GameState.RUNNING || state == GameState.TACTICAL) {
-                loot = new LootInterface(this, items, player.getInventory().getItems());
+                loot = new LootInterface(this, items, player.getInventory().getItems(),
+                        player.getInventory().getEquipmentItems());
                 input.resetAllKeys();
                 Gdx.input.setInputProcessor(loot.getStage());
                 setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
@@ -255,7 +257,6 @@ public class Match implements Screen {
     private void renderLootInterface(float delta) {
         batch.setProjectionMatrix(loot.getStage().getCamera().combined);
         loot.getStage().draw();
-        loot.getUpperStage().draw();
     }
 
     private void renderMap(float delta) {

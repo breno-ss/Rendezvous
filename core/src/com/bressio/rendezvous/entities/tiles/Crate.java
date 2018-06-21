@@ -1,8 +1,7 @@
 package com.bressio.rendezvous.entities.tiles;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.bressio.rendezvous.entities.objects.Empty;
-import com.bressio.rendezvous.entities.objects.Medkit;
+import com.bressio.rendezvous.entities.objects.*;
 import com.bressio.rendezvous.scenes.Match;
 
 public class Crate extends Loot {
@@ -19,9 +18,9 @@ public class Crate extends Loot {
 
     private void addItems() {
         getItems().add(new Medkit(getMatch()));
-        getItems().add(new Medkit(getMatch()));
-        getItems().add(new Empty(getMatch()));
-        getItems().add(new Empty(getMatch()));
+        getItems().add(new MilitaryVest(getMatch()));
+        getItems().add(new CombatHelmet(getMatch()));
+        getItems().add(new HalfHelmet(getMatch()));
     }
 
     @Override

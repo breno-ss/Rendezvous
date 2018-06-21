@@ -39,7 +39,12 @@ public final class ResourceHandler implements Disposable {
         INVENTORY("textures/gui/items/inventory.png"),
         INVISIBLE_SLOT("textures/gui/items/invisible-slot.png"),
         SELECTED_SLOT("textures/gui/items/selected-slot.png"),
-        GENERIC_PROGRESS_BAR("textures/gui/bars/generic-progress-bar.png");
+        GENERIC_PROGRESS_BAR("textures/gui/bars/generic-progress-bar.png"),
+        SOLDIER_BODY("textures/gui/icons/soldier-body.png"),
+        COMBAT_HELMET("textures/gui/items/combat-helmet.png"),
+        HALF_HELMET("textures/gui/items/half-helmet.png"),
+        MILITARY_VEST("textures/gui/items/military-vest.png"),
+        SOFT_VEST("textures/gui/items/soft-vest.png");
 
         private String path;
         TexturePath(String path) { this.path = path; }
@@ -136,6 +141,11 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.INVISIBLE_SLOT.path, Texture.class);
         assetManager.load(TexturePath.SELECTED_SLOT.path, Texture.class);
         assetManager.load(TexturePath.GENERIC_PROGRESS_BAR.path, Texture.class);
+        assetManager.load(TexturePath.SOLDIER_BODY.path, Texture.class);
+        assetManager.load(TexturePath.COMBAT_HELMET.path, Texture.class);
+        assetManager.load(TexturePath.HALF_HELMET.path, Texture.class);
+        assetManager.load(TexturePath.MILITARY_VEST.path, Texture.class);
+        assetManager.load(TexturePath.SOFT_VEST.path, Texture.class);
         assetManager.finishLoading();
     }
 

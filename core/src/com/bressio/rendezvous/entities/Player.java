@@ -22,6 +22,7 @@ public class Player extends Soldier {
     @Override
     public void update(float delta) {
         super.update(delta);
+        getInventory().update(delta);
         handleKeyboardInput(delta);
         handleMouseInput(delta);
     }

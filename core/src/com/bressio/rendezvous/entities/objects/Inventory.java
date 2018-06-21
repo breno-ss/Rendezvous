@@ -8,6 +8,7 @@ public class Inventory {
 
     private Match match;
     private ArrayList<EntityObject> items;
+    private ArrayList<EntityObject> equipmentItems;
     private boolean isSelectedBeingUsed;
 
     public Inventory(Match match) {
@@ -17,12 +18,16 @@ public class Inventory {
 
     private void addItems() {
         items = new ArrayList<>();
-        items.add(new Medkit(match));
-        items.add(new Empty(match));
-        items.add(new Medkit(match));
         items.add(new Empty(match));
         items.add(new Empty(match));
         items.add(new Empty(match));
+        items.add(new Empty(match));
+        items.add(new Empty(match));
+        items.add(new Empty(match));
+
+        equipmentItems = new ArrayList<>();
+        equipmentItems.add(new Empty(match));
+        equipmentItems.add(new Empty(match));
     }
 
     public boolean isSelectedBeingUsed() {
@@ -34,7 +39,8 @@ public class Inventory {
     }
 
     public void useSelectedItem() {
-        if (getItem(match.getHud().getSelectedSlot()).getClass() == Medkit.class) {
+        Object selectedSlotClass = getItem(match.getHud().getSelectedSlot()).getClass();
+        if (selectedSlotClass == Medkit.class) {
             isSelectedBeingUsed = true;
             match.getPlayer().blockActions();
             match.getProgress().setActivity("healing");
@@ -46,8 +52,23 @@ public class Inventory {
         items.set(match.getHud().getSelectedSlot(), new Empty(match));
     }
 
+    public void update(float delta) {
+        setArmorPoints(delta);
+    }
+
+    private void setArmorPoints(float delta) {
+        int armorPoints = 0;
+        armorPoints += equipmentItems.get(0).getClass() != Empty.class ? ((Helmet)equipmentItems.get(0)).getArmorPoints() : 0;
+        armorPoints += equipmentItems.get(1).getClass() != Empty.class ? ((Armor)equipmentItems.get(1)).getArmorPoints() : 0;
+        match.getPlayer().setArmor(armorPoints);
+    }
+
     public ArrayList<EntityObject> getItems() {
         return items;
+    }
+
+    public ArrayList<EntityObject> getEquipmentItems() {
+        return equipmentItems;
     }
 
     public EntityObject getItem(int index) {
