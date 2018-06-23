@@ -75,10 +75,10 @@ public abstract class Soldier extends Entity {
                 getBody().getPosition().x - pCenter(getWidth()),
                 getBody().getPosition().y - pCenter(getHeight()));
         setRegion(animator.getFrame(delta, 1));
-        listenObjectChanges();
+        verifyItems();
     }
 
-    private void listenObjectChanges() {
+    private void verifyItems() {
         Object selectedObjectClass = inventory.getItem(getMatch().getHud().getSelectedSlot()).getClass();
         Object selectedAmorClass = inventory.getEquipmentItems().get(1).getClass();
         Object selectedHelmetClass = inventory.getEquipmentItems().get(0).getClass();
@@ -87,61 +87,59 @@ public abstract class Soldier extends Entity {
                 selectedHelmetClass != lastEquippedHelmetClass) {
 
             if (selectedAmorClass == Empty.class && selectedHelmetClass == Empty.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                } else if (selectedObjectClass == Medkit.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_MEDKIT, ResourceHandler.TextureAtlasPath.SOLDIER_MEDKIT_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS,
+                        AnimationRegion.SOLDIER_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MEDKIT_ATLAS);
             } else if (selectedHelmetClass == Empty.class && selectedAmorClass == MilitaryVest.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_MILITARY_VEST, ResourceHandler.TextureAtlasPath.SOLDIER_MILITARY_VEST_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER_MILITARY_VEST,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MILITARY_VEST_ATLAS,
+                        AnimationRegion.SOLDIER_MV_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_MEDKIT_ATLAS);
             } else if (selectedHelmetClass == Empty.class && selectedAmorClass == SoftVest.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_SOFT_VEST, ResourceHandler.TextureAtlasPath.SOLDIER_SOFT_VEST_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER_SOFT_VEST,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SOFT_VEST_ATLAS,
+                        AnimationRegion.SOLDIER_SV_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_MEDKIT_ATLAS);
             } else if (selectedHelmetClass == CombatHelmet.class && selectedAmorClass == Empty.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_COMBAT_HELMET, ResourceHandler.TextureAtlasPath.SOLDIER_COMBAT_HELMET_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER_COMBAT_HELMET,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_COMBAT_HELMET_ATLAS,
+                        AnimationRegion.SOLDIER_CT_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_CT_MEDKIT_ATLAS);
             } else if (selectedHelmetClass == HalfHelmet.class && selectedAmorClass == Empty.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_HALF_HELMET, ResourceHandler.TextureAtlasPath.SOLDIER_HALF_HELMET_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER_HALF_HELMET,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_HALF_HELMET_ATLAS,
+                        AnimationRegion.SOLDIER_HT_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_HT_MEDKIT_ATLAS);
             } else if (selectedHelmetClass == CombatHelmet.class && selectedAmorClass == MilitaryVest.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_MV_COMBAT_HELMET, ResourceHandler.TextureAtlasPath.SOLDIER_MV_COMBAT_HELMET_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER_MV_COMBAT_HELMET,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_COMBAT_HELMET_ATLAS,
+                        AnimationRegion.SOLDIER_MV_CT_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_CT_MEDKIT_ATLAS);
             } else if (selectedHelmetClass == HalfHelmet.class && selectedAmorClass == MilitaryVest.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_MV_HALF_HELMET, ResourceHandler.TextureAtlasPath.SOLDIER_MV_HALF_HELMET_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER_MV_HALF_HELMET,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_HALF_HELMET_ATLAS,
+                        AnimationRegion.SOLDIER_MV_HT_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_HT_MEDKIT_ATLAS);
             } else if (selectedHelmetClass == CombatHelmet.class && selectedAmorClass == SoftVest.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_SV_COMBAT_HELMET, ResourceHandler.TextureAtlasPath.SOLDIER_SV_COMBAT_HELMET_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER_SV_COMBAT_HELMET,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_COMBAT_HELMET_ATLAS,
+                        AnimationRegion.SOLDIER_SV_CT_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_CT_MEDKIT_ATLAS);
             } else if (selectedHelmetClass == HalfHelmet.class && selectedAmorClass == SoftVest.class) {
-                if (selectedObjectClass == Empty.class) {
-                    changeAnimation(AnimationRegion.SOLDIER_SV_HALF_HELMET, ResourceHandler.TextureAtlasPath.SOLDIER_SV_HALF_HELMET_ATLAS);
-                } else {
-                    changeAnimation(AnimationRegion.SOLDIER, ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS);
-                }
+                defineNewAnimation(selectedObjectClass,
+                        AnimationRegion.SOLDIER_SV_HALF_HELMET,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_HALF_HELMET_ATLAS,
+                        AnimationRegion.SOLDIER_SV_HT_MEDKIT,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_HT_MEDKIT_ATLAS);
             }
         }
         lastSelectedObjectClass = selectedObjectClass;
@@ -149,7 +147,19 @@ public abstract class Soldier extends Entity {
         lastEquippedHelmetClass = selectedHelmetClass;
     }
 
-    private void changeAnimation(AnimationRegion animationRegion, ResourceHandler.TextureAtlasPath textureAtlasPath) {
+    private void defineNewAnimation(Object selectedObjectClass,
+                                    AnimationRegion baseAnim, ResourceHandler.TextureAtlasPath base,
+                                    AnimationRegion medkitAnim, ResourceHandler.TextureAtlasPath medkit) {
+        if (selectedObjectClass == Empty.class) {
+            switchAnimation(baseAnim, base);
+        } else if (selectedObjectClass == Medkit.class) {
+            switchAnimation(medkitAnim, medkit);
+        } else {
+            switchAnimation(baseAnim, base);
+        }
+    }
+
+    private void switchAnimation(AnimationRegion animationRegion, ResourceHandler.TextureAtlasPath textureAtlasPath) {
         this.animationRegion = animationRegion;
         setRegion(getMatch().getResources().getTextureAtlas(textureAtlasPath).findRegion(animationRegion.getRegion()));
         animator = new Animator(this, animationRegion);

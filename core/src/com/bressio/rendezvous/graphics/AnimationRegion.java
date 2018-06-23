@@ -2,7 +2,7 @@ package com.bressio.rendezvous.graphics;
 
 public enum AnimationRegion {
     SOLDIER("soldier", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
-    SOLDIER_MEDKIT("soldier-medkit", 0, 0, 77, 77, 18, .04f, 0, 0, 77, 77),
+    SOLDIER_MEDKIT("soldier-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
     SOLDIER_MILITARY_VEST("soldier-military-vest", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
     SOLDIER_SOFT_VEST("soldier-soft-vest", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
     SOLDIER_COMBAT_HELMET("soldier-combat-helmet", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
@@ -10,7 +10,15 @@ public enum AnimationRegion {
     SOLDIER_MV_COMBAT_HELMET("soldier-mv-combat-helmet", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
     SOLDIER_MV_HALF_HELMET("soldier-mv-half-helmet", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
     SOLDIER_SV_COMBAT_HELMET("soldier-sv-combat-helmet", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
-    SOLDIER_SV_HALF_HELMET("soldier-sv-half-helmet", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79);
+    SOLDIER_SV_HALF_HELMET("soldier-sv-half-helmet", 0, 0, 81, 79, 18, .04f, 0, 0, 81, 79),
+    SOLDIER_SV_MEDKIT("soldier-sv-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
+    SOLDIER_MV_MEDKIT("soldier-mv-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
+    SOLDIER_CT_MEDKIT("soldier-ct-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
+    SOLDIER_HT_MEDKIT("soldier-ht-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
+    SOLDIER_MV_CT_MEDKIT("soldier-mv-ct-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
+    SOLDIER_MV_HT_MEDKIT("soldier-mv-ht-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
+    SOLDIER_SV_CT_MEDKIT("soldier-sv-ct-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
+    SOLDIER_SV_HT_MEDKIT("soldier-sv-ht-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77);
     AnimationRegion(String region, int startRow, int startColumn, int frameWidth, int frameHeight, int amountFrames, float frameDuration,
                     int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
         this.region = region;
