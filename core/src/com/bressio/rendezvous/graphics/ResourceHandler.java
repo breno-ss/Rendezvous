@@ -96,6 +96,15 @@ public final class ResourceHandler implements Disposable {
         SOLDIER_MV_HT_MEDKIT_ATLAS("textures/animations/soldier-mv-ht-medkit-animation.pack"),
         SOLDIER_SV_CT_MEDKIT_ATLAS("textures/animations/soldier-sv-ct-medkit-animation.pack"),
         SOLDIER_SV_HT_MEDKIT_ATLAS("textures/animations/soldier-sv-ht-medkit-animation.pack"),
+        SOLDIER_STAR_ATLAS("textures/animations/soldier-star-animation.pack"),
+        SOLDIER_MV_STAR_ATLAS("textures/animations/soldier-mv-star-animation.pack"),
+        SOLDIER_SV_STAR_ATLAS("textures/animations/soldier-sv-star-animation.pack"),
+        SOLDIER_CT_STAR_ATLAS("textures/animations/soldier-ct-star-animation.pack"),
+        SOLDIER_HT_STAR_ATLAS("textures/animations/soldier-ht-star-animation.pack"),
+        SOLDIER_MV_CT_STAR_ATLAS("textures/animations/soldier-mv-ct-star-animation.pack"),
+        SOLDIER_MV_HT_STAR_ATLAS("textures/animations/soldier-mv-ht-star-animation.pack"),
+        SOLDIER_SV_CT_STAR_ATLAS("textures/animations/soldier-sv-ct-star-animation.pack"),
+        SOLDIER_SV_HT_STAR_ATLAS("textures/animations/soldier-sv-ht-star-animation.pack"),
         WINDOW_ATLAS("skins/vis/skin/x2/uiskin.atlas");
         private String path;
         TextureAtlasPath(String path) { this.path = path; }
@@ -157,6 +166,15 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TextureAtlasPath.SOLDIER_MV_HT_MEDKIT_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_CT_MEDKIT_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_HT_MEDKIT_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_STAR_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_STAR_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_STAR_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_CT_STAR_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_HT_STAR_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_CT_STAR_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_HT_STAR_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_CT_STAR_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_HT_STAR_ATLAS.path, TextureAtlas.class);
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);
         assetManager.load(TiledMapPath.OVER_TILEMAP.path, TiledMap.class);

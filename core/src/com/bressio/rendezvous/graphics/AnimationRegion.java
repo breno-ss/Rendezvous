@@ -18,7 +18,16 @@ public enum AnimationRegion {
     SOLDIER_MV_CT_MEDKIT("soldier-mv-ct-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
     SOLDIER_MV_HT_MEDKIT("soldier-mv-ht-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
     SOLDIER_SV_CT_MEDKIT("soldier-sv-ct-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
-    SOLDIER_SV_HT_MEDKIT("soldier-sv-ht-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77);
+    SOLDIER_SV_HT_MEDKIT("soldier-sv-ht-medkit", 0, 0, 78, 77, 18, .04f, 0, 0, 78, 77),
+    SOLDIER_STAR("soldier-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_MV_STAR("soldier-mv-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_SV_STAR("soldier-sv-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_CT_STAR("soldier-ct-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_HT_STAR("soldier-ht-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_MV_CT_STAR("soldier-mv-ct-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_MV_HT_STAR("soldier-mv-ht-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_SV_CT_STAR("soldier-sv-ct-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_SV_HT_STAR("soldier-sv-ht-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105);
     AnimationRegion(String region, int startRow, int startColumn, int frameWidth, int frameHeight, int amountFrames, float frameDuration,
                     int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
         this.region = region;
