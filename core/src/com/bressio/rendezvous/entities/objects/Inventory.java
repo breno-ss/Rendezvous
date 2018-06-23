@@ -24,9 +24,9 @@ public class Inventory {
         items = new ArrayList<>();
         items.add(new M20(match));
         items.add(new AW3(match));
-        items.add(new Empty(match));
-        items.add(new Empty(match));
-        items.add(new Empty(match));
+        items.add(new Medkit(match));
+        items.add(new Medkit(match));
+        items.add(new Medkit(match));
         items.add(new Empty(match));
 
         equipmentItems = new ArrayList<>();

@@ -1,10 +1,10 @@
 package com.bressio.rendezvous.entities.tiles;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.bressio.rendezvous.entities.objects.ammo.FiveFiveSix;
-import com.bressio.rendezvous.entities.objects.ammo.Nine;
-import com.bressio.rendezvous.entities.objects.ammo.SevenSixTwo;
-import com.bressio.rendezvous.entities.objects.weapons.ars.W16A;
+import com.bressio.rendezvous.entities.objects.equipment.armor.MilitaryVest;
+import com.bressio.rendezvous.entities.objects.equipment.armor.SoftVest;
+import com.bressio.rendezvous.entities.objects.equipment.helmets.CombatHelmet;
+import com.bressio.rendezvous.entities.objects.equipment.helmets.HalfHelmet;
 import com.bressio.rendezvous.scenes.Match;
 
 public class Crate extends Loot {
@@ -20,10 +20,10 @@ public class Crate extends Loot {
     }
 
     private void addItems() {
-        getItems().add(new FiveFiveSix(getMatch()));
-        getItems().add(new Nine(getMatch()));
-        getItems().add(new SevenSixTwo(getMatch()));
-        getItems().add(new W16A(getMatch()));
+        getItems().add(new MilitaryVest(getMatch()));
+        getItems().add(new SoftVest(getMatch()));
+        getItems().add(new CombatHelmet(getMatch()));
+        getItems().add(new HalfHelmet(getMatch()));
     }
 
     @Override
