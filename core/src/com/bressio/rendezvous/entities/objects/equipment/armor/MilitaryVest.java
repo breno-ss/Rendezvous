@@ -1,12 +1,12 @@
-package com.bressio.rendezvous.entities.objects;
+package com.bressio.rendezvous.entities.objects.equipment.armor;
 
 import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
 
-public class CombatHelmet extends Helmet {
+public class MilitaryVest extends Armor {
 
-    public CombatHelmet(Match match) {
+    public MilitaryVest(Match match) {
         super(match);
         setAttributes();
     }
@@ -17,9 +17,9 @@ public class CombatHelmet extends Helmet {
     }
 
     private void setAttributes() {
-        setName(getI18n().getBundle().get("combatHelmet"));
-        setIcon(getResources().getTexture(ResourceHandler.TexturePath.COMBAT_HELMET));
-        setArmorPoints(60);
+        setName(getI18n().getBundle().get("militaryVest"));
+        setIcon(getResources().getTexture(ResourceHandler.TexturePath.MILITARY_VEST));
+        setArmorPoints(40);
         setDamage(0);
     }
 }

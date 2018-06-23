@@ -1,4 +1,4 @@
-package com.bressio.rendezvous.entities.objects;
+package com.bressio.rendezvous.entities.objects.equipment.helmets;
 
 import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.graphics.ResourceHandler;

@@ -16,6 +16,8 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.entities.objects.*;
+import com.bressio.rendezvous.entities.objects.equipment.armor.Armor;
+import com.bressio.rendezvous.entities.objects.equipment.helmets.Helmet;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
@@ -65,7 +67,7 @@ public class LootInterface implements Disposable {
         setupStages();
         forgeInventoryInterface();
         forgeLootInterface();
-        forgeUpperStage();
+        forgeGraphics();
         forgeEquipmentInterface();
     }
 
@@ -88,7 +90,7 @@ public class LootInterface implements Disposable {
 
         inventoryWindow = new Window("", skin, "background-none");
         inventoryWindow.setSize(width, height);
-        inventoryWindow.setPosition(pCenter(GAME_WIDTH) + 100, pCenter(GAME_HEIGHT) - pCenter(height));
+        inventoryWindow.setPosition(pCenter(GAME_WIDTH) + 130, pCenter(GAME_HEIGHT) - pCenter(height));
         inventoryWindow.padTop(-20);
 
         inventoryWindow.add(new Label(match.getI18n().getBundle().get("inventory"), skin)).padTop(20).row();
@@ -103,7 +105,7 @@ public class LootInterface implements Disposable {
     private void forgeLootInterface() {
         lootWindow = new Window("", skin, "background-none");
         lootWindow.setSize(width, height);
-        lootWindow.setPosition(pCenter(GAME_WIDTH) - (width + 100), pCenter(GAME_HEIGHT) - pCenter(height));
+        lootWindow.setPosition(pCenter(GAME_WIDTH) - (width + 130), pCenter(GAME_HEIGHT) - pCenter(height));
         lootWindow.padTop(-20);
 
         lootWindow.add(new Label(match.getI18n().getBundle().get("loot"), skin)).padTop(20).row();
@@ -115,7 +117,7 @@ public class LootInterface implements Disposable {
         stage.addActor(lootWindow);
     }
 
-    private void forgeUpperStage() {
+    private void forgeGraphics() {
         soldierBody = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.SOLDIER_BODY));
         soldierBody.setPosition(pCenter(GAME_WIDTH) - pCenter(soldierBody.getWidth()), pCenter(GAME_HEIGHT) - pCenter(soldierBody.getHeight()));
         stage.addActor(soldierBody);
@@ -169,9 +171,11 @@ public class LootInterface implements Disposable {
         });
 
         window.add(itemImage).padTop(10).row();
-        window.add(new Label(item.getName(),
-                new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
-                        14, false), Color.WHITE))).row();
+        if (item != null) {
+            window.add(new Label(item.getName(),
+                    new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD,
+                            14, false), Color.WHITE))).row();
+        }
     }
 
     private boolean selectSlot(int index, ArrayList<EntityObject> originList) {

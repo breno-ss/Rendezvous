@@ -1,21 +1,22 @@
-package com.bressio.rendezvous.entities.objects;
+package com.bressio.rendezvous.entities.objects.equipment.armor;
 
 import com.bressio.rendezvous.entities.Soldier;
+import com.bressio.rendezvous.entities.objects.EntityObject;
 import com.bressio.rendezvous.scenes.Match;
 
-public abstract class Helmet extends EntityObject{
+public abstract class Armor extends EntityObject {
 
     private int armorPoints;
     private int damage;
 
-    Helmet(Match match) {
+    Armor(Match match) {
         super(match);
     }
 
     @Override
     public abstract boolean transformSoldier(Soldier soldier);
 
-    int getArmorPoints() {
+    public int getArmorPoints() {
         return armorPoints - damage;
     }
 

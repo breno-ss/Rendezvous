@@ -1,0 +1,28 @@
+package com.bressio.rendezvous.entities.objects.weapons.ars;
+
+import com.bressio.rendezvous.entities.Soldier;
+import com.bressio.rendezvous.graphics.ResourceHandler;
+import com.bressio.rendezvous.scenes.Match;
+
+public class STAR extends AssaultRifle {
+
+    public STAR(Match match) {
+        super(match);
+        setAttributes();
+    }
+
+    @Override
+    public boolean transformSoldier(Soldier soldier) {
+        return false;
+    }
+
+    private void setAttributes() {
+        setName(getI18n().getBundle().get("star"));
+        setIcon(getResources().getTexture(ResourceHandler.TexturePath.STAR));
+        setDamage(5);
+        setRateOfFire(10);
+        setReloadTime(3);
+        setMagCapacity(20);
+        setAccuracy(5);
+    }
+}

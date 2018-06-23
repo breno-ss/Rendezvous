@@ -14,7 +14,7 @@ public abstract class EntityObject {
     private ResourceHandler resources;
     private Internationalization i18n;
 
-    EntityObject(Match match) {
+    public EntityObject(Match match) {
         this.match = match;
         init();
     }
@@ -26,11 +26,11 @@ public abstract class EntityObject {
 
     public abstract boolean transformSoldier(Soldier soldier);
 
-    void setName(String name) {
+    public void setName(String name) {
         this.name = name;
     }
 
-    void setIcon(Texture icon) {
+    public void setIcon(Texture icon) {
         this.icon = icon;
     }
 
@@ -42,11 +42,11 @@ public abstract class EntityObject {
         return name;
     }
 
-    ResourceHandler getResources() {
+    public ResourceHandler getResources() {
         return resources;
     }
 
-    Internationalization getI18n() {
+    public Internationalization getI18n() {
         return i18n;
     }
 }
