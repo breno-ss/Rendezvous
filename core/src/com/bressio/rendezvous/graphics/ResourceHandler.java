@@ -50,7 +50,10 @@ public final class ResourceHandler implements Disposable {
         M20("textures/gui/items/weapons/m20.png"),
         P26("textures/gui/items/weapons/p26.png"),
         STAR("textures/gui/items/weapons/star.png"),
-        W16A("textures/gui/items/weapons/w16a.png");
+        W16A("textures/gui/items/weapons/w16a.png"),
+        FIVE_FIVE_SIX("textures/gui/items/ammo/five-five-six.png"),
+        NINE("textures/gui/items/ammo/nine.png"),
+        SEVEN_SIX_TWO("textures/gui/items/ammo/seven-six-two.png");
 
         private String path;
         TexturePath(String path) { this.path = path; }
@@ -158,6 +161,9 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.P26.path, Texture.class);
         assetManager.load(TexturePath.STAR.path, Texture.class);
         assetManager.load(TexturePath.W16A.path, Texture.class);
+        assetManager.load(TexturePath.FIVE_FIVE_SIX.path, Texture.class);
+        assetManager.load(TexturePath.NINE.path, Texture.class);
+        assetManager.load(TexturePath.SEVEN_SIX_TWO.path, Texture.class);
         assetManager.finishLoading();
     }
 

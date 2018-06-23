@@ -1,10 +1,10 @@
 package com.bressio.rendezvous.entities.tiles;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.bressio.rendezvous.entities.objects.weapons.ars.STAR;
+import com.bressio.rendezvous.entities.objects.ammo.FiveFiveSix;
+import com.bressio.rendezvous.entities.objects.ammo.Nine;
+import com.bressio.rendezvous.entities.objects.ammo.SevenSixTwo;
 import com.bressio.rendezvous.entities.objects.weapons.ars.W16A;
-import com.bressio.rendezvous.entities.objects.weapons.pistols.G21;
-import com.bressio.rendezvous.entities.objects.weapons.pistols.P26;
 import com.bressio.rendezvous.scenes.Match;
 
 public class Crate extends Loot {
@@ -20,9 +20,9 @@ public class Crate extends Loot {
     }
 
     private void addItems() {
-        getItems().add(new G21(getMatch()));
-        getItems().add(new P26(getMatch()));
-        getItems().add(new STAR(getMatch()));
+        getItems().add(new FiveFiveSix(getMatch()));
+        getItems().add(new Nine(getMatch()));
+        getItems().add(new SevenSixTwo(getMatch()));
         getItems().add(new W16A(getMatch()));
     }
 

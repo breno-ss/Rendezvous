@@ -1,4 +1,18 @@
 package com.bressio.rendezvous.entities.objects.ammo;
 
-public class Nine {
+import com.bressio.rendezvous.graphics.ResourceHandler;
+import com.bressio.rendezvous.scenes.Match;
+
+public class Nine extends Ammo {
+
+    public Nine(Match match) {
+        super(match);
+        setAttributes();
+    }
+
+    private void setAttributes() {
+        setAmount(40);
+        setName(getI18n().getBundle().get("nine") + " (" + getAmount() + "x)");
+        setIcon(getResources().getTexture(ResourceHandler.TexturePath.NINE));
+    }
 }
