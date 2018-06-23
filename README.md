@@ -1,3 +1,3 @@
-![alt text](https://i.imgur.com/fmpNuii.png)
+![alt text](https://i.imgur.com/8NMCgUX.png)
 
 A 2D Battle Royale Game
