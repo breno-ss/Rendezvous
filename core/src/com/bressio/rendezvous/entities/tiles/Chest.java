@@ -2,7 +2,6 @@ package com.bressio.rendezvous.entities.tiles;
 
 import com.badlogic.gdx.math.Rectangle;
 import com.bressio.rendezvous.entities.objects.Empty;
-import com.bressio.rendezvous.entities.objects.Medkit;
 import com.bressio.rendezvous.scenes.Match;
 
 public class Chest extends Loot {
@@ -18,7 +17,7 @@ public class Chest extends Loot {
     }
 
     private void addItems() {
-        getItems().add(new Medkit(getMatch()));
+        getItems().add(new Empty(getMatch()));
         getItems().add(new Empty(getMatch()));
     }
 

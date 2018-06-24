@@ -12,6 +12,8 @@ public abstract class Ammo extends EntityObject {
         super(match);
     }
 
+    public abstract void updateName();
+
     @Override
     public boolean transformSoldier(Soldier soldier) {
         return false;
@@ -21,7 +23,15 @@ public abstract class Ammo extends EntityObject {
         this.amount = amount;
     }
 
+    public void useAmount(int amount) {
+        this.amount -= amount;
+    }
+
     public int getAmount() {
         return amount;
+    }
+
+    public void useAll() {
+        this.amount = 0;
     }
 }

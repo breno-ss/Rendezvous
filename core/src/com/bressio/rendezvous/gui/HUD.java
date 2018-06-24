@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.entities.objects.Empty;
+import com.bressio.rendezvous.entities.objects.Inventory;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
@@ -58,6 +59,8 @@ public class HUD implements Disposable {
 
     private Texture vignette;
 
+    private Label ammoIndicator;
+
     public HUD(Match match) {
         this.match = match;
         setupStage();
@@ -65,6 +68,7 @@ public class HUD implements Disposable {
         forgeMinimap();
         forgeHealthDisplay();
         forgeInventory();
+        forgeAmmoIndicator();
     }
 
     private void setupStage() {
@@ -158,6 +162,21 @@ public class HUD implements Disposable {
         }
     }
 
+    private void forgeAmmoIndicator() {
+        Table table = new Table();
+        table.bottom();
+        table.setFillParent(true);
+
+        ammoIndicator = new Label("",
+                new Label.LabelStyle(
+                        FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 22, false), Color.WHITE
+                )
+        );
+        table.add(ammoIndicator).padBottom(60).row();
+
+        stage.addActor(table);
+    }
+
     private Vector2 getSelectionMarkerPosition(int index) {
         switch (index) {
             case 0: return new Vector2(996, 6);
@@ -218,6 +237,16 @@ public class HUD implements Disposable {
     public void updateHealthBars(float delta, int health, int armor) {
         armorPoints.setText(String.valueOf(armor));
         healthPoints.setText(String.valueOf(health));
+    }
+
+    public void updateAmmoIndicator(float delta, Inventory inventory) {
+        String bulletsInMagazine = inventory.getBulletsInMagazine();
+        String bulletsInAmmoBoxes = inventory.getBulletsInAmmoBoxes();
+        if (bulletsInMagazine != null && bulletsInAmmoBoxes != null) {
+            ammoIndicator.setText(bulletsInMagazine + " | " + bulletsInAmmoBoxes);
+        } else {
+            ammoIndicator.setText("");
+        }
     }
 
     public void updateInventory(float delta) {

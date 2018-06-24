@@ -10,9 +10,14 @@ public class SevenSixTwo extends Ammo {
         setAttributes();
     }
 
+    @Override
+    public void updateName() {
+        setName(getI18n().getBundle().get("sevenSixTwo") + " (" + getAmount() + "x)");
+    }
+
     private void setAttributes() {
         setAmount(20);
-        setName(getI18n().getBundle().get("sevenSixTwo") + " (" + getAmount() + "x)");
+        updateName();
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.SEVEN_SIX_TWO));
     }
 }

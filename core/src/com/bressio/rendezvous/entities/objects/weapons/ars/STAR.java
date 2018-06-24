@@ -1,6 +1,5 @@
 package com.bressio.rendezvous.entities.objects.weapons.ars;
 
-import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
 
@@ -9,11 +8,6 @@ public class STAR extends AssaultRifle {
     public STAR(Match match) {
         super(match);
         setAttributes();
-    }
-
-    @Override
-    public boolean transformSoldier(Soldier soldier) {
-        return false;
     }
 
     private void setAttributes() {

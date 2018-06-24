@@ -25,7 +25,8 @@ public final class InputTracker extends InputAdapter {
     public static final int NUM_4 = 10;
     public static final int NUM_5 = 11;
     public static final int NUM_6 = 12;
-    private static final int MAX = 13;
+    public static final int R = 13;
+    private static final int MAX = 14;
 
     private static boolean[] keyPresses;
 
@@ -88,6 +89,9 @@ public final class InputTracker extends InputAdapter {
             case Input.Keys.NUM_6:
                 keyPresses[NUM_6] = true;
                 break;
+            case Input.Keys.R:
+                keyPresses[R] = true;
+                break;
         }
         return true;
     }
@@ -133,6 +137,9 @@ public final class InputTracker extends InputAdapter {
                 break;
             case Input.Keys.NUM_6:
                 keyPresses[NUM_6] = false;
+                break;
+            case Input.Keys.R:
+                keyPresses[R] = false;
                 break;
         }
         return true;

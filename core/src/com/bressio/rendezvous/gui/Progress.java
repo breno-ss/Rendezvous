@@ -31,6 +31,8 @@ public class Progress implements Disposable {
 
     private Label activity;
 
+    private float progressSpeed;
+
     public Progress(Match match) {
         this.match = match;
         setupStage();
@@ -46,12 +48,12 @@ public class Progress implements Disposable {
         genericProgressBar = match.getResources().getTexture(ResourceHandler.TexturePath.GENERIC_PROGRESS_BAR);
 
         Image emptyBar = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.EMPTY_BAR));
-        emptyBar.setPosition(pCenter(GAME_WIDTH) - 50, 100);
+        emptyBar.setPosition(pCenter(GAME_WIDTH) - 50, 120);
         emptyBar.setSize(100, 10);
         stage.addActor(emptyBar);
 
         progressBar = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.GENERIC_PROGRESS_BAR));
-        progressBar.setPosition(pCenter(GAME_WIDTH) - 50, 100);
+        progressBar.setPosition(pCenter(GAME_WIDTH) - 50, 120);
         progressBar.setSize(0, 10);
         stage.addActor(progressBar);
 
@@ -64,20 +66,20 @@ public class Progress implements Disposable {
         Table table = new Table();
         table.bottom();
         table.setFillParent(true);
-        table.add(activity).fillX().padBottom(80);
+        table.add(activity).fillX().padBottom(100);
         stage.addActor(table);
     }
 
     public void fillProgressBar(float delta) {
         progressTimeCount += delta;
-        if (progressTimeCount >= .05f) {
+        if (progressTimeCount >= progressSpeed) {
             if (progressBar.getWidth() <= 100) {
                 progressBar.setSize(progressBar.getWidth() + 1, 10);
             } else {
                 progressBar.setSize(0, 10);
                 match.getPlayer().unblockActions();
                 match.getPlayer().getInventory().setSelectedBeingUsed(false);
-                match.getPlayer().getInventory().consumeSelectedItem();
+                match.getPlayer().getInventory().applyAction();
             }
             progressTimeCount = 0;
         }
@@ -89,6 +91,10 @@ public class Progress implements Disposable {
 
     public Stage getStage() {
         return stage;
+    }
+
+    public void setProgressSpeed(float progressSpeed) {
+        this.progressSpeed = progressSpeed;
     }
 
     @Override

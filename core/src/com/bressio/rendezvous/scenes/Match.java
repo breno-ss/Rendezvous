@@ -169,7 +169,7 @@ public class Match implements Screen {
     }
 
     public void handleLootInterface(float delta, ArrayList<EntityObject> items) {
-        if (InputTracker.isPressed(InputTracker.E) && player.isActionsBlocked()){
+        if (InputTracker.isPressed(InputTracker.E) && !player.isActionsBlocked()){
             if (state == GameState.RUNNING || state == GameState.TACTICAL) {
                 loot = new LootInterface(this, items, player.getInventory().getItems(),
                         player.getInventory().getEquipmentItems());
@@ -196,7 +196,7 @@ public class Match implements Screen {
     }
 
     private void handleInventoryInput(float delta) {
-        if (player.isActionsBlocked()) {
+        if (!player.isActionsBlocked()) {
             if (InputTracker.isPressed(InputTracker.NUM_1)) {
                 hud.switchSelectedSlot(0);
             } else if (InputTracker.isPressed(InputTracker.NUM_2)) {
@@ -322,6 +322,7 @@ public class Match implements Screen {
         hud.drawHealthBars(delta, player.getHealth(), player.getArmor());
         hud.getStage().draw();
         hud.updateHealthBars(delta, player.getHealth(), player.getArmor());
+        hud.updateAmmoIndicator(delta, player.getInventory());
         hud.updateInventory(delta);
         if (state != GameState.TACTICAL) {
             hud.drawMinimap(delta, player.getBody().getPosition());

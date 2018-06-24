@@ -11,11 +11,6 @@ public class P26 extends Pistol {
         setAttributes();
     }
 
-    @Override
-    public boolean transformSoldier(Soldier soldier) {
-        return false;
-    }
-
     private void setAttributes() {
         setName(getI18n().getBundle().get("p26"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.P26));

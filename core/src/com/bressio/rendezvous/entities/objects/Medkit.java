@@ -21,4 +21,8 @@ public class Medkit extends EntityObject{
         setName(getI18n().getBundle().get("medkit"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.MEDKIT_ICON));
     }
+
+    public static float timeToTransform() {
+        return .05f;
+    }
 }

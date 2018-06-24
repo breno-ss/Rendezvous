@@ -22,7 +22,7 @@ public abstract class Soldier extends Entity {
 
     private final float radius;
     private final float linearDamping;
-    private final int speed;
+    private int speed;
     private final short categoryBits;
     private final short maskBits;
     private final Object userData;
@@ -211,5 +211,9 @@ public abstract class Soldier extends Entity {
 
     public void setArmor(int armor) {
         this.armor = armor;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

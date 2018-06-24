@@ -11,11 +11,6 @@ public class G21 extends Pistol {
         setAttributes();
     }
 
-    @Override
-    public boolean transformSoldier(Soldier soldier) {
-        return false;
-    }
-
     private void setAttributes() {
         setName(getI18n().getBundle().get("g21"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.G21));

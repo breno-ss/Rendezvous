@@ -11,13 +11,18 @@ public abstract class Weapon extends EntityObject {
     private int reloadTime;
     private int magCapacity;
     private int accuracy;
+    private int bullets;
 
     public Weapon(Match match) {
         super(match);
     }
 
-    @Override
-    public abstract boolean transformSoldier(Soldier soldier);
+    public boolean transformSoldier(Soldier soldier) {
+        soldier.getInventory().transferAmmo(bullets);
+        return true;
+    }
+
+    public abstract Object getAmmoType();
 
     public void setDamage(int damage) {
         this.damage = damage;
@@ -37,5 +42,19 @@ public abstract class Weapon extends EntityObject {
 
     public void setAccuracy(int accuracy) {
         this.accuracy = accuracy;
+    }
+
+    public void setBullets(int bullets) {
+        this.bullets = bullets;
+    }
+
+    public abstract float getTimeToTransform();
+
+    public int getBullets() {
+        return bullets;
+    }
+
+    public int getMagCapacity() {
+        return magCapacity;
     }
 }

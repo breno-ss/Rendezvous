@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.bressio.rendezvous.entities.objects.EntityObject;
+import com.bressio.rendezvous.entities.objects.weapons.Weapon;
 import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.graphics.AnimationRegion;
 import com.bressio.rendezvous.scenes.Match;
@@ -13,6 +15,7 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 public class Player extends Soldier {
 
     private boolean actionsBlocked;
+    private boolean actionsSemiBlocked;
 
     public Player(Match match, float radius, float linearDamping, int speed, Vector2 position) {
         super(match, position, radius, linearDamping, speed, AnimationRegion.SOLDIER, PLAYER_TAG,
@@ -60,6 +63,20 @@ public class Player extends Soldier {
                             getBody().getWorldCenter(), true);
                 }
             }
+
+            if (!actionsSemiBlocked) {
+                if (InputTracker.isPressed(InputTracker.R) &&
+                        (getMatch().getState() == Match.GameState.RUNNING ||
+                                getMatch().getState() == Match.GameState.TACTICAL)) {
+
+                    EntityObject selectedItem = getInventory().getItem(getMatch().getHud().getSelectedSlot());
+
+                    if (Weapon.class.isAssignableFrom(selectedItem.getClass()) &&
+                            ((Weapon)selectedItem).getBullets() < ((Weapon)selectedItem).getMagCapacity()) {
+                        getInventory().reloadSelectedWeapon();
+                    }
+                }
+            }
         }
     }
 
@@ -84,12 +101,19 @@ public class Player extends Soldier {
         actionsBlocked = true;
     }
 
+    public void slowDown() {
+        setSpeed(7);
+        actionsSemiBlocked = true;
+    }
+
     public void unblockActions() {
         actionsBlocked = false;
+        actionsSemiBlocked = false;
+        setSpeed(8);
     }
 
     public boolean isActionsBlocked() {
-        return !actionsBlocked;
+        return actionsBlocked || actionsSemiBlocked;
     }
 
     public void takeDangerZoneDamage() {

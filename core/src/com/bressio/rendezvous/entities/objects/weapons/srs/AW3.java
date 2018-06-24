@@ -11,11 +11,6 @@ public class AW3 extends SniperRifle {
         setAttributes();
     }
 
-    @Override
-    public boolean transformSoldier(Soldier soldier) {
-        return false;
-    }
-
     private void setAttributes() {
         setName(getI18n().getBundle().get("aW3"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.AW3));
