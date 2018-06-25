@@ -64,6 +64,8 @@ public class WorldBuilder {
                     pol.getX() + pCenter(pol.getOriginX()),
                     pol.getY() + pCenter(pol.getOriginY())))
                     .withBodyType(BodyDef.BodyType.StaticBody)
+                    .withMaskBits(PLAYER_TAG)
+                    .withCategoryBits(WATER_TAG)
                     .withVertices(pScale(pol.getVertices()))
                     .build();
         }

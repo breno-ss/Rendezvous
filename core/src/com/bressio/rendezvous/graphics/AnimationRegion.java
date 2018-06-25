@@ -45,7 +45,17 @@ public enum AnimationRegion {
     SOLDIER_MV_CT_G21("soldier-mv-ct-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
     SOLDIER_MV_HT_G21("soldier-mv-ht-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
     SOLDIER_SV_CT_G21("soldier-sv-ct-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
-    SOLDIER_SV_HT_G21("soldier-sv-ht-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88);
+    SOLDIER_SV_HT_G21("soldier-sv-ht-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+
+    SOLDIER_P26("soldier-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_MV_P26("soldier-mv-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_SV_P26("soldier-sv-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_CT_P26("soldier-ct-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_HT_P26("soldier-ht-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_MV_CT_P26("soldier-mv-ct-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_MV_HT_P26("soldier-mv-ht-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_SV_CT_P26("soldier-sv-ct-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_SV_HT_P26("soldier-sv-ht-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88);
     AnimationRegion(String region, int startRow, int startColumn, int frameWidth, int frameHeight, int amountFrames, float frameDuration,
                     int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
         this.region = region;
