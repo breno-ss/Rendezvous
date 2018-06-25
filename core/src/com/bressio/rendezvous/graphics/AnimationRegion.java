@@ -27,7 +27,17 @@ public enum AnimationRegion {
     SOLDIER_MV_CT_STAR("soldier-mv-ct-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
     SOLDIER_MV_HT_STAR("soldier-mv-ht-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
     SOLDIER_SV_CT_STAR("soldier-sv-ct-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
-    SOLDIER_SV_HT_STAR("soldier-sv-ht-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105);
+    SOLDIER_SV_HT_STAR("soldier-sv-ht-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+
+    SOLDIER_W16A("soldier-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_MV_W16A("soldier-mv-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_SV_W16A("soldier-sv-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_CT_W16A("soldier-ct-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_HT_W16A("soldier-ht-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_MV_CT_W16A("soldier-mv-ct-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_MV_HT_W16A("soldier-mv-ht-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_SV_CT_W16A("soldier-sv-ct-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_SV_HT_W16A("soldier-sv-ht-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105);
     AnimationRegion(String region, int startRow, int startColumn, int frameWidth, int frameHeight, int amountFrames, float frameDuration,
                     int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
         this.region = region;

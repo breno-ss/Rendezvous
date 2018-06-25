@@ -59,7 +59,7 @@ public class Match implements Screen {
     private OrthogonalTiledMapRenderer renderer;
     private OrthogonalTiledMapRenderer overRenderer;
     private Box2DDebugRenderer collisionDebugRenderer;
-    private float cameraZoom = 10;
+    private float cameraZoom = 20;
 
     // world
     private World world;
