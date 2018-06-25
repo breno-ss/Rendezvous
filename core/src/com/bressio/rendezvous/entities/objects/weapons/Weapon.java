@@ -1,17 +1,23 @@
 package com.bressio.rendezvous.entities.objects.weapons;
 
+import com.badlogic.gdx.utils.Timer;
 import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.entities.objects.EntityObject;
+import com.bressio.rendezvous.entities.projectiles.Bullet;
 import com.bressio.rendezvous.scenes.Match;
 
 public abstract class Weapon extends EntityObject {
 
     private int damage;
-    private int rateOfFire;
+    private float rateOfFire;
     private int reloadTime;
     private int magCapacity;
     private int accuracy;
     private int bullets;
+
+    private float bulletTimeCount;
+    private boolean isblocked;
+    private boolean isUnblocking;
 
     public Weapon(Match match) {
         super(match);
@@ -22,13 +28,43 @@ public abstract class Weapon extends EntityObject {
         return true;
     }
 
+    public void shoot() {
+        if (bullets > 0) {
+            if (!isblocked) {
+                getMatch().addBullet(new Bullet(getMatch()));
+                bullets--;
+                bulletTimeCount = 0;
+                isblocked = true;
+                getMatch().getPlayer().setFiring(true);
+            }
+            if (!isUnblocking){
+                isUnblocking = true;
+
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        getMatch().getPlayer().setFiring(false);
+                    }
+                }, .01f);
+
+                Timer.schedule(new Timer.Task(){
+                    @Override
+                    public void run() {
+                        isblocked = false;
+                        isUnblocking = false;
+                    }
+                }, rateOfFire);
+            }
+        }
+    }
+
     public abstract Object getAmmoType();
 
     public void setDamage(int damage) {
         this.damage = damage;
     }
 
-    public void setRateOfFire(int rateOfFire) {
+    public void setRateOfFire(float rateOfFire) {
         this.rateOfFire = rateOfFire;
     }
 

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.entities.Player;
 import com.bressio.rendezvous.entities.objects.EntityObject;
+import com.bressio.rendezvous.entities.projectiles.Bullet;
 import com.bressio.rendezvous.entities.tiles.Loot;
 import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.events.RendezvousController;
@@ -63,6 +64,7 @@ public class Match implements Screen {
     private TmxMapLoader mapLoader;
     private TiledMap map;
     private TiledMap overMap;
+    private ArrayList<Bullet> bullets;
 
     // events
     private InputTracker input;
@@ -117,6 +119,7 @@ public class Match implements Screen {
         player = new Player(this, 35, 5, 8, new Vector2(3800, 3800));//worldBuilder.getPlayerSpawnPoint());
         world.setContactListener(new WorldContactListener());
         rendezvousController = new RendezvousController(this);
+        bullets = new ArrayList<>();
     }
 
     private void setupInputTracker() {
@@ -138,6 +141,12 @@ public class Match implements Screen {
         overRenderer.setView(camera);
     }
 
+    private void updateBullets() {
+        for (Bullet bullet : bullets) {
+            bullet.moveForward();
+        }
+    }
+
     private void update(float delta) {
         if (state == GameState.RUNNING || state == GameState.TACTICAL || state == GameState.LOOTING) {
             world.step(1 / 60f, 6, 2);
@@ -145,8 +154,8 @@ public class Match implements Screen {
             player.update(delta);
             matchMap.update(delta, player.getBody().getPosition());
             updateCamera();
+            updateBullets();
         }
-
     }
 
     private void lateUpdate(float delta) {
@@ -249,6 +258,10 @@ public class Match implements Screen {
         return player;
     }
 
+    public ArrayList<Bullet> getBullets() {
+        return bullets;
+    }
+
     private void renderPauseMenu(float delta) {
         batch.setProjectionMatrix(pause.getStage().getCamera().combined);
         pause.getStage().draw();
@@ -286,6 +299,10 @@ public class Match implements Screen {
         for (Loot loot : worldBuilder.getLoot()) {
             loot.update(delta);
         }
+    }
+
+    public void addBullet(Bullet bullet) {
+        bullets.add(bullet);
     }
 
     @Override
@@ -351,6 +368,14 @@ public class Match implements Screen {
         }
     }
 
+    private void renderBullets(float delta) {
+        batch.begin();
+        for (Bullet bullet : bullets) {
+            bullet.draw(getBatch());
+        }
+        batch.end();
+    }
+
     @Override
     public void render(float delta) {
         update(delta);
@@ -358,6 +383,7 @@ public class Match implements Screen {
         renderer.render();
         renderCollisionDebug();
         batch.setProjectionMatrix(camera.combined);
+        renderBullets(delta);
         renderPlayer();
         overRenderer.render();
         renderLootInteractionButton();

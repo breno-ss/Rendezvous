@@ -14,7 +14,7 @@ public class STAR extends AssaultRifle {
         setName(getI18n().getBundle().get("star"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.STAR));
         setDamage(5);
-        setRateOfFire(10);
+        setRateOfFire(.1f);
         setReloadTime(3);
         setMagCapacity(20);
         setAccuracy(5);

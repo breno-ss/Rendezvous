@@ -14,7 +14,7 @@ public class W16A extends AssaultRifle {
         setName(getI18n().getBundle().get("w16A"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.W16A));
         setDamage(6);
-        setRateOfFire(12);
+        setRateOfFire(.2f);
         setReloadTime(4);
         setMagCapacity(20);
         setAccuracy(4);

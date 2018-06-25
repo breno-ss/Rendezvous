@@ -47,12 +47,14 @@ public class Inventory {
     }
 
     public void useSelectedItem() {
-        Object selectedSlotClass = getItem(match.getHud().getSelectedSlot()).getClass();
-        if (selectedSlotClass == Medkit.class) {
+        Object selectedSlot = getItem(match.getHud().getSelectedSlot());
+        if (selectedSlot.getClass() == Medkit.class) {
             isSelectedBeingUsed = true;
             match.getProgress().setProgressSpeed(Medkit.timeToTransform());
             match.getPlayer().blockActions();
             match.getProgress().setActivity("healing");
+        } else if (Weapon.class.isAssignableFrom(selectedSlot.getClass())) {
+            ((Weapon)selectedSlot).shoot();
         }
     }
 

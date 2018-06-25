@@ -1,6 +1,7 @@
 package com.bressio.rendezvous.events;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.bressio.rendezvous.entities.projectiles.Bullet;
 import com.bressio.rendezvous.entities.tiles.InteractiveTile;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
@@ -30,6 +31,14 @@ public class WorldContactListener implements ContactListener {
                     }
                 }
                 break;
+            case BULLET_TAG | DEFAULT_TAG:
+            case BULLET_TAG | BUILDING_TAG:
+            case BULLET_TAG | LOOT_TAG:
+                if(fixtureA.getFilterData().categoryBits == BULLET_TAG) {
+                    ((Bullet) fixtureA.getUserData()).destroy();
+                } else {
+                    ((Bullet) fixtureB.getUserData()).destroy();
+                }
         }
     }
 

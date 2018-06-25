@@ -49,4 +49,8 @@ public abstract class EntityObject {
     public Internationalization getI18n() {
         return i18n;
     }
+
+    public Match getMatch() {
+        return match;
+    }
 }

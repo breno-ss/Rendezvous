@@ -1,5 +1,7 @@
 package com.bressio.rendezvous.entities;
 
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.bressio.rendezvous.entities.objects.Empty;
@@ -36,6 +38,10 @@ public abstract class Soldier extends Entity {
     private int armor = 0;
     private Inventory inventory;
 
+    private Texture pointlight;
+
+    private boolean isFiring;
+
     Soldier(Match match, Vector2 position, float radius, float linearDamping, int speed,
             AnimationRegion animationRegion, short categoryBits, short maskBits, Object userData) {
         super(match, position, animationRegion);
@@ -57,6 +63,7 @@ public abstract class Soldier extends Entity {
         setOrigin(pScaleCenter(animationRegion.getFrameWidth()), pScaleCenter(animationRegion.getFrameHeight()));
         setBounds(0, 0, pScale(animationRegion.getFrameWidth()), pScale(animationRegion.getFrameHeight()));
         setRegion(animator.getIdleTexture());
+        pointlight = getMatch().getResources().getTexture(ResourceHandler.TexturePath.POINTLIGHT);
     }
 
     @Override
@@ -179,6 +186,22 @@ public abstract class Soldier extends Entity {
         } else {
             switchAnimation(baseAnim, base);
         }
+    }
+
+    @Override
+    public void draw(Batch batch) {
+        if (isFiring) {
+            batch.draw(pointlight,
+                    getBody().getPosition().x - pScaleCenter(pointlight.getWidth()),
+                    getBody().getPosition().y - pScaleCenter(pointlight.getHeight()),
+                    pScale(pointlight.getWidth()),
+                    pScale(pointlight.getHeight()));
+        }
+        super.draw(batch);
+    }
+
+    public void setFiring(boolean firing) {
+        isFiring = firing;
     }
 
     private void switchAnimation(AnimationRegion animationRegion, ResourceHandler.TextureAtlasPath textureAtlasPath) {
