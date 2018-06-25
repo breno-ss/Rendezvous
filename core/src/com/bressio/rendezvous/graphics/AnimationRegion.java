@@ -28,7 +28,6 @@ public enum AnimationRegion {
     SOLDIER_MV_HT_STAR("soldier-mv-ht-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
     SOLDIER_SV_CT_STAR("soldier-sv-ct-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
     SOLDIER_SV_HT_STAR("soldier-sv-ht-star", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
-
     SOLDIER_W16A("soldier-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
     SOLDIER_MV_W16A("soldier-mv-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
     SOLDIER_SV_W16A("soldier-sv-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
@@ -37,7 +36,16 @@ public enum AnimationRegion {
     SOLDIER_MV_CT_W16A("soldier-mv-ct-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
     SOLDIER_MV_HT_W16A("soldier-mv-ht-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
     SOLDIER_SV_CT_W16A("soldier-sv-ct-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
-    SOLDIER_SV_HT_W16A("soldier-sv-ht-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105);
+    SOLDIER_SV_HT_W16A("soldier-sv-ht-w16a", 0, 0, 57, 105, 18, .04f, 0, 0, 57, 105),
+    SOLDIER_G21("soldier-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_MV_G21("soldier-mv-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_SV_G21("soldier-sv-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_CT_G21("soldier-ct-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_HT_G21("soldier-ht-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_MV_CT_G21("soldier-mv-ct-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_MV_HT_G21("soldier-mv-ht-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_SV_CT_G21("soldier-sv-ct-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_SV_HT_G21("soldier-sv-ht-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88);
     AnimationRegion(String region, int startRow, int startColumn, int frameWidth, int frameHeight, int amountFrames, float frameDuration,
                     int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
         this.region = region;

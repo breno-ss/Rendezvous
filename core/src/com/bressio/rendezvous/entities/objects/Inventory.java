@@ -1,7 +1,6 @@
 package com.bressio.rendezvous.entities.objects;
 
 import com.bressio.rendezvous.entities.objects.ammo.Ammo;
-import com.bressio.rendezvous.entities.objects.ammo.FiveFiveSix;
 import com.bressio.rendezvous.entities.objects.ammo.Nine;
 import com.bressio.rendezvous.entities.objects.ammo.SevenSixTwo;
 import com.bressio.rendezvous.entities.objects.equipment.armor.Armor;
@@ -9,6 +8,7 @@ import com.bressio.rendezvous.entities.objects.equipment.helmets.Helmet;
 import com.bressio.rendezvous.entities.objects.weapons.Weapon;
 import com.bressio.rendezvous.entities.objects.weapons.ars.STAR;
 import com.bressio.rendezvous.entities.objects.weapons.ars.W16A;
+import com.bressio.rendezvous.entities.objects.weapons.pistols.G21;
 import com.bressio.rendezvous.scenes.Match;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ public class Inventory {
     private void addItems() {
         items = new ArrayList<>();
         items.add(new STAR(match));
-        items.add(new FiveFiveSix(match));
+        items.add(new G21(match));
         items.add(new SevenSixTwo(match));
         items.add(new Nine(match));
         items.add(new W16A(match));
