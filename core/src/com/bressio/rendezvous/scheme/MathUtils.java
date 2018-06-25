@@ -15,4 +15,9 @@ public final class MathUtils {
     public static double distance(Vector2 objectA, Vector2 objectB){
         return Math.sqrt(Math.pow((objectB.x - objectA.x), 2) + Math.pow((objectB.y - objectA.y), 2));
     }
+
+    public static float lerp(float start, float end, float alpha)
+    {
+        return start + alpha * (end - start);
+    }
 }

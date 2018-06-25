@@ -17,6 +17,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.entities.Player;
 import com.bressio.rendezvous.entities.objects.EntityObject;
+import com.bressio.rendezvous.entities.objects.weapons.ars.AssaultRifle;
+import com.bressio.rendezvous.entities.objects.weapons.pistols.Pistol;
+import com.bressio.rendezvous.entities.objects.weapons.srs.SniperRifle;
 import com.bressio.rendezvous.entities.projectiles.Bullet;
 import com.bressio.rendezvous.entities.tiles.Loot;
 import com.bressio.rendezvous.events.InputTracker;
@@ -26,6 +29,7 @@ import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.*;
 import com.bressio.rendezvous.languages.Internationalization;
+import com.bressio.rendezvous.scheme.MathUtils;
 import com.bressio.rendezvous.scheme.PhysicsAdapter;
 
 import java.util.ArrayList;
@@ -139,6 +143,18 @@ public class Match implements Screen {
         camera.update();
         renderer.setView(camera);
         overRenderer.setView(camera);
+
+        if (SniperRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
+            cameraZoom = MathUtils.lerp(cameraZoom, 1.5f, .05f);
+        } else if (AssaultRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
+            cameraZoom = MathUtils.lerp(cameraZoom, 1.3f, .05f);
+        } else if (Pistol.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
+            cameraZoom = MathUtils.lerp(cameraZoom, 1.1f, .05f);
+        } else {
+            cameraZoom = MathUtils.lerp(cameraZoom, 1, .05f);
+        }
+        viewport.setWorldSize(pScale(GAME_WIDTH) * cameraZoom, pScale(GAME_HEIGHT) * cameraZoom);
+        viewport.apply();
     }
 
     private void updateBullets() {
