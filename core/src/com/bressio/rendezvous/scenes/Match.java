@@ -278,6 +278,10 @@ public class Match implements Screen {
         return bullets;
     }
 
+    public RendezvousController getRendezvousController() {
+        return rendezvousController;
+    }
+
     private void renderPauseMenu(float delta) {
         batch.setProjectionMatrix(pause.getStage().getCamera().combined);
         pause.getStage().draw();
@@ -403,7 +407,7 @@ public class Match implements Screen {
         renderPlayer();
         overRenderer.render();
         renderLootInteractionButton();
-//        rendezvousController.render(delta);
+        rendezvousController.render(delta);
         renderHud(delta);
         renderProgressDisplay(delta);
         renderInterface(delta);

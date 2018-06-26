@@ -55,7 +55,9 @@ public final class ResourceHandler implements Disposable {
         NINE("textures/gui/items/ammo/nine.png"),
         SEVEN_SIX_TWO("textures/gui/items/ammo/seven-six-two.png"),
         BULLET("textures/projectiles/bullet.png"),
-        POINTLIGHT("textures/world/pointlight.png");
+        POINTLIGHT("textures/world/pointlight.png"),
+        SAFEZONE_EXPANDED("textures/world/safezone-expanded.png"),
+        NEXT_SAFEZONE_EXPANDED("textures/world/next-safezone-expanded.png");
 
         private String path;
         TexturePath(String path) { this.path = path; }
@@ -268,7 +270,6 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TextureAtlasPath.SOLDIER_MV_HT_M20_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_CT_M20_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_HT_M20_ATLAS.path, TextureAtlas.class);
-
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);
         assetManager.load(TiledMapPath.OVER_TILEMAP.path, TiledMap.class);
@@ -310,6 +311,8 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.SEVEN_SIX_TWO.path, Texture.class);
         assetManager.load(TexturePath.BULLET.path, Texture.class);
         assetManager.load(TexturePath.POINTLIGHT.path, Texture.class);
+        assetManager.load(TexturePath.SAFEZONE_EXPANDED.path, Texture.class);
+        assetManager.load(TexturePath.NEXT_SAFEZONE_EXPANDED.path, Texture.class);
         assetManager.finishLoading();
     }
 

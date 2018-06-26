@@ -3,6 +3,7 @@ package com.bressio.rendezvous.events;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.bressio.rendezvous.entities.Player;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.gui.HUD;
@@ -12,8 +13,9 @@ import com.bressio.rendezvous.scheme.PhysicsAdapter;
 
 import static com.bressio.rendezvous.scheme.MathUtils.distance;
 import static com.bressio.rendezvous.scheme.MathUtils.randomRange;
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScale;
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.pScaleCenter;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
+import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_HEIGHT;
+import static com.bressio.rendezvous.scheme.PlayerSettings.GAME_WIDTH;
 
 public class RendezvousController {
 
@@ -176,9 +178,42 @@ public class RendezvousController {
                 -dangerZoneWidth * dangerZoneSize);
     }
 
+    public Vector2 getExpandedSafezonePosition(Image expandedSafezone) {
+        Vector2 position = new Vector2();
 
+        if (event == 1 || event == 2) {
+            position.x = pCenter(GAME_WIDTH) - pCenter(expandedSafezone.getWidth()) + (safezoneOffsets[0].x * 7.3f);
+            position.y = pCenter(GAME_HEIGHT) - pCenter(expandedSafezone.getHeight()) + (safezoneOffsets[0].y * 7.3f);
+        } else if (event == 3 || event == 4) {
+            position.x = pCenter(GAME_WIDTH) - pCenter(expandedSafezone.getWidth()) + (safezoneOffsets[1].x * 7.3f);
+            position.y = pCenter(GAME_HEIGHT) - pCenter(expandedSafezone.getHeight()) + (safezoneOffsets[1].y * 7.3f);
+        } else if (event == 5 || event == 6) {
+            position.x = pCenter(GAME_WIDTH) - pCenter(expandedSafezone.getWidth()) + (safezoneOffsets[2].x * 7.3f);
+            position.y = pCenter(GAME_HEIGHT) - pCenter(expandedSafezone.getHeight()) + (safezoneOffsets[2].y * 7.3f);
+        } else if (event == 7 || event == 8) {
+            position.x = pCenter(GAME_WIDTH) - pCenter(expandedSafezone.getWidth()) + (safezoneOffsets[3].x * 7.3f);
+            position.y = pCenter(GAME_HEIGHT) - pCenter(expandedSafezone.getHeight()) + (safezoneOffsets[3].y * 7.3f);
+        }
 
-    private boolean isInRendezvous() {
+        return position;
+    }
+
+    public float getExpandedSafezoneSize() {
+
+        float size = 600;
+
+         if (event == 3 || event == 4) {
+            size *= .75f;
+        } else if (event == 5 || event == 6) {
+            size *= .5f;
+        } else if (event == 7 || event == 8) {
+             size *= .25f;
+        }
+
+        return size;
+    }
+
+    public boolean isInRendezvous() {
         return event % 2 == 0;
     }
 }
