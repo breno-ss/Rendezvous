@@ -21,7 +21,7 @@ public abstract class InteractiveTile {
     private short categoryBits;
 
     InteractiveTile(Rectangle bounds, Match match, boolean isSensor, short categoryBits) {
-        this.map = match.getMap();
+        this.map = match.getOverMap();
         this.bounds = bounds;
         this.isSensor = isSensor;
         this.match = match;
@@ -50,6 +50,8 @@ public abstract class InteractiveTile {
     TiledMap getMap() {
         return map;
     }
+
+
 
     Body getBody() {
         return body;

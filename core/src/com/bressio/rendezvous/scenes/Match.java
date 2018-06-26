@@ -254,6 +254,10 @@ public class Match implements Screen {
         return map;
     }
 
+    public TiledMap getOverMap() {
+        return overMap;
+    }
+
     public SpriteBatch getBatch() {
         return batch;
     }
