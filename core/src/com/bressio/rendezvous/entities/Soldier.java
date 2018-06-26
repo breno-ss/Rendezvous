@@ -15,6 +15,8 @@ import com.bressio.rendezvous.entities.objects.weapons.ars.STAR;
 import com.bressio.rendezvous.entities.objects.weapons.ars.W16A;
 import com.bressio.rendezvous.entities.objects.weapons.pistols.G21;
 import com.bressio.rendezvous.entities.objects.weapons.pistols.P26;
+import com.bressio.rendezvous.entities.objects.weapons.srs.AW3;
+import com.bressio.rendezvous.entities.objects.weapons.srs.M20;
 import com.bressio.rendezvous.forge.BodyBuilder;
 import com.bressio.rendezvous.graphics.AnimationRegion;
 import com.bressio.rendezvous.graphics.Animator;
@@ -110,7 +112,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_G21_ATLAS,
                         AnimationRegion.SOLDIER_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_P26_ATLAS,
+                        AnimationRegion.SOLDIER_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_M20_ATLAS);
             } else if (selectedHelmetClass == Empty.class && selectedAmorClass == MilitaryVest.class) {
                 defineNewAnimation(selectedObjectClass,
                         AnimationRegion.SOLDIER_MILITARY_VEST,
@@ -124,7 +130,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_MV_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_MV_G21_ATLAS,
                         AnimationRegion.SOLDIER_MV_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_P26_ATLAS,
+                        AnimationRegion.SOLDIER_MV_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_MV_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_M20_ATLAS);
             } else if (selectedHelmetClass == Empty.class && selectedAmorClass == SoftVest.class) {
                 defineNewAnimation(selectedObjectClass,
                         AnimationRegion.SOLDIER_SOFT_VEST,
@@ -138,7 +148,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_SV_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_SV_G21_ATLAS,
                         AnimationRegion.SOLDIER_SV_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_P26_ATLAS,
+                        AnimationRegion.SOLDIER_SV_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_SV_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_M20_ATLAS);
             } else if (selectedHelmetClass == CombatHelmet.class && selectedAmorClass == Empty.class) {
                 defineNewAnimation(selectedObjectClass,
                         AnimationRegion.SOLDIER_COMBAT_HELMET,
@@ -152,7 +166,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_CT_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_CT_G21_ATLAS,
                         AnimationRegion.SOLDIER_CT_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_CT_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_CT_P26_ATLAS,
+                        AnimationRegion.SOLDIER_CT_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_CT_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_CT_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_CT_M20_ATLAS);
             } else if (selectedHelmetClass == HalfHelmet.class && selectedAmorClass == Empty.class) {
                 defineNewAnimation(selectedObjectClass,
                         AnimationRegion.SOLDIER_HALF_HELMET,
@@ -166,7 +184,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_HT_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_HT_G21_ATLAS,
                         AnimationRegion.SOLDIER_HT_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_HT_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_HT_P26_ATLAS,
+                        AnimationRegion.SOLDIER_HT_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_HT_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_HT_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_HT_M20_ATLAS);
             } else if (selectedHelmetClass == CombatHelmet.class && selectedAmorClass == MilitaryVest.class) {
                 defineNewAnimation(selectedObjectClass,
                         AnimationRegion.SOLDIER_MV_COMBAT_HELMET,
@@ -180,7 +202,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_MV_CT_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_MV_CT_G21_ATLAS,
                         AnimationRegion.SOLDIER_MV_CT_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_CT_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_CT_P26_ATLAS,
+                        AnimationRegion.SOLDIER_MV_CT_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_CT_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_MV_CT_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_CT_M20_ATLAS);
             } else if (selectedHelmetClass == HalfHelmet.class && selectedAmorClass == MilitaryVest.class) {
                 defineNewAnimation(selectedObjectClass,
                         AnimationRegion.SOLDIER_MV_HALF_HELMET,
@@ -194,7 +220,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_MV_HT_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_MV_HT_G21_ATLAS,
                         AnimationRegion.SOLDIER_MV_HT_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_HT_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_HT_P26_ATLAS,
+                        AnimationRegion.SOLDIER_MV_HT_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_HT_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_MV_HT_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_MV_HT_M20_ATLAS);
             } else if (selectedHelmetClass == CombatHelmet.class && selectedAmorClass == SoftVest.class) {
                 defineNewAnimation(selectedObjectClass,
                         AnimationRegion.SOLDIER_SV_COMBAT_HELMET,
@@ -208,7 +238,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_SV_CT_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_SV_CT_G21_ATLAS,
                         AnimationRegion.SOLDIER_SV_CT_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_CT_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_CT_P26_ATLAS,
+                        AnimationRegion.SOLDIER_SV_CT_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_CT_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_SV_CT_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_CT_M20_ATLAS);
             } else if (selectedHelmetClass == HalfHelmet.class && selectedAmorClass == SoftVest.class) {
                 defineNewAnimation(selectedObjectClass,
                         AnimationRegion.SOLDIER_SV_HALF_HELMET,
@@ -222,7 +256,11 @@ public abstract class Soldier extends Entity {
                         AnimationRegion.SOLDIER_SV_HT_G21,
                         ResourceHandler.TextureAtlasPath.SOLDIER_SV_HT_G21_ATLAS,
                         AnimationRegion.SOLDIER_SV_HT_P26,
-                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_HT_P26_ATLAS);
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_HT_P26_ATLAS,
+                        AnimationRegion.SOLDIER_SV_HT_AW3,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_HT_AW3_ATLAS,
+                        AnimationRegion.SOLDIER_SV_HT_M20,
+                        ResourceHandler.TextureAtlasPath.SOLDIER_SV_HT_M20_ATLAS);
             }
         }
         lastSelectedObjectClass = selectedObjectClass;
@@ -236,7 +274,9 @@ public abstract class Soldier extends Entity {
                                     AnimationRegion starAnim, ResourceHandler.TextureAtlasPath star,
                                     AnimationRegion w16aAnim, ResourceHandler.TextureAtlasPath w16a,
                                     AnimationRegion g21Anim, ResourceHandler.TextureAtlasPath g21,
-                                    AnimationRegion p26Anim, ResourceHandler.TextureAtlasPath p26) {
+                                    AnimationRegion p26Anim, ResourceHandler.TextureAtlasPath p26,
+                                    AnimationRegion aw3Anim, ResourceHandler.TextureAtlasPath aw3,
+                                    AnimationRegion m20Anim, ResourceHandler.TextureAtlasPath m20) {
         if (selectedObjectClass == Empty.class) {
             switchAnimation(baseAnim, base);
         } else if (selectedObjectClass == Medkit.class) {
@@ -249,6 +289,10 @@ public abstract class Soldier extends Entity {
             switchAnimation(g21Anim, g21);
         } else if (selectedObjectClass == P26.class) {
             switchAnimation(p26Anim, p26);
+        } else if (selectedObjectClass == AW3.class) {
+            switchAnimation(aw3Anim, aw3);
+        } else if (selectedObjectClass == M20.class) {
+            switchAnimation(m20Anim, m20);
         } else {
             switchAnimation(baseAnim, base);
         }

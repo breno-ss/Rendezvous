@@ -125,7 +125,6 @@ public final class ResourceHandler implements Disposable {
         SOLDIER_MV_HT_G21_ATLAS("textures/animations/soldier-mv-ht-g21-animation.pack"),
         SOLDIER_SV_CT_G21_ATLAS("textures/animations/soldier-sv-ct-g21-animation.pack"),
         SOLDIER_SV_HT_G21_ATLAS("textures/animations/soldier-sv-ht-g21-animation.pack"),
-
         SOLDIER_P26_ATLAS("textures/animations/soldier-p26-animation.pack"),
         SOLDIER_MV_P26_ATLAS("textures/animations/soldier-mv-p26-animation.pack"),
         SOLDIER_SV_P26_ATLAS("textures/animations/soldier-sv-p26-animation.pack"),
@@ -135,6 +134,24 @@ public final class ResourceHandler implements Disposable {
         SOLDIER_MV_HT_P26_ATLAS("textures/animations/soldier-mv-ht-p26-animation.pack"),
         SOLDIER_SV_CT_P26_ATLAS("textures/animations/soldier-sv-ct-p26-animation.pack"),
         SOLDIER_SV_HT_P26_ATLAS("textures/animations/soldier-sv-ht-p26-animation.pack"),
+        SOLDIER_AW3_ATLAS("textures/animations/soldier-aw3-animation.pack"),
+        SOLDIER_MV_AW3_ATLAS("textures/animations/soldier-mv-aw3-animation.pack"),
+        SOLDIER_SV_AW3_ATLAS("textures/animations/soldier-sv-aw3-animation.pack"),
+        SOLDIER_CT_AW3_ATLAS("textures/animations/soldier-ct-aw3-animation.pack"),
+        SOLDIER_HT_AW3_ATLAS("textures/animations/soldier-ht-aw3-animation.pack"),
+        SOLDIER_MV_CT_AW3_ATLAS("textures/animations/soldier-mv-ct-aw3-animation.pack"),
+        SOLDIER_MV_HT_AW3_ATLAS("textures/animations/soldier-mv-ht-aw3-animation.pack"),
+        SOLDIER_SV_CT_AW3_ATLAS("textures/animations/soldier-sv-ct-aw3-animation.pack"),
+        SOLDIER_SV_HT_AW3_ATLAS("textures/animations/soldier-sv-ht-aw3-animation.pack"),
+        SOLDIER_M20_ATLAS("textures/animations/soldier-m20-animation.pack"),
+        SOLDIER_MV_M20_ATLAS("textures/animations/soldier-mv-m20-animation.pack"),
+        SOLDIER_SV_M20_ATLAS("textures/animations/soldier-sv-m20-animation.pack"),
+        SOLDIER_CT_M20_ATLAS("textures/animations/soldier-ct-m20-animation.pack"),
+        SOLDIER_HT_M20_ATLAS("textures/animations/soldier-ht-m20-animation.pack"),
+        SOLDIER_MV_CT_M20_ATLAS("textures/animations/soldier-mv-ct-m20-animation.pack"),
+        SOLDIER_MV_HT_M20_ATLAS("textures/animations/soldier-mv-ht-m20-animation.pack"),
+        SOLDIER_SV_CT_M20_ATLAS("textures/animations/soldier-sv-ct-m20-animation.pack"),
+        SOLDIER_SV_HT_M20_ATLAS("textures/animations/soldier-sv-ht-m20-animation.pack"),
 
         WINDOW_ATLAS("skins/vis/skin/x2/uiskin.atlas");
         private String path;
@@ -224,7 +241,6 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TextureAtlasPath.SOLDIER_MV_HT_G21_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_CT_G21_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_HT_G21_ATLAS.path, TextureAtlas.class);
-
         assetManager.load(TextureAtlasPath.SOLDIER_P26_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_MV_P26_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_P26_ATLAS.path, TextureAtlas.class);
@@ -234,6 +250,24 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TextureAtlasPath.SOLDIER_MV_HT_P26_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_CT_P26_ATLAS.path, TextureAtlas.class);
         assetManager.load(TextureAtlasPath.SOLDIER_SV_HT_P26_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_CT_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_HT_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_CT_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_HT_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_CT_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_HT_AW3_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_M20_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_M20_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_M20_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_CT_M20_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_HT_M20_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_CT_M20_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_MV_HT_M20_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_CT_M20_ATLAS.path, TextureAtlas.class);
+        assetManager.load(TextureAtlasPath.SOLDIER_SV_HT_M20_ATLAS.path, TextureAtlas.class);
 
         assetManager.setLoader(TiledMap.class, new TmxMapLoader(new InternalFileHandleResolver()));
         assetManager.load(TiledMapPath.TILEMAP.path, TiledMap.class);

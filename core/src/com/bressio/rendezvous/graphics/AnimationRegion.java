@@ -46,7 +46,6 @@ public enum AnimationRegion {
     SOLDIER_MV_HT_G21("soldier-mv-ht-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
     SOLDIER_SV_CT_G21("soldier-sv-ct-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
     SOLDIER_SV_HT_G21("soldier-sv-ht-g21", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
-
     SOLDIER_P26("soldier-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
     SOLDIER_MV_P26("soldier-mv-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
     SOLDIER_SV_P26("soldier-sv-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
@@ -55,7 +54,25 @@ public enum AnimationRegion {
     SOLDIER_MV_CT_P26("soldier-mv-ct-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
     SOLDIER_MV_HT_P26("soldier-mv-ht-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
     SOLDIER_SV_CT_P26("soldier-sv-ct-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
-    SOLDIER_SV_HT_P26("soldier-sv-ht-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88);
+    SOLDIER_SV_HT_P26("soldier-sv-ht-p26", 0, 0, 54, 88, 18, .04f, 0, 0, 54, 88),
+    SOLDIER_AW3("soldier-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_MV_AW3("soldier-mv-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_SV_AW3("soldier-sv-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_CT_AW3("soldier-ct-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_HT_AW3("soldier-ht-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_MV_CT_AW3("soldier-mv-ct-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_MV_HT_AW3("soldier-mv-ht-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_SV_CT_AW3("soldier-sv-ct-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_SV_HT_AW3("soldier-sv-ht-aw3", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_M20("soldier-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_MV_M20("soldier-mv-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_SV_M20("soldier-sv-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_CT_M20("soldier-ct-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_HT_M20("soldier-ht-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_MV_CT_M20("soldier-mv-ct-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_MV_HT_M20("soldier-mv-ht-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_SV_CT_M20("soldier-sv-ct-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114),
+    SOLDIER_SV_HT_M20("soldier-sv-ht-m20", 0, 0, 57, 114, 18, .04f, 0, 0, 57, 114);
     AnimationRegion(String region, int startRow, int startColumn, int frameWidth, int frameHeight, int amountFrames, float frameDuration,
                     int idleTextureX, int idleTextureY, int idleTextureWidth, int idleTextureHeight) {
         this.region = region;
