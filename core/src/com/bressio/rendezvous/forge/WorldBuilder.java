@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.entities.tiles.Building;
 import com.bressio.rendezvous.entities.tiles.Chest;
 import com.bressio.rendezvous.entities.tiles.Crate;
@@ -22,7 +23,7 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class WorldBuilder {
 
-    private enum Layer {
+    public enum Layer {
         OCEAN(0),
         ROCK(1),
         TREE(2),
@@ -30,13 +31,16 @@ public class WorldBuilder {
         PLAYER_SPAWN_POINTS(4),
         BUILDING_SENSOR(5),
         CHEST(6),
-        CRATE(7);
+        CRATE(7),
+        ENEMY_SPAWN_POINTS(8),
+        CEILING(24);
         Layer(int index) { this.index = index; }
-        private final int index;
+        public final int index;
     }
 
     private ArrayList<Crate> crates;
     private ArrayList<Chest> chests;
+    private ArrayList<Enemy> enemies;
     private Match match;
 
     public WorldBuilder(Match match) {
@@ -49,11 +53,13 @@ public class WorldBuilder {
         buildChests();
         buildCrates();
         buildBuildingSensors();
+        buildEnemies();
     }
 
     private void init() {
         chests = new ArrayList<>();
         crates = new ArrayList<>();
+        enemies = new ArrayList<>();
     }
 
     private void buildPolygonalObject(Layer layer) {
@@ -64,7 +70,7 @@ public class WorldBuilder {
                     pol.getX() + pCenter(pol.getOriginX()),
                     pol.getY() + pCenter(pol.getOriginY())))
                     .withBodyType(BodyDef.BodyType.StaticBody)
-                    .withMaskBits(PLAYER_TAG)
+                    .withMaskBits((short) (PLAYER_TAG | ENEMY_TAG))
                     .withCategoryBits(WATER_TAG)
                     .withVertices(pScale(pol.getVertices()))
                     .build();
@@ -121,6 +127,15 @@ public class WorldBuilder {
         }
     }
 
+    private void buildEnemies() {
+        for (MapObject object :
+                match.getMap().getLayers().get(Layer.ENEMY_SPAWN_POINTS.index).getObjects()
+                        .getByType(EllipseMapObject.class)) {
+            Ellipse rect = ((EllipseMapObject) object).getEllipse();
+            enemies.add(new Enemy(match, 35, 5, 8, new Vector2(rect.x, rect.y)));
+        }
+    }
+
     public Vector2 getPlayerSpawnPoint() {
         Vector2[] spawnPoints = new Vector2[20];
         int count = 0;
@@ -142,5 +157,9 @@ public class WorldBuilder {
         loot.addAll(crates);
         loot.addAll(chests);
         return loot;
+    }
+
+    public ArrayList<Enemy> getEnemies() {
+        return enemies;
     }
 }

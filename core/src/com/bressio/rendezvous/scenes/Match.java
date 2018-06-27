@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.entities.Player;
 import com.bressio.rendezvous.entities.objects.EntityObject;
 import com.bressio.rendezvous.entities.objects.weapons.ars.AssaultRifle;
@@ -150,7 +151,7 @@ public class Match implements Screen {
         if (SniperRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 2, .05f);
         } else if (AssaultRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
-            cameraZoom = MathUtils.lerp(cameraZoom, 10, .05f);
+            cameraZoom = MathUtils.lerp(cameraZoom, 1.3f, .05f);
         } else if (Pistol.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 1.1f, .05f);
         } else {
@@ -166,11 +167,18 @@ public class Match implements Screen {
         }
     }
 
+    private void updateEnemies(float delta) {
+        for (Enemy enemy : worldBuilder.getEnemies()) {
+            enemy.update(delta);
+        }
+    }
+
     private void update(float delta) {
         if (state == GameState.RUNNING || state == GameState.TACTICAL || state == GameState.LOOTING) {
             world.step(1 / 60f, 6, 2);
             rendezvousController.update(delta);
             player.update(delta);
+            updateEnemies(delta);
             matchMap.update(delta, player.getBody().getPosition());
             updateCamera();
             updateBullets();
@@ -369,6 +377,14 @@ public class Match implements Screen {
         batch.end();
     }
 
+    private void renderEnemies() {
+        batch.begin();
+        for (Enemy enemy : worldBuilder.getEnemies()) {
+            enemy.draw(batch);
+        }
+        batch.end();
+    }
+
     private void renderLootInteractionButton() {
         for (Loot loot : worldBuilder.getLoot()) {
             loot.drawInteractionButton();
@@ -428,9 +444,10 @@ public class Match implements Screen {
         batch.setProjectionMatrix(camera.combined);
         renderBullets(delta);
         renderPlayer();
+        renderEnemies();
         overRenderer.render();
         renderLootInteractionButton();
-        rendezvousController.render(delta);
+//        rendezvousController.render(delta);
         renderHud(delta);
         renderProgressDisplay(delta);
         renderInterface(delta);

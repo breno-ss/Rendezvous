@@ -2,6 +2,7 @@ package com.bressio.rendezvous.entities.tiles;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.scenes.Match;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.BUILDING_TAG;
@@ -14,7 +15,7 @@ public class Building extends InteractiveTile {
     }
 
     private int[][] ceilingTileIds;
-    private final int CEILING_LAYER = 23;
+    private final int CEILING_LAYER = WorldBuilder.Layer.CEILING.index;
     private final int TRANSPARENT_TILE = 40;
     private final int CEILING_AREA = 31;
 

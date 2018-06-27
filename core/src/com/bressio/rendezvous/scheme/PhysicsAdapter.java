@@ -16,6 +16,7 @@ public final class PhysicsAdapter {
     public static final short LOOT_TAG = 8;
     public static final short BULLET_TAG = 16;
     public static final short WATER_TAG = 32;
+    public static final short ENEMY_TAG = 64;
 
     public static float pScale(float number) {
         return number / SCALE;

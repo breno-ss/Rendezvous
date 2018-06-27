@@ -3,9 +3,7 @@ package com.bressio.rendezvous.forge;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.BULLET_TAG;
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.DEFAULT_TAG;
-import static com.bressio.rendezvous.scheme.PhysicsAdapter.PLAYER_TAG;
+import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class BodyBuilder{
 
@@ -32,7 +30,7 @@ public class BodyBuilder{
     private void init() {
         // by default, all objects collide with other default objects, soldiers and bullets
         this.categoryBits = DEFAULT_TAG;
-        this.maskBits = DEFAULT_TAG | PLAYER_TAG | BULLET_TAG;
+        this.maskBits = DEFAULT_TAG | PLAYER_TAG | BULLET_TAG | ENEMY_TAG;
     }
 
     public BodyBuilder withWidth(float width) {

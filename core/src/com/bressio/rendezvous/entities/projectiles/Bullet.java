@@ -39,7 +39,7 @@ public class Bullet extends Sprite {
         position = match.getPlayer().getBody().getPosition();
         radius = 5;
         categoryBits = BULLET_TAG;
-        maskBits =  (short) (DEFAULT_TAG | LOOT_TAG | PLAYER_TAG);
+        maskBits =  (short) (DEFAULT_TAG | LOOT_TAG | PLAYER_TAG | ENEMY_TAG);
     }
 
     public void moveForward() {

@@ -15,10 +15,8 @@ public abstract class Entity extends Sprite {
     private Body body;
     private Vector2 position;
 
-    Entity(Match match, Vector2 position, AnimationRegion animationRegion) {
-        super(match.getResources().getTextureAtlas(
-                ResourceHandler.TextureAtlasPath.SOLDIER_ATLAS
-        ).findRegion(animationRegion.getRegion()));
+    Entity(Match match, Vector2 position, AnimationRegion animationRegion, ResourceHandler.TextureAtlasPath textureAtlasPath) {
+        super(match.getResources().getTextureAtlas(textureAtlasPath).findRegion(animationRegion.getRegion()));
         this.match = match;
         this.position = new Vector2(pScale(position.x), pScale(position.y));
     }
