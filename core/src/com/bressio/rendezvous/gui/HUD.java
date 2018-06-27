@@ -110,7 +110,9 @@ public class HUD implements Disposable {
         minimap = match.getResources().getTexture(ResourceHandler.TexturePath.MATCH_MINIMAP);
         minimapFrame = match.getResources().getTexture(ResourceHandler.TexturePath.MATCH_MINIMAP_FRAME);
         minimapPlayerMark = match.getResources().getTexture(ResourceHandler.TexturePath.PLAYER_MARK);
-        minimapMask = new Rectangle( minimapOffset, minimapOffset, 200, 200);
+        minimapMask = new Rectangle();
+        Rectangle clipBounds = new Rectangle(minimapOffset, minimapOffset, 200, 200);
+        ScissorStack.calculateScissors(stage.getCamera(), stage.getBatch().getTransformMatrix(), clipBounds, minimapMask);
     }
 
     private void forgeHealthDisplay() {
@@ -143,7 +145,7 @@ public class HUD implements Disposable {
     private void forgeInventory() {
         items = new ArrayList<>();
         inventoryBackground = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.INVENTORY));
-        inventoryBackground.setPosition(1000, 10);
+        inventoryBackground.setPosition(GAME_WIDTH - 366, 10);
         stage.addActor(inventoryBackground);
 
         selectedSlot = 0;
@@ -153,7 +155,7 @@ public class HUD implements Disposable {
         selectionMarker.setPosition(markerPos.x, markerPos.y);
         stage.addActor(selectionMarker);
 
-        float itemPos = 996;
+        float itemPos = GAME_WIDTH - 370;
         for (int i = 0; i < 6; i++) {
             items.add(new Image(match.getResources().getTexture(ResourceHandler.TexturePath.INVISIBLE_SLOT)));
             items.get(i).setPosition(itemPos, 15);
@@ -179,19 +181,19 @@ public class HUD implements Disposable {
 
     private Vector2 getSelectionMarkerPosition(int index) {
         switch (index) {
-            case 0: return new Vector2(996, 6);
-            case 1: return new Vector2(1051.5f, 6);
-            case 2: return new Vector2(1107, 6);
-            case 3: return new Vector2(1162.5f, 6);
-            case 4: return new Vector2(1218, 6);
-            case 5: return new Vector2(1273.5f, 6);
-            default: return new Vector2(1329, 6);
+            case 0: return new Vector2(GAME_WIDTH - 370, 6);
+            case 1: return new Vector2(GAME_WIDTH - 314.5f, 6);
+            case 2: return new Vector2(GAME_WIDTH - 259, 6);
+            case 3: return new Vector2(GAME_WIDTH - 203.5f, 6);
+            case 4: return new Vector2(GAME_WIDTH - 148, 6);
+            case 5: return new Vector2(GAME_WIDTH - 92.5f, 6);
+            default: return new Vector2(GAME_WIDTH - 37, 6);
         }
     }
 
     public void drawVignette(float delta) {
         match.getBatch().begin();
-        match.getBatch().draw(vignette, 0, 0);
+        match.getBatch().draw(vignette, 0, 0, GAME_WIDTH, GAME_HEIGHT);
         match.getBatch().end();
     }
 
@@ -199,12 +201,12 @@ public class HUD implements Disposable {
         match.getBatch().begin();
         match.getBatch().flush();
         ScissorStack.pushScissors(minimapMask);
-        match.getBatch().draw(minimap, - playerPosition.x * 7.2f - 77 + minimapOffset,
-                - playerPosition.y * 7.2f - 77 + minimapOffset);
+        match.getBatch().draw(minimap, - playerPosition.x * 7.2f - 82 + minimapOffset,
+                - playerPosition.y * 7.2f - 82 + minimapOffset);
         match.getBatch().draw(minimapFrame, minimapOffset, minimapOffset);
         match.getBatch().draw(minimapPlayerMark,
-                pCenter(minimapMask.width) - pCenter(minimapPlayerMark.getWidth()) + 5 + minimapOffset,
-                pCenter(minimapMask.height) - pCenter(minimapPlayerMark.getHeight()) + 5 + minimapOffset);
+                pCenter(minimapFrame.getWidth()) - pCenter(minimapPlayerMark.getWidth()) + minimapOffset,
+                pCenter(minimapFrame.getHeight()) - pCenter(minimapPlayerMark.getHeight()) + minimapOffset);
         match.getBatch().flush();
         ScissorStack.popScissors();
         match.getBatch().end();

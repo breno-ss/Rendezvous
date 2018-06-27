@@ -6,10 +6,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Timer;
@@ -40,7 +37,7 @@ public class MainMenu implements Screen {
     private Texture logo;
     private Texture loadingScreen;
     private Label loadingLabel;
-    private Texture gameIcon;
+    private Image gameIcon;
 
     // rendering
     private OrthographicCamera camera;
@@ -62,7 +59,7 @@ public class MainMenu implements Screen {
         logo = resources.getTexture(ResourceHandler.TexturePath.MENU_LOGO);
         skin = resources.getSkin(ResourceHandler.SkinPaths.BUTTON_SKIN);
         loadingScreen = resources.getTexture(ResourceHandler.TexturePath.LOADING_SCREEN);
-        gameIcon = resources.getTexture(ResourceHandler.TexturePath.GAME_ICON);
+        gameIcon = new Image(resources.getTexture(ResourceHandler.TexturePath.GAME_ICON));
         i18n = new Internationalization();
     }
 
@@ -130,12 +127,14 @@ public class MainMenu implements Screen {
         loadingStage = new Stage(viewport, batch);
 
         Table table = new Table();
-        table.bottom();
+        table.right().bottom();
         table.setFillParent(true);
+
+        table.add(gameIcon).padBottom(70).padRight(5);
 
         loadingLabel = new Label(i18n.getBundle().get("loading"),
                 new Label.LabelStyle(FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 42, false), Color.WHITE));
-        table.add(loadingLabel).padBottom(70).padLeft(900).row();
+        table.add(loadingLabel).padBottom(70).padRight(100).row();
 
         loadingStage.addActor(table);
     }
@@ -156,10 +155,11 @@ public class MainMenu implements Screen {
 
     private void renderBackground() {
         batch.begin();
-        batch.draw(background, 0, 0);
+        batch.draw(background, 0, 0, GAME_WIDTH, GAME_HEIGHT);
         batch.draw(logo,
                 pCenter(GAME_WIDTH) - pCenter(logo.getWidth()),
-                GAME_HEIGHT - 300);
+                GAME_HEIGHT - (GAME_HEIGHT / 3)
+        );
         batch.end();
     }
 
@@ -171,12 +171,7 @@ public class MainMenu implements Screen {
     private void renderLoadingScreen() {
         if (isLoading) {
             batch.begin();
-            batch.draw(loadingScreen, 0, 0);
-            if (i18n.getBundle().getLocale().getLanguage().equals("")) {
-                batch.draw(gameIcon, 1010, 75);
-            } else if (i18n.getBundle().getLocale().getLanguage().equals("pt")) {
-                batch.draw(gameIcon, 980, 75);
-            }
+            batch.draw(loadingScreen, 0, 0, GAME_WIDTH, GAME_HEIGHT);
             batch.end();
             loadingStage.draw();
         }
