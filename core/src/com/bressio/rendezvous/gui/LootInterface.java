@@ -54,6 +54,8 @@ public class LootInterface implements Disposable {
     private EntityObject selectedInventoryItem;
     private EntityObject selectedEquipmentItem;
 
+    private int selectedIndex;
+
     private Image background;
     private Image soldierBody;
 
@@ -194,6 +196,7 @@ public class LootInterface implements Disposable {
             } else if (originList == equipmentItems) {
                 selectedEquipmentItem = originList.get(index);
             }
+            selectedIndex = index;
             originList.set(index, new Empty(match));
             updateWindows();
             return true;
@@ -218,6 +221,26 @@ public class LootInterface implements Disposable {
                 destinyList.set(index, selectedEquipmentItem);
                 onItemDropComplete();
             }
+        } else {
+            if (acceptInventoryItem && selectedInventoryItem != null &&
+                    !Armor.class.isAssignableFrom(destinyList.get(index).getClass()) &&
+                    !Helmet.class.isAssignableFrom(destinyList.get(index).getClass())) {
+                inventoryItems.set(selectedIndex, destinyList.get(index));
+                destinyList.set(index, selectedInventoryItem);
+                onItemDropComplete();
+            } else if ((acceptLootItem && selectedLootItem != null) &&
+                    (equipmentFitIndex(selectedLootItem, index) || !isEquipmentSlot) &&
+                    (!itemIsEquipment(selectedLootItem) || acceptInventoryEquipmentItem)) {
+                lootItems.set(selectedIndex, destinyList.get(index));
+                destinyList.set(index, selectedLootItem);
+                onItemDropComplete();
+            } else if ((acceptEquipmentItem && selectedEquipmentItem != null) &&
+                    (equipmentFitIndex(selectedEquipmentItem, index) || !isEquipmentSlot) &&
+                    equipmentsMatch(selectedEquipmentItem, destinyList.get(index))) {
+                equipmentItems.set(selectedIndex, destinyList.get(index));
+                destinyList.set(index, selectedEquipmentItem);
+                onItemDropComplete();
+            }
         }
     }
 
@@ -229,6 +252,11 @@ public class LootInterface implements Disposable {
     private boolean equipmentFitIndex(EntityObject selectedItem, int index) {
         return ((Helmet.class.isAssignableFrom(selectedItem.getClass()) && index == 0) ||
                 (Armor.class.isAssignableFrom(selectedItem.getClass()) && index == 1));
+    }
+
+    private boolean equipmentsMatch(EntityObject objA, EntityObject objB) {
+        return (Helmet.class.isAssignableFrom(objA.getClass()) && Helmet.class.isAssignableFrom(objB.getClass())) ||
+                Armor.class.isAssignableFrom(objA.getClass()) && Armor.class.isAssignableFrom(objB.getClass());
     }
 
     private void onItemDropComplete() {
