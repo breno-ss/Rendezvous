@@ -51,9 +51,7 @@ public abstract class InteractiveTile {
         return map;
     }
 
-
-
-    Body getBody() {
+    public Body getBody() {
         return body;
     }
 

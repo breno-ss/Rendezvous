@@ -124,6 +124,9 @@ public class Match implements Screen {
         world = new World(GRAVITY, true);
         worldBuilder = new WorldBuilder(this);
         player = new Player(this, 35, 5, 8, new Vector2(3800, 3800));//worldBuilder.getPlayerSpawnPoint());
+        for (Enemy enemy : worldBuilder.getEnemies()) {
+            enemy.getAi().wakeUp(worldBuilder);
+        }
         world.setContactListener(new WorldContactListener());
         rendezvousController = new RendezvousController(this);
         bullets = new ArrayList<>();
@@ -151,7 +154,7 @@ public class Match implements Screen {
         if (SniperRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 2, .05f);
         } else if (AssaultRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
-            cameraZoom = MathUtils.lerp(cameraZoom, 1.3f, .05f);
+            cameraZoom = MathUtils.lerp(cameraZoom, 5, .05f);
         } else if (Pistol.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 1.1f, .05f);
         } else {
@@ -295,6 +298,10 @@ public class Match implements Screen {
 
     public RendezvousController getRendezvousController() {
         return rendezvousController;
+    }
+
+    public WorldBuilder getWorldBuilder() {
+        return worldBuilder;
     }
 
     public OrthographicCamera getCamera() {

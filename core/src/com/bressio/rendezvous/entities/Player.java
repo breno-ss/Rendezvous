@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.bressio.rendezvous.entities.objects.EntityObject;
+import com.bressio.rendezvous.entities.objects.PlayerInventory;
 import com.bressio.rendezvous.entities.objects.weapons.Weapon;
 import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.graphics.AnimationRegion;
@@ -23,11 +24,32 @@ public class Player extends Soldier {
     }
 
     @Override
+    protected void init() {
+        super.init();
+        setInventory(new PlayerInventory(getMatch()));
+    }
+
+    @Override
     public void update(float delta) {
         super.update(delta);
         getInventory().update(delta);
         handleKeyboardInput(delta);
         handleMouseInput(delta);
+    }
+
+    @Override
+    protected void verifyItems() {
+        Object selectedObjectClass = getInventory().getItem(getMatch().getHud().getSelectedSlot()).getClass();
+        Object selectedAmorClass = getInventory().getEquipmentItems().get(1).getClass();
+        Object selectedHelmetClass = getInventory().getEquipmentItems().get(0).getClass();
+
+        if (selectedObjectClass != getLastSelectedObjectClass() || selectedAmorClass != getLastEquippedArmorClass() ||
+                selectedHelmetClass != getLastEquippedHelmetClass()) {
+            getAnimator().verify(selectedAmorClass, selectedHelmetClass, selectedObjectClass);
+        }
+        setLastSelectedObjectClass(selectedObjectClass);
+        setLastEquippedArmorClass(selectedAmorClass);
+        setLastEquippedHelmetClass(selectedHelmetClass);
     }
 
     private void handleKeyboardInput(float delta) {
@@ -52,20 +74,16 @@ public class Player extends Soldier {
             }
 
             if (directionX != 0 || directionY != 0) {
-                if (InputTracker.getButtonsPressed() == 1) {
-                    getBody().applyForce(new Vector2(directionX, directionY), getBody().getWorldCenter(), true);
-                } else {
-                    float normalization = (float) (
-                            (getSpeed() + Math.pow(InputTracker.getButtonsPressed(), 2)) /
-                                    (getSpeed() * InputTracker.getButtonsPressed()));
+                    Vector2 normalizedDirection = new Vector2(directionX, directionY).nor();
                     getBody().applyForce(
-                            new Vector2(directionX * normalization, directionY * normalization),
-                            getBody().getWorldCenter(), true);
-                }
+                            new Vector2(normalizedDirection.x * getSpeed(), normalizedDirection.y * getSpeed()),
+                            getBody().getWorldCenter(),
+                            true
+                    );
             }
 
             if (!actionsSemiBlocked) {
-                if (InputTracker.isPressed(InputTracker.R) &&
+                if (InputTracker.isPressed(InputTracker.R) && !Gdx.input.isButtonPressed(Input.Buttons.LEFT) &&
                         (getMatch().getState() == Match.GameState.RUNNING ||
                                 getMatch().getState() == Match.GameState.TACTICAL)) {
 

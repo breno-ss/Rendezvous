@@ -41,6 +41,7 @@ public class WorldBuilder {
     private ArrayList<Crate> crates;
     private ArrayList<Chest> chests;
     private ArrayList<Enemy> enemies;
+    private ArrayList<Building> buildings;
     private Match match;
 
     public WorldBuilder(Match match) {
@@ -60,6 +61,7 @@ public class WorldBuilder {
         chests = new ArrayList<>();
         crates = new ArrayList<>();
         enemies = new ArrayList<>();
+        buildings = new ArrayList<>();
     }
 
     private void buildPolygonalObject(Layer layer) {
@@ -123,7 +125,7 @@ public class WorldBuilder {
                 match.getMap().getLayers().get(Layer.BUILDING_SENSOR.index).getObjects()
                         .getByType(RectangleMapObject.class)) {
             Rectangle rect = ((RectangleMapObject) object).getRectangle();
-            new Building(rect, match);
+            buildings.add(new Building(rect, match));
         }
     }
 
@@ -161,5 +163,9 @@ public class WorldBuilder {
 
     public ArrayList<Enemy> getEnemies() {
         return enemies;
+    }
+
+    public ArrayList<Building> getBuildings() {
+        return buildings;
     }
 }

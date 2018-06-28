@@ -53,9 +53,8 @@ public abstract class Soldier extends Entity {
         buildBody();
     }
 
-    private void init() {
+    protected void init() {
         animator = new Animator(this, animationRegion);
-        inventory = new Inventory(getMatch());
         setOrigin(pScaleCenter(animationRegion.getFrameWidth()), pScaleCenter(animationRegion.getFrameHeight()));
         setBounds(0, 0, pScale(animationRegion.getFrameWidth()), pScale(animationRegion.getFrameHeight()));
         setRegion(animator.getIdleTexture());
@@ -83,19 +82,7 @@ public abstract class Soldier extends Entity {
         verifyItems();
     }
 
-    private void verifyItems() {
-        Object selectedObjectClass = inventory.getItem(getMatch().getHud().getSelectedSlot()).getClass();
-        Object selectedAmorClass = inventory.getEquipmentItems().get(1).getClass();
-        Object selectedHelmetClass = inventory.getEquipmentItems().get(0).getClass();
-
-        if (selectedObjectClass != lastSelectedObjectClass || selectedAmorClass != lastEquippedArmorClass ||
-                selectedHelmetClass != lastEquippedHelmetClass) {
-            animator.verify(selectedAmorClass, selectedHelmetClass, selectedObjectClass);
-        }
-        lastSelectedObjectClass = selectedObjectClass;
-        lastEquippedArmorClass = selectedAmorClass;
-        lastEquippedHelmetClass = selectedHelmetClass;
-    }
+    protected abstract void verifyItems();
 
     @Override
     public void draw(Batch batch) {
@@ -129,7 +116,7 @@ public abstract class Soldier extends Entity {
         return inventory;
     }
 
-    int getSpeed() {
+    public int getSpeed() {
         return speed;
     }
 
@@ -151,5 +138,37 @@ public abstract class Soldier extends Entity {
 
     public Fixture getFixture() {
         return fixture;
+    }
+
+    public void setInventory(Inventory inventory) {
+        this.inventory = inventory;
+    }
+
+    public Object getLastSelectedObjectClass() {
+        return lastSelectedObjectClass;
+    }
+
+    public Object getLastEquippedArmorClass() {
+        return lastEquippedArmorClass;
+    }
+
+    public Object getLastEquippedHelmetClass() {
+        return lastEquippedHelmetClass;
+    }
+
+    public void setLastSelectedObjectClass(Object lastSelectedObjectClass) {
+        this.lastSelectedObjectClass = lastSelectedObjectClass;
+    }
+
+    public void setLastEquippedArmorClass(Object lastEquippedArmorClass) {
+        this.lastEquippedArmorClass = lastEquippedArmorClass;
+    }
+
+    public void setLastEquippedHelmetClass(Object lastEquippedHelmetClass) {
+        this.lastEquippedHelmetClass = lastEquippedHelmetClass;
+    }
+
+    public Animator getAnimator() {
+        return animator;
     }
 }

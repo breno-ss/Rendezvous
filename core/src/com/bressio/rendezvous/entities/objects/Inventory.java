@@ -2,19 +2,15 @@ package com.bressio.rendezvous.entities.objects;
 
 import com.bressio.rendezvous.entities.objects.ammo.Ammo;
 import com.bressio.rendezvous.entities.objects.ammo.FiveFiveSix;
-import com.bressio.rendezvous.entities.objects.ammo.Nine;
-import com.bressio.rendezvous.entities.objects.ammo.SevenSixTwo;
 import com.bressio.rendezvous.entities.objects.equipment.armor.Armor;
 import com.bressio.rendezvous.entities.objects.equipment.helmets.Helmet;
 import com.bressio.rendezvous.entities.objects.weapons.Weapon;
 import com.bressio.rendezvous.entities.objects.weapons.ars.W16A;
-import com.bressio.rendezvous.entities.objects.weapons.pistols.P26;
-import com.bressio.rendezvous.entities.objects.weapons.srs.M20;
 import com.bressio.rendezvous.scenes.Match;
 
 import java.util.ArrayList;
 
-public class Inventory {
+public abstract class Inventory {
 
     private Match match;
     private ArrayList<EntityObject> items;
@@ -29,11 +25,11 @@ public class Inventory {
     private void addItems() {
         items = new ArrayList<>();
         items.add(new W16A(match));
-        items.add(new P26(match));
-        items.add(new M20(match));
         items.add(new FiveFiveSix(match));
-        items.add(new SevenSixTwo(match));
-        items.add(new Nine(match));
+        items.add(new FiveFiveSix(match));
+        items.add(new FiveFiveSix(match));
+        items.add(new FiveFiveSix(match));
+        items.add(new FiveFiveSix(match));
 
         equipmentItems = new ArrayList<>();
         equipmentItems.add(new Empty(match));
@@ -48,30 +44,11 @@ public class Inventory {
         isSelectedBeingUsed = selectedBeingUsed;
     }
 
-    public void useSelectedItem() {
-        Object selectedSlot = getItem(match.getHud().getSelectedSlot());
-        if (selectedSlot.getClass() == Medkit.class) {
-            isSelectedBeingUsed = true;
-            match.getProgress().setProgressSpeed(Medkit.timeToTransform());
-            match.getPlayer().blockActions();
-            match.getProgress().setActivity("healing");
-        } else if (Weapon.class.isAssignableFrom(selectedSlot.getClass())) {
-            ((Weapon)selectedSlot).shoot();
-        }
-    }
+    public abstract void useSelectedItem();
 
-    public void reloadSelectedWeapon() {
-        Object selectedSlotClass = getItem(match.getHud().getSelectedSlot());
+    public abstract void reloadSelectedWeapon();
 
-         if (hasAmmoForWeaponType((Weapon)selectedSlotClass)) {
-            isSelectedBeingUsed = true;
-            match.getProgress().setProgressSpeed(((Weapon)selectedSlotClass).getTimeToTransform());
-            match.getPlayer().slowDown();
-            match.getProgress().setActivity("reloading");
-        }
-    }
-
-    private boolean hasAmmoForWeaponType(Weapon weapon) {
+    protected boolean hasAmmoForWeaponType(Weapon weapon) {
         for (EntityObject item : items) {
             if (Ammo.class.isAssignableFrom(item.getClass()) && weapon.getAmmoType() == item.getClass()) {
                 return true;
@@ -80,40 +57,9 @@ public class Inventory {
         return false;
     }
 
-    public void applyAction(){
-        getItem(match.getHud().getSelectedSlot()).transformSoldier(match.getPlayer());
-        if (items.get(match.getHud().getSelectedSlot()).getClass() == Medkit.class) {
-            items.set(match.getHud().getSelectedSlot(), new Empty(match));
-        }
-    }
+    public abstract void applyAction();
 
-    public void transferAmmo(int bulletsInWeapon) {
-        int bullets = bulletsInWeapon;
-        int amountNeeded = ((Weapon)getItem(match.getHud().getSelectedSlot())).getMagCapacity() - bulletsInWeapon;
-        for (int i = 0; i < items.size(); i++) {
-
-            if (Ammo.class.isAssignableFrom(items.get(i).getClass()) && amountNeeded > 0 &&
-                    ((Weapon)getItem(match.getHud().getSelectedSlot())).getAmmoType() == items.get(i).getClass()) {
-
-                Ammo ammoBox = ((Ammo)items.get(i));
-                if (ammoBox.getAmount() >= amountNeeded) {
-                    bullets += amountNeeded;
-                    ammoBox.useAmount(amountNeeded);
-                    amountNeeded = 0;
-                } else {
-                    bullets += ammoBox.getAmount();
-                    ammoBox.useAll();
-                    amountNeeded -= ammoBox.getAmount();
-                }
-                if (ammoBox.getAmount() == 0) {
-                    items.set(i, new Empty(match));
-                } else {
-                    ammoBox.updateName();
-                }
-            }
-        }
-        ((Weapon)getItem(match.getHud().getSelectedSlot())).setBullets(bullets);
-    }
+    public abstract void transferAmmo(int bulletsInWeapon);
 
     public void update(float delta) {
         setArmorPoints(delta);
@@ -126,28 +72,9 @@ public class Inventory {
         match.getPlayer().setArmor(armorPoints);
     }
 
-    public String getBulletsInMagazine() {
-        if (Weapon.class.isAssignableFrom(getItem(match.getHud().getSelectedSlot()).getClass())) {
-            return String.valueOf(((Weapon)getItem(match.getHud().getSelectedSlot())).getBullets());
-        } else {
-            return null;
-        }
-    }
+    public abstract String getBulletsInMagazine();
 
-    public String getBulletsInAmmoBoxes() {
-        if (Weapon.class.isAssignableFrom(getItem(match.getHud().getSelectedSlot()).getClass())) {
-            int bullets = 0;
-            for (EntityObject item : items) {
-                if (Ammo.class.isAssignableFrom(item.getClass()) &&
-                        ((Weapon)getItem(match.getHud().getSelectedSlot())).getAmmoType() == item.getClass()) {
-                        bullets += ((Ammo)item).getAmount();
-                }
-            }
-            return String.valueOf(bullets);
-        } else {
-            return null;
-        }
-    }
+    public abstract String getBulletsInAmmoBoxes();
 
     public ArrayList<EntityObject> getItems() {
         return items;
@@ -159,5 +86,9 @@ public class Inventory {
 
     public EntityObject getItem(int index) {
         return items.get(index);
+    }
+
+    public Match getMatch() {
+        return match;
     }
 }

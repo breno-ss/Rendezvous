@@ -163,16 +163,6 @@ public final class InputTracker extends InputAdapter {
         return keyPresses[key];
     }
 
-    public static int getButtonsPressed() {
-        int count = 0;
-        for (int i = 0; i < MAX; i++) {
-            if (keyPresses[i]) {
-                count++;
-            }
-        }
-        return count;
-    }
-
     public int getRelativeX() {
         return (Gdx.input.getX() < GAME_WIDTH / 2 ?
                 -((GAME_WIDTH / 2) - Gdx.input.getX()) : Gdx.input.getX() - (GAME_WIDTH / 2));
