@@ -18,5 +18,6 @@ public class W16A extends AssaultRifle {
         setReloadTime(4);
         setMagCapacity(20);
         setAccuracy(4);
+        setRarity(3);
     }
 }

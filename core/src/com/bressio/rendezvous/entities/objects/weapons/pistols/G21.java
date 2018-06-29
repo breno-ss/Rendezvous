@@ -18,5 +18,6 @@ public class G21 extends Pistol {
         setReloadTime(2);
         setMagCapacity(15);
         setAccuracy(3);
+        setRarity(11);
     }
 }

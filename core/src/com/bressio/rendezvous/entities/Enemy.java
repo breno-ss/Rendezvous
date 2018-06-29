@@ -62,7 +62,17 @@ public class Enemy extends Soldier implements SteeringBehavior {
 
     @Override
     protected void verifyItems() {
+        Object selectedObjectClass = getInventory().getItem(ai.getSelectedInventorySlot()).getClass();
+        Object selectedAmorClass = getInventory().getEquipmentItems().get(1).getClass();
+        Object selectedHelmetClass = getInventory().getEquipmentItems().get(0).getClass();
 
+        if (selectedObjectClass != getLastSelectedObjectClass() || selectedAmorClass != getLastEquippedArmorClass() ||
+                selectedHelmetClass != getLastEquippedHelmetClass()) {
+            getAnimator().verify(selectedAmorClass, selectedHelmetClass, selectedObjectClass);
+        }
+        setLastSelectedObjectClass(selectedObjectClass);
+        setLastEquippedArmorClass(selectedAmorClass);
+        setLastEquippedHelmetClass(selectedHelmetClass);
     }
 
     @Override

@@ -18,5 +18,6 @@ public class STAR extends AssaultRifle {
         setReloadTime(3);
         setMagCapacity(20);
         setAccuracy(5);
+        setRarity(5);
     }
 }

@@ -18,5 +18,6 @@ public class P26 extends Pistol {
         setReloadTime(1);
         setMagCapacity(17);
         setAccuracy(2);
+        setRarity(8);
     }
 }

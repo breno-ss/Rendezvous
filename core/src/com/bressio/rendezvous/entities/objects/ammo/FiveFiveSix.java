@@ -19,5 +19,6 @@ public class FiveFiveSix extends Ammo{
         setAmount(30);
         updateName();
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.FIVE_FIVE_SIX));
+        setRarity(9);
     }
 }

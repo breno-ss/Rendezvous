@@ -16,7 +16,7 @@ public class Chest extends Loot {
     }
 
     private void addItems() {
-        for (int i = 0; i < 2; i++) {
+        for (int i = 0; i < 6; i++) {
             getItems().add(getRandomItem());
         }
     }

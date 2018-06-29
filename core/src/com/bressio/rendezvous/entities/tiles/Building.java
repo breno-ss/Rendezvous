@@ -2,6 +2,7 @@ package com.bressio.rendezvous.entities.tiles;
 
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.scenes.Match;
 
@@ -76,5 +77,15 @@ public class Building extends InteractiveTile {
     @Override
     public void onPlayerLeave() {
         traverseCeilingTiles(TraverseMode.SHOW);
+    }
+
+    @Override
+    public void onEnemyEnter(Enemy enemy) {
+
+    }
+
+    @Override
+    public void onEnemyLeave(Enemy enemy) {
+
     }
 }

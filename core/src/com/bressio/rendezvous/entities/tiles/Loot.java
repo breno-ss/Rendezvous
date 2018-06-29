@@ -3,6 +3,8 @@ package com.bressio.rendezvous.entities.tiles;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
+import com.bressio.rendezvous.entities.Enemy;
+import com.bressio.rendezvous.entities.objects.EntityObject;
 import com.bressio.rendezvous.entities.objects.Medkit;
 import com.bressio.rendezvous.entities.objects.ammo.FiveFiveSix;
 import com.bressio.rendezvous.entities.objects.ammo.Nine;
@@ -18,7 +20,6 @@ import com.bressio.rendezvous.entities.objects.weapons.pistols.P26;
 import com.bressio.rendezvous.entities.objects.weapons.srs.AW3;
 import com.bressio.rendezvous.entities.objects.weapons.srs.M20;
 import com.bressio.rendezvous.graphics.ResourceHandler;
-import com.bressio.rendezvous.entities.objects.EntityObject;
 import com.bressio.rendezvous.scenes.Match;
 import com.bressio.rendezvous.scheme.MathUtils;
 
@@ -79,6 +80,16 @@ public abstract class Loot extends InteractiveTile {
     @Override
     public void onPlayerLeave() {
         playerIsColliding = false;
+    }
+
+    @Override
+    public void onEnemyEnter(Enemy enemy) {
+        enemy.getAi().searchForItems(items);
+    }
+
+    @Override
+    public void onEnemyLeave(Enemy enemy) {
+
     }
 
     public EntityObject getRandomItem() {

@@ -1,6 +1,7 @@
 package com.bressio.rendezvous.events;
 
 import com.badlogic.gdx.physics.box2d.*;
+import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.entities.projectiles.Bullet;
 import com.bressio.rendezvous.entities.tiles.InteractiveTile;
 
@@ -38,6 +39,22 @@ public class WorldContactListener implements ContactListener {
                 } else {
                     ((Bullet) fixtureB.getUserData()).destroy();
                 }
+                break;
+            case ENEMY_TAG | LOOT_TAG:
+                if(fixtureA.getFilterData().categoryBits == ENEMY_TAG) {
+                    if (!isEndingContact) {
+                        ((InteractiveTile) fixtureB.getUserData()).onEnemyEnter((Enemy)fixtureA.getUserData());
+                    } else {
+                        ((InteractiveTile) fixtureB.getUserData()).onEnemyLeave((Enemy)fixtureA.getUserData());
+                    }
+                } else {
+                    if (!isEndingContact) {
+                        ((InteractiveTile) fixtureA.getUserData()).onEnemyEnter((Enemy)fixtureB.getUserData());
+                    } else {
+                        ((InteractiveTile) fixtureA.getUserData()).onEnemyLeave((Enemy)fixtureB.getUserData());
+                    }
+                }
+                break;
         }
     }
 

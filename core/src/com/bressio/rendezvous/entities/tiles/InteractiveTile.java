@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.forge.BodyBuilder;
 import com.bressio.rendezvous.scenes.Match;
 
@@ -46,6 +47,10 @@ public abstract class InteractiveTile {
     public abstract void onPlayerEnter();
 
     public abstract void onPlayerLeave();
+
+    public abstract void onEnemyEnter(Enemy enemy);
+
+    public abstract void onEnemyLeave(Enemy enemy);
 
     TiledMap getMap() {
         return map;

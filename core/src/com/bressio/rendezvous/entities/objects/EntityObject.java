@@ -6,13 +6,14 @@ import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.languages.Internationalization;
 import com.bressio.rendezvous.scenes.Match;
 
-public abstract class EntityObject {
+public abstract class EntityObject implements Comparable<EntityObject>{
 
     private Match match;
     private String name;
     private Texture icon;
     private ResourceHandler resources;
     private Internationalization i18n;
+    private int rarity;
 
     public EntityObject(Match match) {
         this.match = match;
@@ -52,5 +53,18 @@ public abstract class EntityObject {
 
     public Match getMatch() {
         return match;
+    }
+
+    public int getRarity() {
+        return rarity;
+    }
+
+    public void setRarity(int rarity) {
+        this.rarity = rarity;
+    }
+
+    @Override
+    public int compareTo(EntityObject o) {
+        return Integer.compare(this.getRarity(), o.getRarity());
     }
 }

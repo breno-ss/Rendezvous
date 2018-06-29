@@ -18,5 +18,6 @@ public class AW3 extends SniperRifle {
         setReloadTime(5);
         setMagCapacity(1);
         setAccuracy(1);
+        setRarity(1);
     }
 }

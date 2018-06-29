@@ -62,7 +62,6 @@ public abstract class Inventory {
         int armorPoints = 0;
         armorPoints += equipmentItems.get(0).getClass() != Empty.class ? ((Helmet)equipmentItems.get(0)).getArmorPoints() : 0;
         armorPoints += equipmentItems.get(1).getClass() != Empty.class ? ((Armor)equipmentItems.get(1)).getArmorPoints() : 0;
-        System.out.println(armorPoints);
         match.getPlayer().setArmor(armorPoints);
     }
 

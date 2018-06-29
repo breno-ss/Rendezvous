@@ -158,7 +158,7 @@ public class Match implements Screen {
         } else if (Pistol.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 1.1f, .05f);
         } else {
-            cameraZoom = MathUtils.lerp(cameraZoom, 1, .05f);
+            cameraZoom = MathUtils.lerp(cameraZoom, 5, .05f);
         }
         viewport.setWorldSize(pScale(GAME_WIDTH) * cameraZoom, pScale(GAME_HEIGHT) * cameraZoom);
         viewport.apply();

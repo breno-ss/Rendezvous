@@ -4,12 +4,21 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.entities.Soldier;
+import com.bressio.rendezvous.entities.objects.Empty;
+import com.bressio.rendezvous.entities.objects.EntityObject;
+import com.bressio.rendezvous.entities.objects.equipment.armor.Armor;
+import com.bressio.rendezvous.entities.objects.equipment.helmets.Helmet;
+import com.bressio.rendezvous.entities.objects.weapons.Weapon;
+import com.bressio.rendezvous.entities.objects.weapons.ars.AssaultRifle;
+import com.bressio.rendezvous.entities.objects.weapons.pistols.Pistol;
+import com.bressio.rendezvous.entities.objects.weapons.srs.SniperRifle;
 import com.bressio.rendezvous.entities.tiles.Loot;
 import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.scenes.Match;
 import com.bressio.rendezvous.scheme.MathUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class AI {
 
@@ -23,6 +32,8 @@ public class AI {
     private boolean isLooting;
     private boolean isGoingByAltPath;
     private boolean isAltPathTimedOut;
+
+    private int selectedInventorySlot;
 
     private enum State {
         IDLE, CALCULATING_ROUTE, SEEKING_LOOT, LOOTING, FINDING_PATH
@@ -40,6 +51,7 @@ public class AI {
 
     private void init() {
         spatialMemory = new ArrayList<>();
+        selectedInventorySlot = 0;
     }
 
     public void update(float delta) {
@@ -57,6 +69,8 @@ public class AI {
                 findPath();
                 break;
         }
+
+        selectedInventorySlot = selectWeapon();
     }
 
     public void wakeUp(WorldBuilder worldBuilder) {
@@ -93,7 +107,7 @@ public class AI {
         } else {
             if (((SteeringBehavior)soldier).seek(target)) {
                 if (soldier.getBody().getLinearVelocity().x == 0 && soldier.getBody().getLinearVelocity().y == 0) {
-                    if (!match.getCamera().frustum.pointInFrustum(
+                    if (match.getCamera().frustum.pointInFrustum(
                             soldier.getBody().getPosition().x, soldier.getBody().getPosition().y, 0
                     )) {
                         soldier.getBody().getFixtureList().first().setSensor(true);
@@ -152,5 +166,155 @@ public class AI {
     private void setState(State state) {
         previousState = this.state;
         this.state = state;
+    }
+
+    public void searchForItems(ArrayList<EntityObject> items) {
+        Collections.sort(items);
+        for (int i = 0; i < items.size(); i++) {
+            exchangeItem(items, i);
+        }
+        // Print intems of each enemy
+//        System.out.println(" = = = = = = = = = = = = =");
+//        for (EntityObject item : soldier.getInventory().getItems()) {
+//            System.out.println(item.getName());
+//        }
+//        System.out.println("- - -");
+//        for (EntityObject item : soldier.getInventory().getEquipmentItems()) {
+//            System.out.println(item.getName());
+//        }
+    }
+
+    private void exchangeItem(ArrayList<EntityObject> items, int index) {
+        if (!hasItem(items.get(index))) {
+            if (Helmet.class.isAssignableFrom(items.get(index).getClass())) {
+                if (!hasHelmet()) {
+                    if (soldier.getInventory().getEquipmentItems().get(0).getClass() == Empty.class) {
+                        soldier.getInventory().getEquipmentItems().set(0, items.get(index));
+                        items.set(index, new Empty(match));
+                    }
+                } else if (isItemWorthSwapping(items.get(index))) {
+                    EntityObject escrow = soldier.getInventory().getEquipmentItems().get(0);
+                    soldier.getInventory().getEquipmentItems().set(0, items.get(index));
+                    items.set(index, escrow);
+                }
+            } else if (Armor.class.isAssignableFrom(items.get(index).getClass())) {
+                if (!hasArmor()) {
+                    if (soldier.getInventory().getEquipmentItems().get(1).getClass() == Empty.class) {
+                        soldier.getInventory().getEquipmentItems().set(1, items.get(index));
+                        items.set(index, new Empty(match));
+                    }
+                } else if (isItemWorthSwapping(items.get(index))) {
+                    EntityObject escrow = soldier.getInventory().getEquipmentItems().get(1);
+                    soldier.getInventory().getEquipmentItems().set(1, items.get(index));
+                    items.set(index, escrow);
+                }
+            } else {
+                if (!isInventoryFull()) {
+                    if (!Weapon.class.isAssignableFrom(items.get(index).getClass()) || !hasWeapon()) {
+                        for (int j = 0; j < soldier.getInventory().getItems().size(); j++) {
+                            if (soldier.getInventory().getItems().get(j).getClass() == Empty.class) {
+                                soldier.getInventory().getItems().set(j, items.get(index));
+                                items.set(index, new Empty(match));
+                            }
+                        }
+                    }
+                } else {
+                    for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
+                        if (isItemWorthSwapping(items.get(index), soldier.getInventory().getItems().get(i))) {
+                            EntityObject escrow = soldier.getInventory().getItems().get(i);
+                            soldier.getInventory().getItems().set(i, items.get(index));
+                            items.set(index, escrow);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private boolean hasItem(EntityObject lootItem) {
+        if (Armor.class.isAssignableFrom(lootItem.getClass()) ||
+                Helmet.class.isAssignableFrom(lootItem.getClass())) {
+            for (EntityObject item : soldier.getInventory().getEquipmentItems()) {
+                if (lootItem.getClass() == item.getClass()) {
+                    return true;
+                }
+            }
+        } else {
+            for (EntityObject item : soldier.getInventory().getItems()) {
+                if (lootItem.getClass() == item.getClass()) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean hasWeapon() {
+        for (EntityObject item : soldier.getInventory().getItems()) {
+            if (Weapon.class.isAssignableFrom(item.getClass())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean isItemWorthSwapping(EntityObject lootItem) {
+        if (Helmet.class.isAssignableFrom(lootItem.getClass())) {
+            return lootItem.getRarity() < soldier.getInventory().getEquipmentItems().get(0).getRarity();
+        } else if (Armor.class.isAssignableFrom(lootItem.getClass())) {
+            return lootItem.getRarity() < soldier.getInventory().getEquipmentItems().get(1).getRarity();
+        }
+        return false;
+    }
+
+    private boolean isItemWorthSwapping(EntityObject lootItem, EntityObject inventoryItem) {
+         if (Weapon.class.isAssignableFrom(lootItem.getClass()) && Weapon.class.isAssignableFrom(inventoryItem.getClass())) {
+             return lootItem.getRarity() < inventoryItem.getRarity();
+        }
+        return false;
+    }
+
+    private boolean isInventoryFull() {
+        int capacity = soldier.getInventory().getItems().size();
+
+        for (EntityObject item : soldier.getInventory().getItems()) {
+            if (item.getClass() != Empty.class) {
+                capacity--;
+            }
+        }
+
+        return capacity == 1;
+    }
+
+    private boolean hasHelmet() {
+        return soldier.getInventory().getEquipmentItems().get(0).getClass() != Empty.class;
+    }
+
+    private boolean hasArmor() {
+        return soldier.getInventory().getEquipmentItems().get(1).getClass() != Empty.class;
+    }
+
+    public int getSelectedInventorySlot() {
+        return selectedInventorySlot;
+    }
+
+    private int selectWeapon() {
+        ArrayList<EntityObject> items = soldier.getInventory().getItems();
+        for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
+            if (SniperRifle.class.isAssignableFrom(items.get(i).getClass())) {
+                return i;
+            }
+        }
+        for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
+             if (AssaultRifle.class.isAssignableFrom(items.get(i).getClass())) {
+                 return i;
+            }
+        }
+        for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
+            if (Pistol.class.isAssignableFrom(items.get(i).getClass())) {
+                return i;
+            }
+        }
+        return 0;
     }
 }

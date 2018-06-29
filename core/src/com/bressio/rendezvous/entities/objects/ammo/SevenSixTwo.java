@@ -19,5 +19,6 @@ public class SevenSixTwo extends Ammo {
         setAmount(20);
         updateName();
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.SEVEN_SIX_TWO));
+        setRarity(6);
     }
 }

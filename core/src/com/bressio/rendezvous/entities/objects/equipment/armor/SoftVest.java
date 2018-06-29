@@ -21,5 +21,6 @@ public class SoftVest extends Armor {
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.SOFT_VEST));
         setArmorPoints(20);
         setDamage(0);
+        setRarity(12);
     }
 }

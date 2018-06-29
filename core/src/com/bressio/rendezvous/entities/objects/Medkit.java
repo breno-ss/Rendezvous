@@ -20,6 +20,7 @@ public class Medkit extends EntityObject{
     private void setAttributes() {
         setName(getI18n().getBundle().get("medkit"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.MEDKIT_ICON));
+        setRarity(13);
     }
 
     public static float timeToTransform() {

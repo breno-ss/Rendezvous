@@ -44,7 +44,7 @@ public class LootInterface implements Disposable {
     private Match match;
 
     private int width = 300;
-    private int height = 400;
+    private int height = 500;
 
     private ArrayList<EntityObject> lootItems;
     private ArrayList<EntityObject> inventoryItems;

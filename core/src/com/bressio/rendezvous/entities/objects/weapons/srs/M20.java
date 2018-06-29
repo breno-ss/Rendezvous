@@ -18,5 +18,6 @@ public class M20 extends SniperRifle {
         setReloadTime(4);
         setMagCapacity(5);
         setAccuracy(1);
+        setRarity(2);
     }
 }

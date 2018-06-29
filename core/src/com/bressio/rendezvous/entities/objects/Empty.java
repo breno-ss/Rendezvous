@@ -19,5 +19,6 @@ public class Empty extends EntityObject {
     private void setAttributes() {
         setName(getI18n().getBundle().get("empty"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.EMPTY_SLOT));
+        setRarity(14);
     }
 }
