@@ -4,5 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public interface SteeringBehavior {
 
-    void seek(Vector2 target);
+    boolean seek(Vector2 target);
+
+    void setVisible(boolean isVisible);
 }

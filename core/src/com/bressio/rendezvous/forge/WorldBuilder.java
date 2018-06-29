@@ -136,6 +136,10 @@ public class WorldBuilder {
             Ellipse rect = ((EllipseMapObject) object).getEllipse();
             enemies.add(new Enemy(match, 35, 5, 8, new Vector2(rect.x, rect.y)));
         }
+        // instantiate a single enemy
+//            Ellipse rect = ((EllipseMapObject) match.getMap().getLayers()
+//                    .get(Layer.ENEMY_SPAWN_POINTS.index).getObjects().getByType(EllipseMapObject.class).get(37)).getEllipse();
+//            enemies.add(new Enemy(match, 35, 5, 8, new Vector2(rect.x, rect.y)));
     }
 
     public Vector2 getPlayerSpawnPoint() {

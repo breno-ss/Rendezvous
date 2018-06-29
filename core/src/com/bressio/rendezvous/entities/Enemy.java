@@ -1,5 +1,6 @@
 package com.bressio.rendezvous.entities;
 
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.bressio.rendezvous.entities.objects.NPCInventory;
@@ -14,10 +15,13 @@ public class Enemy extends Soldier implements SteeringBehavior {
 
     private AI ai;
     private Vector2 target;
+    private boolean isVisible;
 
     public Enemy(Match match, float radius, float linearDamping, int speed, Vector2 position) {
         super(match, position, radius, linearDamping, speed, AnimationRegion.SOLDIER, ENEMY_TAG,
-                (short) (DEFAULT_TAG | BUILDING_TAG | LOOT_TAG | WATER_TAG | PLAYER_TAG | BULLET_TAG), null);
+                (short) (DEFAULT_TAG | BUILDING_TAG | LOOT_TAG | WATER_TAG | PLAYER_TAG | ENEMY_TAG | BULLET_TAG),
+                null);
+        isVisible = true;
         setUserData();
     }
 
@@ -35,10 +39,17 @@ public class Enemy extends Soldier implements SteeringBehavior {
     }
 
     @Override
+    public void draw(Batch batch) {
+        if (isVisible) {
+            super.draw(batch);
+        }
+    }
+
+    @Override
     protected void init() {
         super.init();
         setInventory(new NPCInventory(getMatch()));
-        ai = new AI(this);
+        ai = new AI(getMatch(), this);
     }
 
     @Override
@@ -55,13 +66,14 @@ public class Enemy extends Soldier implements SteeringBehavior {
     }
 
     @Override
-    public void seek(Vector2 target) {
+    public boolean seek(Vector2 target) {
         this.target = target;
         Vector2 direction = new Vector2();
         direction.x = target.x - getBody().getPosition().x;
         direction.y = target.y - getBody().getPosition().y;
         direction = direction.nor();
         getBody().applyForce(new Vector2(direction.x * getSpeed(), direction.y * getSpeed()), getBody().getWorldCenter(), true);
+        return true;
     }
 
     private void setUserData() {
@@ -70,5 +82,10 @@ public class Enemy extends Soldier implements SteeringBehavior {
 
     public AI getAi() {
         return ai;
+    }
+
+    @Override
+    public void setVisible(boolean visible) {
+        isVisible = visible;
     }
 }
