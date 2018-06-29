@@ -73,6 +73,11 @@ public class PlayerInventory extends Inventory{
     }
 
     @Override
+    public void update(float delta)  {
+        setArmorPoints(delta);
+    }
+
+    @Override
     public String getBulletsInMagazine() {
         if (Weapon.class.isAssignableFrom(getItem(getMatch().getHud().getSelectedSlot()).getClass())) {
             return String.valueOf(((Weapon)getItem(getMatch().getHud().getSelectedSlot())).getBullets());

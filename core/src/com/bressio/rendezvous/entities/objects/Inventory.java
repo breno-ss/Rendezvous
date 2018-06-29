@@ -1,11 +1,9 @@
 package com.bressio.rendezvous.entities.objects;
 
 import com.bressio.rendezvous.entities.objects.ammo.Ammo;
-import com.bressio.rendezvous.entities.objects.ammo.FiveFiveSix;
 import com.bressio.rendezvous.entities.objects.equipment.armor.Armor;
 import com.bressio.rendezvous.entities.objects.equipment.helmets.Helmet;
 import com.bressio.rendezvous.entities.objects.weapons.Weapon;
-import com.bressio.rendezvous.entities.objects.weapons.ars.W16A;
 import com.bressio.rendezvous.scenes.Match;
 
 import java.util.ArrayList;
@@ -24,12 +22,9 @@ public abstract class Inventory {
 
     private void addItems() {
         items = new ArrayList<>();
-        items.add(new W16A(match));
-        items.add(new FiveFiveSix(match));
-        items.add(new FiveFiveSix(match));
-        items.add(new FiveFiveSix(match));
-        items.add(new FiveFiveSix(match));
-        items.add(new FiveFiveSix(match));
+        for (int i = 0; i < 6; i++) {
+            items.add(new Empty(match));
+        }
 
         equipmentItems = new ArrayList<>();
         equipmentItems.add(new Empty(match));
@@ -61,14 +56,13 @@ public abstract class Inventory {
 
     public abstract void transferAmmo(int bulletsInWeapon);
 
-    public void update(float delta) {
-        setArmorPoints(delta);
-    }
+    public abstract void update(float delta);
 
-    private void setArmorPoints(float delta) {
+    protected void setArmorPoints(float delta) {
         int armorPoints = 0;
         armorPoints += equipmentItems.get(0).getClass() != Empty.class ? ((Helmet)equipmentItems.get(0)).getArmorPoints() : 0;
         armorPoints += equipmentItems.get(1).getClass() != Empty.class ? ((Armor)equipmentItems.get(1)).getArmorPoints() : 0;
+        System.out.println(armorPoints);
         match.getPlayer().setArmor(armorPoints);
     }
 

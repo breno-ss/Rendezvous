@@ -1,7 +1,6 @@
 package com.bressio.rendezvous.entities.tiles;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.bressio.rendezvous.entities.objects.Empty;
 import com.bressio.rendezvous.scenes.Match;
 
 public class Chest extends Loot {
@@ -17,8 +16,9 @@ public class Chest extends Loot {
     }
 
     private void addItems() {
-        getItems().add(new Empty(getMatch()));
-        getItems().add(new Empty(getMatch()));
+        for (int i = 0; i < 2; i++) {
+            getItems().add(getRandomItem());
+        }
     }
 
     @Override

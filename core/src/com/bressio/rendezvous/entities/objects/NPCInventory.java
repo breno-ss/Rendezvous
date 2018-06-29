@@ -29,6 +29,11 @@ public class NPCInventory extends Inventory{
     }
 
     @Override
+    public void update(float delta) {
+
+    }
+
+    @Override
     public String getBulletsInMagazine() {
         return null;
     }

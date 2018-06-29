@@ -154,7 +154,7 @@ public class Match implements Screen {
         if (SniperRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 2, .05f);
         } else if (AssaultRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
-            cameraZoom = MathUtils.lerp(cameraZoom, 5, .05f);
+            cameraZoom = MathUtils.lerp(cameraZoom, 1.3f, .05f);
         } else if (Pistol.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 1.1f, .05f);
         } else {
