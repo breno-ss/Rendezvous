@@ -12,15 +12,20 @@ public class HalfHelmet extends Helmet {
     }
 
     @Override
+    public void updateName() {
+        setName(getI18n().getBundle().get("halfHelmet") + " (" + getArmorPoints() + "%)");
+    }
+
+    @Override
     public boolean transformSoldier(Soldier soldier) {
         return false;
     }
 
     private void setAttributes() {
-        setName(getI18n().getBundle().get("halfHelmet"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.HALF_HELMET));
         setArmorPoints(30);
-        setDamage(0);
+        takeDamage(0);
         setRarity(9);
+        updateName();
     }
 }

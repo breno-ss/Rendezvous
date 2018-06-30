@@ -16,7 +16,7 @@ public class Nine extends Ammo {
     }
 
     private void setAttributes() {
-        setAmount(40);
+        setAmount(50);
         updateName();
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.NINE));
         setRarity(12);

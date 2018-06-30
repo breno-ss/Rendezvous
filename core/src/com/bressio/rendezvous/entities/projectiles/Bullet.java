@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.utils.Timer;
+import com.bressio.rendezvous.entities.objects.weapons.Weapon;
 import com.bressio.rendezvous.forge.BodyBuilder;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
@@ -15,6 +16,7 @@ import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 public class Bullet extends Sprite {
 
     private Match match;
+    private Weapon weapon;
     private Body body;
     private Vector2 position;
     private float radius;
@@ -23,10 +25,12 @@ public class Bullet extends Sprite {
     private int velocity;
 
     private boolean canDrawTexture;
+    private boolean isDestroyed;
 
-    public Bullet(Match match) {
+    public Bullet(Match match, Weapon weapon) {
         super(match.getResources().getTexture(ResourceHandler.TexturePath.BULLET));
         this.match = match;
+        this.weapon = weapon;
         init();
         buildBody();
         delayTextureAppearance();
@@ -57,6 +61,7 @@ public class Bullet extends Sprite {
                 .withRadius(pScale(radius))
                 .withCategoryBits(categoryBits)
                 .withMaskBits(maskBits)
+                .withSensor(true)
                 .withUserData(this)
                 .build();
         setRotation(match.getPlayer().getRotation());
@@ -80,5 +85,14 @@ public class Bullet extends Sprite {
 
     public void destroy() {
         match.getBullets().remove(this);
+        isDestroyed = true;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
+    }
+
+    public boolean isDestroyed() {
+        return isDestroyed;
     }
 }

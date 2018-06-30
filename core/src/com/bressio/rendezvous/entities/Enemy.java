@@ -48,16 +48,18 @@ public class Enemy extends Soldier implements SteeringBehavior {
     @Override
     protected void init() {
         super.init();
-        setInventory(new NPCInventory(getMatch()));
+        setInventory(new NPCInventory(getMatch(), this));
         ai = new AI(getMatch(), this);
     }
 
     @Override
     public void update(float delta) {
-        super.update(delta);
-        getInventory().update(delta);
-        ai.update(delta);
-        updateRotation(delta);
+        if (!isDead()) {
+            super.update(delta);
+            getInventory().update(delta);
+            ai.update(delta);
+            updateRotation(delta);
+        }
     }
 
     @Override
@@ -84,6 +86,13 @@ public class Enemy extends Soldier implements SteeringBehavior {
         direction = direction.nor();
         getBody().applyForce(new Vector2(direction.x * getSpeed(), direction.y * getSpeed()), getBody().getWorldCenter(), true);
         return true;
+    }
+
+    @Override
+    protected void die() {
+        setDead(true);
+        isVisible = true;
+        getBody().getFixtureList().first().setSensor(true);
     }
 
     private void setUserData() {

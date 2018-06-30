@@ -31,7 +31,7 @@ public abstract class Weapon extends EntityObject {
     public void shoot() {
         if (bullets > 0) {
             if (!isblocked) {
-                getMatch().addBullet(new Bullet(getMatch()));
+                getMatch().addBullet(new Bullet(getMatch(), this));
                 bullets--;
                 bulletTimeCount = 0;
                 isblocked = true;
@@ -92,5 +92,9 @@ public abstract class Weapon extends EntityObject {
 
     public int getMagCapacity() {
         return magCapacity;
+    }
+
+    public int getDamage() {
+        return damage;
     }
 }

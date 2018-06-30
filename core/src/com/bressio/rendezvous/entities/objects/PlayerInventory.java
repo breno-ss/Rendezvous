@@ -1,13 +1,19 @@
 package com.bressio.rendezvous.entities.objects;
 
+import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.entities.objects.ammo.Ammo;
+import com.bressio.rendezvous.entities.objects.ammo.FiveFiveSix;
 import com.bressio.rendezvous.entities.objects.weapons.Weapon;
+import com.bressio.rendezvous.entities.objects.weapons.ars.W16A;
 import com.bressio.rendezvous.scenes.Match;
 
 public class PlayerInventory extends Inventory{
 
-    public PlayerInventory(Match match) {
-        super(match);
+    public PlayerInventory(Match match, Soldier soldier) {
+        super(match, soldier);
+        getItems().set(0, new W16A(match));
+        getItems().set(1, new FiveFiveSix(match));
+        getItems().set(2, new FiveFiveSix(match));
     }
 
     @Override

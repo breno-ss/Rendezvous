@@ -107,7 +107,7 @@ public class AI {
         } else {
             if (((SteeringBehavior)soldier).seek(target)) {
                 if (soldier.getBody().getLinearVelocity().x == 0 && soldier.getBody().getLinearVelocity().y == 0) {
-                    if (match.getCamera().frustum.pointInFrustum(
+                    if (!match.getCamera().frustum.pointInFrustum(
                             soldier.getBody().getPosition().x, soldier.getBody().getPosition().y, 0
                     )) {
                         soldier.getBody().getFixtureList().first().setSensor(true);
@@ -143,8 +143,8 @@ public class AI {
     private void findPath() {
         if (!isGoingByAltPath) {
             altTarget = new Vector2();
-            altTarget.x = soldier.getBody().getPosition().x + MathUtils.randomRange(-5, 5);
-            altTarget.y = soldier.getBody().getPosition().y + MathUtils.randomRange(-5, 5);
+            altTarget.x = soldier.getBody().getPosition().x + MathUtils.randomRange(-30, 30);
+            altTarget.y = soldier.getBody().getPosition().y + MathUtils.randomRange(-30, 30);
             isGoingByAltPath = true;
             Timer.schedule(new Timer.Task(){
                 @Override

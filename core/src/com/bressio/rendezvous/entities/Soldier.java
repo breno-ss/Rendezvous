@@ -5,7 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.bressio.rendezvous.entities.objects.Empty;
 import com.bressio.rendezvous.entities.objects.Inventory;
+import com.bressio.rendezvous.entities.objects.equipment.armor.Armor;
+import com.bressio.rendezvous.entities.objects.equipment.helmets.Helmet;
+import com.bressio.rendezvous.entities.projectiles.Bullet;
 import com.bressio.rendezvous.forge.BodyBuilder;
 import com.bressio.rendezvous.graphics.AnimationRegion;
 import com.bressio.rendezvous.graphics.Animator;
@@ -37,6 +41,8 @@ public abstract class Soldier extends Entity {
     private Texture pointlight;
 
     private boolean isFiring;
+
+    private boolean isDead;
 
     Soldier(Match match, Vector2 position, float radius, float linearDamping, int speed,
             AnimationRegion animationRegion, short categoryBits, short maskBits, Object userData) {
@@ -80,20 +86,31 @@ public abstract class Soldier extends Entity {
                 getBody().getPosition().y - pCenter(getHeight()));
         setRegion(animator.getFrame(delta, 1));
         verifyItems();
+        verifyHealth();
     }
 
     protected abstract void verifyItems();
 
+    private void verifyHealth() {
+        if (health <= 0) {
+            die();
+        }
+    }
+
+    protected abstract void die();
+
     @Override
     public void draw(Batch batch) {
-        if (isFiring) {
-            batch.draw(pointlight,
-                    getBody().getPosition().x - pScaleCenter(pointlight.getWidth()),
-                    getBody().getPosition().y - pScaleCenter(pointlight.getHeight()),
-                    pScale(pointlight.getWidth()),
-                    pScale(pointlight.getHeight()));
+        if (!isDead) {
+            if (isFiring) {
+                batch.draw(pointlight,
+                        getBody().getPosition().x - pScaleCenter(pointlight.getWidth()),
+                        getBody().getPosition().y - pScaleCenter(pointlight.getHeight()),
+                        pScale(pointlight.getWidth()),
+                        pScale(pointlight.getHeight()));
+            }
+            super.draw(batch);
         }
-        super.draw(batch);
     }
 
     public void setFiring(boolean firing) {
@@ -170,5 +187,28 @@ public abstract class Soldier extends Entity {
 
     public Animator getAnimator() {
         return animator;
+    }
+
+    public void getShot(Bullet bullet) {
+        if (armor > 0) {
+            if (getInventory().getEquipmentItems().get(0).getClass() != Empty.class) {
+                ((Helmet)getInventory().getEquipmentItems().get(0)).takeDamage(bullet.getWeapon().getDamage());
+                ((Helmet)getInventory().getEquipmentItems().get(0)).updateName();
+            }
+            if (getInventory().getEquipmentItems().get(1).getClass() != Empty.class) {
+                ((Armor)getInventory().getEquipmentItems().get(1)).takeDamage(bullet.getWeapon().getDamage());
+                ((Armor)getInventory().getEquipmentItems().get(1)).updateName();
+            }
+        } else {
+            health -= bullet.getWeapon().getDamage();
+        }
+    }
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
+    public boolean isDead() {
+        return isDead;
     }
 }

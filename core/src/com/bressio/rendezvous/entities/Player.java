@@ -26,7 +26,7 @@ public class Player extends Soldier {
     @Override
     protected void init() {
         super.init();
-        setInventory(new PlayerInventory(getMatch()));
+        setInventory(new PlayerInventory(getMatch(), this));
     }
 
     @Override
@@ -50,6 +50,11 @@ public class Player extends Soldier {
         setLastSelectedObjectClass(selectedObjectClass);
         setLastEquippedArmorClass(selectedAmorClass);
         setLastEquippedHelmetClass(selectedHelmetClass);
+    }
+
+    @Override
+    protected void die() {
+
     }
 
     private void handleKeyboardInput(float delta) {

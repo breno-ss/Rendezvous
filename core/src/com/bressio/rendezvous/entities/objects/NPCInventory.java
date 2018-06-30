@@ -1,11 +1,12 @@
 package com.bressio.rendezvous.entities.objects;
 
+import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.scenes.Match;
 
 public class NPCInventory extends Inventory{
 
-    public NPCInventory(Match match) {
-        super(match);
+    public NPCInventory(Match match, Soldier soldier) {
+        super(match, soldier);
     }
 
     @Override
@@ -30,7 +31,7 @@ public class NPCInventory extends Inventory{
 
     @Override
     public void update(float delta) {
-
+        setArmorPoints(delta);
     }
 
     @Override

@@ -12,15 +12,20 @@ public class SoftVest extends Armor {
     }
 
     @Override
+    public void updateName() {
+        setName(getI18n().getBundle().get("softVest") + " (" + getArmorPoints() + "%)");
+    }
+
+    @Override
     public boolean transformSoldier(Soldier soldier) {
         return false;
     }
 
     private void setAttributes() {
-        setName(getI18n().getBundle().get("softVest"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.SOFT_VEST));
         setArmorPoints(20);
-        setDamage(0);
+        takeDamage(0);
         setRarity(12);
+        updateName();
     }
 }

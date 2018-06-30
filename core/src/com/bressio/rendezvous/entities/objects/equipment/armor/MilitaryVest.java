@@ -12,15 +12,20 @@ public class MilitaryVest extends Armor {
     }
 
     @Override
+    public void updateName() {
+        setName(getI18n().getBundle().get("militaryVest") + " (" + getArmorPoints() + "%)");
+    }
+
+    @Override
     public boolean transformSoldier(Soldier soldier) {
         return false;
     }
 
     private void setAttributes() {
-        setName(getI18n().getBundle().get("militaryVest"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.MILITARY_VEST));
         setArmorPoints(40);
-        setDamage(0);
+        takeDamage(0);
         setRarity(6);
+        updateName();
     }
 }

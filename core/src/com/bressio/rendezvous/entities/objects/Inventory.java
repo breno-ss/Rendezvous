@@ -1,5 +1,6 @@
 package com.bressio.rendezvous.entities.objects;
 
+import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.entities.objects.ammo.Ammo;
 import com.bressio.rendezvous.entities.objects.equipment.armor.Armor;
 import com.bressio.rendezvous.entities.objects.equipment.helmets.Helmet;
@@ -14,9 +15,11 @@ public abstract class Inventory {
     private ArrayList<EntityObject> items;
     private ArrayList<EntityObject> equipmentItems;
     private boolean isSelectedBeingUsed;
+    private Soldier soldier;
 
-    public Inventory(Match match) {
+    public Inventory(Match match, Soldier soldier) {
         this.match = match;
+        this.soldier = soldier;
         addItems();
     }
 
@@ -62,7 +65,7 @@ public abstract class Inventory {
         int armorPoints = 0;
         armorPoints += equipmentItems.get(0).getClass() != Empty.class ? ((Helmet)equipmentItems.get(0)).getArmorPoints() : 0;
         armorPoints += equipmentItems.get(1).getClass() != Empty.class ? ((Armor)equipmentItems.get(1)).getArmorPoints() : 0;
-        match.getPlayer().setArmor(armorPoints);
+        soldier.setArmor(armorPoints);
     }
 
     public abstract String getBulletsInMagazine();

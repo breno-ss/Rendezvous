@@ -13,11 +13,13 @@ public abstract class Armor extends EntityObject {
         super(match);
     }
 
+    public abstract void updateName();
+
     @Override
     public abstract boolean transformSoldier(Soldier soldier);
 
     public int getArmorPoints() {
-        return armorPoints - damage;
+        return 100 - ((damage / armorPoints) * 100);
     }
 
     void setArmorPoints(int armorPoints) {
@@ -28,7 +30,7 @@ public abstract class Armor extends EntityObject {
         return damage;
     }
 
-    void setDamage(int damage) {
-        this.damage = damage;
+    public void takeDamage(int damage) {
+        this.damage += damage;
     }
 }

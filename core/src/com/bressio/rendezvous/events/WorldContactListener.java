@@ -55,6 +55,16 @@ public class WorldContactListener implements ContactListener {
                     }
                 }
                 break;
+            case ENEMY_TAG | BULLET_TAG:
+                if(fixtureA.getFilterData().categoryBits == ENEMY_TAG) {
+                    if (!((Enemy) fixtureA.getUserData()).isDead() && !((Bullet) fixtureB.getUserData()).isDestroyed()) {
+                        ((Enemy) fixtureA.getUserData()).getShot((Bullet)fixtureB.getUserData());
+                        ((Bullet) fixtureB.getUserData()).destroy();
+                    }
+                } else if (!((Enemy) fixtureB.getUserData()).isDead() && !((Bullet) fixtureA.getUserData()).isDestroyed()) {
+                    ((Enemy) fixtureB.getUserData()).getShot((Bullet)fixtureA.getUserData());
+                    ((Bullet) fixtureA.getUserData()).destroy();
+                }
         }
     }
 

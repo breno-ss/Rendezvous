@@ -10,7 +10,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -72,6 +71,7 @@ public class Match implements Screen {
     private TiledMap overMap;
     private ArrayList<Bullet> bullets;
     private Texture waterBackground;
+    private Texture deadLoot;
 
     // events
     private InputTracker input;
@@ -123,7 +123,7 @@ public class Match implements Screen {
     private void forgeWorld() {
         world = new World(GRAVITY, true);
         worldBuilder = new WorldBuilder(this);
-        player = new Player(this, 35, 5, 8, new Vector2(3800, 3800));//worldBuilder.getPlayerSpawnPoint());
+        player = new Player(this, 35, 5, 8, worldBuilder.getPlayerSpawnPoint());
         for (Enemy enemy : worldBuilder.getEnemies()) {
             enemy.getAi().wakeUp(worldBuilder);
         }
@@ -131,6 +131,7 @@ public class Match implements Screen {
         rendezvousController = new RendezvousController(this);
         bullets = new ArrayList<>();
         waterBackground = resources.getTexture(ResourceHandler.TexturePath.WATER_BACKGROUND);
+        deadLoot = resources.getTexture(ResourceHandler.TexturePath.DEAD_LOOT);
     }
 
     private void setupInputTracker() {
@@ -158,7 +159,7 @@ public class Match implements Screen {
         } else if (Pistol.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 1.1f, .05f);
         } else {
-            cameraZoom = MathUtils.lerp(cameraZoom, 5, .05f);
+            cameraZoom = MathUtils.lerp(cameraZoom, 1, .05f);
         }
         viewport.setWorldSize(pScale(GAME_WIDTH) * cameraZoom, pScale(GAME_HEIGHT) * cameraZoom);
         viewport.apply();
@@ -433,6 +434,23 @@ public class Match implements Screen {
         }
     }
 
+    private void renderDeadLoots(float delta) {
+        batch.begin();
+        for (Enemy enemy : worldBuilder.getEnemies()) {
+            if (enemy.isDead()) {
+                batch.draw(deadLoot, enemy.getBody().getPosition().x - pScaleCenter(deadLoot.getWidth()),
+                        enemy.getBody().getPosition().y - pScaleCenter(deadLoot.getHeight()),
+                        pScale(deadLoot.getWidth()), pScale(deadLoot.getHeight()));
+            }
+        }
+        if (player.isDead()) {
+            batch.draw(deadLoot, player.getBody().getPosition().x - pScaleCenter(deadLoot.getWidth()),
+                    player.getBody().getPosition().y - pScaleCenter(deadLoot.getHeight()),
+                    pScale(deadLoot.getWidth()), pScale(deadLoot.getHeight()));
+        }
+        batch.end();
+    }
+
     private void renderBullets(float delta) {
         batch.begin();
         for (Bullet bullet : bullets) {
@@ -449,6 +467,7 @@ public class Match implements Screen {
         renderer.render();
         renderCollisionDebug();
         batch.setProjectionMatrix(camera.combined);
+        renderDeadLoots(delta);
         renderBullets(delta);
         renderPlayer();
         renderEnemies();
