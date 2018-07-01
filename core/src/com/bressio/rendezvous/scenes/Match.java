@@ -41,7 +41,7 @@ import static com.bressio.rendezvous.scheme.PlayerSettings.*;
 public class Match implements Screen {
 
     public enum GameState {
-        RUNNING, PAUSED, TACTICAL, LOOTING
+        RUNNING, PAUSED, TACTICAL, LOOTING, GAME_OVER
     }
 
     // game
@@ -57,6 +57,7 @@ public class Match implements Screen {
     private PauseMenu pause;
     private LootInterface loot;
     private MatchMap matchMap;
+    private GameOver gameOver;
     private OrthogonalTiledMapRenderer renderer;
     private OrthogonalTiledMapRenderer overRenderer;
     private Box2DDebugRenderer collisionDebugRenderer;
@@ -77,6 +78,9 @@ public class Match implements Screen {
     private InputTracker input;
     private GameState state;
     private RendezvousController rendezvousController;
+    private boolean gameIsOver;
+    private int matchDuration;
+    private float matchTimeCount;
 
     Match(SpriteBatch batch) {
         this.batch = batch;
@@ -104,6 +108,7 @@ public class Match implements Screen {
         hud = new HUD(this);
         progress = new Progress(this);
         pause = new PauseMenu(this);
+        gameOver = new GameOver(this);
         matchMap = new MatchMap(this);
         camera.position.set(pScale((float) Math.sqrt(MAP_AREA)), pScale((float) Math.sqrt(MAP_AREA)), 0);
         camera.update();
@@ -113,7 +118,7 @@ public class Match implements Screen {
         renderer = new OrthogonalTiledMapRenderer(map, PhysicsAdapter.getScale());
         overRenderer = new OrthogonalTiledMapRenderer(overMap, PhysicsAdapter.getScale());
         collisionDebugRenderer = new Box2DDebugRenderer();
-        state = GameState.RUNNING;
+        setState(GameState.RUNNING);
     }
 
     private void setupCursor() {
@@ -132,6 +137,7 @@ public class Match implements Screen {
         bullets = new ArrayList<>();
         waterBackground = resources.getTexture(ResourceHandler.TexturePath.WATER_BACKGROUND);
         deadLoot = resources.getTexture(ResourceHandler.TexturePath.DEAD_LOOT);
+        matchDuration = 0;
     }
 
     private void setupInputTracker() {
@@ -185,6 +191,8 @@ public class Match implements Screen {
             matchMap.update(delta, player.getBody().getPosition());
             updateCamera();
             updateBullets();
+            checkGameOverConditions();
+            updateMatchTimeCount(delta);
         }
     }
 
@@ -201,12 +209,16 @@ public class Match implements Screen {
 
     private void handlePauseMenu(float delta) {
         if (InputTracker.isPressed(InputTracker.ESC)){
-            if (state == GameState.RUNNING || state == GameState.TACTICAL || state == GameState.LOOTING) {
-                input.resetAllKeys();
-                Gdx.input.setInputProcessor(pause.getStage());
-                setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
-                setState(GameState.PAUSED);
-            }
+            pauseMatch();
+        }
+    }
+
+    private void pauseMatch() {
+        if (state == GameState.RUNNING || state == GameState.TACTICAL || state == GameState.LOOTING) {
+            input.resetAllKeys();
+            Gdx.input.setInputProcessor(pause.getStage());
+            setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
+            setState(GameState.PAUSED);
         }
     }
 
@@ -256,6 +268,26 @@ public class Match implements Screen {
                 hud.switchSelectedSlot(input.isScrolling() == 1);
                 input.resetScrollAmount();
             }
+        }
+    }
+
+    private void checkGameOverConditions() {
+        if (player.getHealth() <= 0 && !gameIsOver) {
+            gameIsOver = true;
+            input.resetAllKeys();
+            Gdx.input.setInputProcessor(gameOver.getStage());
+            setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
+            gameOver.setWinner(false);
+            gameOver.forgeGameOverScreen();
+            setState(GameState.GAME_OVER);
+        }
+    }
+
+    private void updateMatchTimeCount(float delta) {
+        matchTimeCount += delta;
+        if (matchTimeCount >= 1) {
+            matchDuration++;
+            matchTimeCount = 0;
         }
     }
 
@@ -311,6 +343,10 @@ public class Match implements Screen {
         return camera;
     }
 
+    public int getMatchDuration() {
+        return matchDuration;
+    }
+
     private void renderPauseMenu(float delta) {
         batch.setProjectionMatrix(pause.getStage().getCamera().combined);
         pause.getStage().draw();
@@ -324,6 +360,11 @@ public class Match implements Screen {
     private void renderMap(float delta) {
         batch.setProjectionMatrix(matchMap.getStage().getCamera().combined);
         matchMap.getStage().draw();
+    }
+
+    private void renderGameOver(float delta) {
+        batch.setProjectionMatrix(gameOver.getStage().getCamera().combined);
+        gameOver.getStage().draw();
     }
 
     public void setState(GameState state) {
@@ -425,7 +466,7 @@ public class Match implements Screen {
         if (player.getInventory().isSelectedBeingUsed()) {
             batch.setProjectionMatrix(progress.getStage().getCamera().combined);
             progress.getStage().draw();
-            if (state != GameState.PAUSED) {
+            if (state != GameState.PAUSED && state != GameState.GAME_OVER) {
                 progress.fillProgressBar(delta);
             }
         }
@@ -441,6 +482,10 @@ public class Match implements Screen {
             renderLootInterface(delta);
             loot.update(delta);
         }
+//        else if (state == GameState.GAME_OVER) {
+            renderGameOver(delta);
+            gameOver.update(delta);
+//        }
     }
 
     private void renderDeadLoots(float delta) {
@@ -497,7 +542,7 @@ public class Match implements Screen {
 
     @Override
     public void pause() {
-
+        pauseMatch();
     }
 
     @Override

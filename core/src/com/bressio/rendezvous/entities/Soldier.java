@@ -34,7 +34,7 @@ public abstract class Soldier extends Entity {
     private Fixture fixture;
 
     private Animator animator;
-    private int health = 100;
+    private int health = 0;
     private int armor = 0;
     private Inventory inventory;
 
@@ -216,7 +216,7 @@ public abstract class Soldier extends Entity {
         return isDead;
     }
 
-    public void accountKill() {
+    private void accountKill() {
         kills++;
     }
 
