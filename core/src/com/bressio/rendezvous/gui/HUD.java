@@ -61,6 +61,8 @@ public class HUD implements Disposable {
 
     private Label ammoIndicator;
 
+    private Label killsIndicator;
+
     public HUD(Match match) {
         this.match = match;
         setupStage();
@@ -69,6 +71,7 @@ public class HUD implements Disposable {
         forgeHealthDisplay();
         forgeInventory();
         forgeAmmoIndicator();
+        forgeKillsIndicator();
     }
 
     private void setupStage() {
@@ -177,6 +180,11 @@ public class HUD implements Disposable {
         table.add(ammoIndicator).padBottom(60).row();
 
         stage.addActor(table);
+    }
+
+    private void forgeKillsIndicator() {
+        Table table = new Table();
+        table.top();
     }
 
     private Vector2 getSelectionMarkerPosition(int index) {

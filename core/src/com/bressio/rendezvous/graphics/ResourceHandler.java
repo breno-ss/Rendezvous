@@ -14,7 +14,10 @@ import com.badlogic.gdx.utils.Disposable;
 public final class ResourceHandler implements Disposable {
 
     public enum TexturePath {
-        MENU_BACKGROUND("textures/gui/backgrounds/menu-background.png"),
+        MENU_P0("textures/gui/backgrounds/menu-plane-zero.png"),
+        MENU_P1("textures/gui/backgrounds/menu-plane-one.png"),
+        MENU_P2("textures/gui/backgrounds/menu-plane-two.png"),
+        MENU_P3("textures/gui/backgrounds/menu-plane-three.png"),
         MENU_LOGO("textures/gui/logos/menu-logo.png"),
         MATCH_MAP("textures/gui/maps/map-expanded.png"),
         MATCH_MINIMAP("textures/gui/maps/minimap.png"),
@@ -189,11 +192,15 @@ public final class ResourceHandler implements Disposable {
     }
 
     public void loadMainMenuResources() {
-        assetManager.load(TexturePath.MENU_BACKGROUND.path, Texture.class);
+        assetManager.load(TexturePath.MENU_P0.path, Texture.class);
+        assetManager.load(TexturePath.MENU_P1.path, Texture.class);
+        assetManager.load(TexturePath.MENU_P2.path, Texture.class);
+        assetManager.load(TexturePath.MENU_P3.path, Texture.class);
         assetManager.load(TexturePath.MENU_LOGO.path, Texture.class);
         assetManager.load(PixmapPath.MENU_CURSOR.path, Pixmap.class);
         assetManager.load(TexturePath.LOADING_SCREEN.path, Texture.class);
         assetManager.load(TexturePath.GAME_ICON.path, Texture.class);
+        assetManager.load(TexturePath.VIGNETTE.path, Texture.class);
         assetManager.finishLoading();
     }
 

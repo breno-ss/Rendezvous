@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.bressio.rendezvous.Rendezvous;
+import com.bressio.rendezvous.events.InputTracker;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.languages.Internationalization;
@@ -33,7 +34,11 @@ public class MainMenu implements Screen {
     private Skin skin;
     private Stage stage;
     private Stage loadingStage;
-    private Texture background;
+    private Texture backgroundP0;
+    private Texture backgroundP1;
+    private Texture backgroundP2;
+    private Texture backgroundP3;
+    private Texture vignette;
     private Texture logo;
     private Texture loadingScreen;
     private Label loadingLabel;
@@ -55,7 +60,11 @@ public class MainMenu implements Screen {
     private void loadResources() {
         resources = new ResourceHandler();
         resources.loadMainMenuResources();
-        background = resources.getTexture(ResourceHandler.TexturePath.MENU_BACKGROUND);
+        backgroundP0 = resources.getTexture(ResourceHandler.TexturePath.MENU_P0);
+        backgroundP1 = resources.getTexture(ResourceHandler.TexturePath.MENU_P1);
+        backgroundP2 = resources.getTexture(ResourceHandler.TexturePath.MENU_P2);
+        backgroundP3 = resources.getTexture(ResourceHandler.TexturePath.MENU_P3);
+        vignette = resources.getTexture(ResourceHandler.TexturePath.VIGNETTE);
         logo = resources.getTexture(ResourceHandler.TexturePath.MENU_LOGO);
         skin = resources.getSkin(ResourceHandler.SkinPaths.BUTTON_SKIN);
         loadingScreen = resources.getTexture(ResourceHandler.TexturePath.LOADING_SCREEN);
@@ -155,11 +164,25 @@ public class MainMenu implements Screen {
 
     private void renderBackground() {
         batch.begin();
-        batch.draw(background, 0, 0, GAME_WIDTH, GAME_HEIGHT);
+        batch.draw(backgroundP0, 0, 0, GAME_WIDTH, GAME_HEIGHT);
+        batch.draw(backgroundP1,
+                pCenter(GAME_WIDTH) - pCenter(backgroundP1.getWidth()) - InputTracker.getRelativeX() / 10,
+                pCenter(GAME_HEIGHT) - pCenter(backgroundP1.getHeight()) + InputTracker.getRelativeY() / 10);
         batch.draw(logo,
-                pCenter(GAME_WIDTH) - pCenter(logo.getWidth()),
-                GAME_HEIGHT - (GAME_HEIGHT / 3)
+                pCenter(GAME_WIDTH) - pCenter(logo.getWidth())  - InputTracker.getRelativeX() / 15,
+                GAME_HEIGHT - (GAME_HEIGHT / 3) + InputTracker.getRelativeY() / 15
         );
+        batch.draw(backgroundP2,
+                pCenter(GAME_WIDTH) - pCenter(backgroundP2.getWidth() / 2) - InputTracker.getRelativeX() / 30,
+                pCenter(GAME_HEIGHT) - pCenter(backgroundP2.getHeight() / 2) + 450 + InputTracker.getRelativeY() / 30,
+                backgroundP2.getWidth() / 2, backgroundP2.getHeight() / 2
+        );
+        batch.draw(backgroundP3,
+                pCenter(GAME_WIDTH) - pCenter(backgroundP3.getWidth() / 2) + 50 - InputTracker.getRelativeX() / 15,
+                pCenter(GAME_HEIGHT) - pCenter(backgroundP3.getHeight() / 2) + 450 + InputTracker.getRelativeY() / 15,
+                backgroundP3.getWidth() / 2, backgroundP3.getHeight() / 2
+        );
+        batch.draw(vignette, 0, 0, GAME_WIDTH, GAME_HEIGHT);
         batch.end();
     }
 

@@ -84,7 +84,7 @@ public abstract class Soldier extends Entity {
         setPosition(
                 getBody().getPosition().x - pCenter(getWidth()),
                 getBody().getPosition().y - pCenter(getHeight()));
-        setRegion(animator.getFrame(delta, 1));
+        setRegion(animator.getFrame(delta, .7f));
         verifyItems();
         verifyHealth();
     }

@@ -163,12 +163,12 @@ public final class InputTracker extends InputAdapter {
         return keyPresses[key];
     }
 
-    public int getRelativeX() {
+    public static int getRelativeX() {
         return (Gdx.input.getX() < GAME_WIDTH / 2 ?
                 -((GAME_WIDTH / 2) - Gdx.input.getX()) : Gdx.input.getX() - (GAME_WIDTH / 2));
     }
 
-    public int getRelativeY() {
+    public static int getRelativeY() {
         return (Gdx.input.getY() < GAME_HEIGHT / 2 ?
                 -((GAME_HEIGHT / 2) - Gdx.input.getY()) : Gdx.input.getY() - (GAME_HEIGHT / 2));
     }
