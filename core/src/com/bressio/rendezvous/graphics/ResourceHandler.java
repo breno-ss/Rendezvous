@@ -62,7 +62,9 @@ public final class ResourceHandler implements Disposable {
         SAFEZONE_EXPANDED("textures/world/safezone-expanded.png"),
         NEXT_SAFEZONE_EXPANDED("textures/world/next-safezone-expanded.png"),
         WATER_BACKGROUND("textures/world/water-background.png"),
-        DEAD_LOOT("textures/world/dead-loot.png");
+        DEAD_LOOT("textures/world/dead-loot.png"),
+        ALIVE_INDICATOR_BG("textures/gui/backgrounds/alive-indicator-bg.png"),
+        THIN_ARROW("textures/gui/icons/thin-arrow.png");
 
         private String path;
         TexturePath(String path) { this.path = path; }
@@ -324,6 +326,8 @@ public final class ResourceHandler implements Disposable {
         assetManager.load(TexturePath.NEXT_SAFEZONE_EXPANDED.path, Texture.class);
         assetManager.load(TexturePath.WATER_BACKGROUND.path, Texture.class);
         assetManager.load(TexturePath.DEAD_LOOT.path, Texture.class);
+        assetManager.load(TexturePath.ALIVE_INDICATOR_BG.path, Texture.class);
+        assetManager.load(TexturePath.THIN_ARROW.path, Texture.class);
         assetManager.finishLoading();
     }
 

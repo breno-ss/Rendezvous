@@ -42,7 +42,7 @@ public abstract class Inventory {
         isSelectedBeingUsed = selectedBeingUsed;
     }
 
-    public abstract void useSelectedItem();
+    public abstract void useSelectedItem(Soldier soldier);
 
     public abstract void reloadSelectedWeapon();
 

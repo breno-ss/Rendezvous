@@ -194,7 +194,9 @@ public class Match implements Screen {
         handleMatchMap(delta);
         handleInventoryInput(delta);
         updateLoot(delta);
-        updateEnemies(delta);
+        if (state == GameState.RUNNING || state == GameState.TACTICAL || state == GameState.LOOTING) {
+            updateEnemies(delta);
+        }
     }
 
     private void handlePauseMenu(float delta) {
@@ -412,6 +414,7 @@ public class Match implements Screen {
         hud.getStage().draw();
         hud.updateHealthBars(delta, player.getHealth(), player.getArmor());
         hud.updateAmmoIndicator(delta, player.getInventory());
+        hud.updateEnemyStatus(delta, worldBuilder);
         hud.updateInventory(delta);
         if (state != GameState.TACTICAL) {
             hud.drawMinimap(delta, player.getBody().getPosition());

@@ -41,6 +41,7 @@ public abstract class Soldier extends Entity {
     private Texture pointlight;
 
     private boolean isFiring;
+    private int kills;
 
     private boolean isDead;
 
@@ -201,6 +202,9 @@ public abstract class Soldier extends Entity {
             }
         } else {
             health -= bullet.getWeapon().getDamage();
+            if (health <= 0) {
+                bullet.getWeapon().getLastSoldierToShoot().accountKill();
+            }
         }
     }
 
@@ -210,5 +214,13 @@ public abstract class Soldier extends Entity {
 
     public boolean isDead() {
         return isDead;
+    }
+
+    public void accountKill() {
+        kills++;
+    }
+
+    public int getKills() {
+        return kills;
     }
 }

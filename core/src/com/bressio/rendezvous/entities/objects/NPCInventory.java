@@ -10,7 +10,7 @@ public class NPCInventory extends Inventory{
     }
 
     @Override
-    public void useSelectedItem() {
+    public void useSelectedItem(Soldier soldier) {
 
     }
 

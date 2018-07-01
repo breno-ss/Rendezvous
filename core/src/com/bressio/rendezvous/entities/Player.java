@@ -35,6 +35,7 @@ public class Player extends Soldier {
         getInventory().update(delta);
         handleKeyboardInput(delta);
         handleMouseInput(delta);
+        checkKillCount(delta);
     }
 
     @Override
@@ -116,7 +117,7 @@ public class Player extends Soldier {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT) &&
                 (getMatch().getState() == Match.GameState.RUNNING ||
                 getMatch().getState() == Match.GameState.TACTICAL)) {
-            getInventory().useSelectedItem();
+            getInventory().useSelectedItem(this);
         }
     }
 
@@ -141,5 +142,11 @@ public class Player extends Soldier {
 
     public void takeDangerZoneDamage() {
         changeHealth(-5);
+    }
+
+    private void checkKillCount(float delta) {
+        if (getMatch().getHud().getKills() != getKills()) {
+            getMatch().getHud().notifyKill(getKills());
+        }
     }
 }

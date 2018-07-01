@@ -8,6 +8,7 @@ import com.bressio.rendezvous.scenes.Match;
 
 public abstract class Weapon extends EntityObject {
 
+    private Soldier lastSoldierToShoot;
     private int damage;
     private float rateOfFire;
     private int reloadTime;
@@ -28,9 +29,10 @@ public abstract class Weapon extends EntityObject {
         return true;
     }
 
-    public void shoot() {
+    public void shoot(Soldier soldier) {
         if (bullets > 0) {
             if (!isblocked) {
+                lastSoldierToShoot = soldier;
                 getMatch().addBullet(new Bullet(getMatch(), this));
                 bullets--;
                 bulletTimeCount = 0;
@@ -96,5 +98,9 @@ public abstract class Weapon extends EntityObject {
 
     public int getDamage() {
         return damage;
+    }
+
+    public Soldier getLastSoldierToShoot() {
+        return lastSoldierToShoot;
     }
 }

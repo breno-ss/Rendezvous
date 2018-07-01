@@ -17,7 +17,7 @@ public class PlayerInventory extends Inventory{
     }
 
     @Override
-    public void useSelectedItem() {
+    public void useSelectedItem(Soldier soldier) {
         Object selectedSlot = getItem(getMatch().getHud().getSelectedSlot());
         if (selectedSlot.getClass() == Medkit.class) {
             setSelectedBeingUsed(true);
@@ -25,7 +25,7 @@ public class PlayerInventory extends Inventory{
             getMatch().getPlayer().blockActions();
             getMatch().getProgress().setActivity("healing");
         } else if (Weapon.class.isAssignableFrom(selectedSlot.getClass())) {
-            ((Weapon)selectedSlot).shoot();
+            ((Weapon)selectedSlot).shoot(soldier);
         }
     }
 

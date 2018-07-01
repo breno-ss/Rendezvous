@@ -13,10 +13,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.Timer;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.entities.objects.Empty;
 import com.bressio.rendezvous.entities.objects.Inventory;
+import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.graphics.FontGenerator;
 import com.bressio.rendezvous.graphics.ResourceHandler;
 import com.bressio.rendezvous.scenes.Match;
@@ -61,17 +64,28 @@ public class HUD implements Disposable {
 
     private Label ammoIndicator;
 
+    private Label aliveIndicator;
     private Label killsIndicator;
+
+    private Label killFeedback;
+
+    private int kills;
 
     public HUD(Match match) {
         this.match = match;
+        init();
         setupStage();
         forgeEventDisplay();
         forgeMinimap();
         forgeHealthDisplay();
         forgeInventory();
         forgeAmmoIndicator();
-        forgeKillsIndicator();
+        forgeEnemyStatus();
+        forgeKillfeedback();
+    }
+
+    private void init() {
+        kills = 0;
     }
 
     private void setupStage() {
@@ -182,9 +196,61 @@ public class HUD implements Disposable {
         stage.addActor(table);
     }
 
-    private void forgeKillsIndicator() {
+    private void forgeEnemyStatus() {
+        Image aliveIndicatorBackground = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.ALIVE_INDICATOR_BG));
+        aliveIndicatorBackground.setPosition(0, GAME_HEIGHT - aliveIndicatorBackground.getHeight());
+        stage.addActor(aliveIndicatorBackground);
+
         Table table = new Table();
-        table.top();
+        table.top().left();
+        table.setFillParent(true);
+        aliveIndicator = new Label("",
+                new Label.LabelStyle(
+                        FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 26, false), Color.valueOf("afafaf")
+                )
+        );
+        table.add(aliveIndicator).padTop(6).padLeft(6).row();
+        stage.addActor(table);
+
+        Image aliveArrow = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.THIN_ARROW));
+        aliveArrow.setPosition(30, GAME_HEIGHT - aliveArrow.getHeight() - 10);
+        stage.addActor(aliveArrow);
+
+        Image killsIndicatorBackground = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.ALIVE_INDICATOR_BG));
+        killsIndicatorBackground.setPosition(GAME_WIDTH, GAME_HEIGHT - killsIndicatorBackground.getHeight());
+        killsIndicatorBackground.setSize(-killsIndicatorBackground.getWidth(), killsIndicatorBackground.getHeight());
+        stage.addActor(killsIndicatorBackground);
+
+        table = new Table();
+        table.top().right();
+        table.setFillParent(true);
+
+        killsIndicator = new Label("",
+                new Label.LabelStyle(
+                        FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 26, false), Color.valueOf("afafaf")
+                )
+        );
+        table.add(killsIndicator).padTop(6).padRight(6).row();
+        stage.addActor(table);
+
+        Image killsArrow = new Image(match.getResources().getTexture(ResourceHandler.TexturePath.THIN_ARROW));
+        killsArrow.setPosition(GAME_WIDTH - 65, GAME_HEIGHT - killsArrow.getHeight() + 8);
+        killsArrow.setSize(killsArrow.getWidth(), -killsArrow.getHeight());
+        stage.addActor(killsArrow);
+    }
+
+    private void forgeKillfeedback() {
+        Table table = new Table();
+        table.center();
+        table.setFillParent(true);
+        killFeedback = new Label( "",
+                new Label.LabelStyle(
+                        FontGenerator.generate(ResourceHandler.FontPath.BOMBARD, 26, false), Color.valueOf("ce3535")
+                )
+        );
+        table.add(killFeedback).padTop(250);
+        stage.addActor(table);
+        killFeedback.setVisible(false);
     }
 
     private Vector2 getSelectionMarkerPosition(int index) {
@@ -259,6 +325,17 @@ public class HUD implements Disposable {
         }
     }
 
+    public void updateEnemyStatus(float delta, WorldBuilder worldBuilder) {
+        int alive = 40;
+        for (Enemy enemy : worldBuilder.getEnemies()) {
+            if (enemy.isDead()) {
+                alive--;
+            }
+        }
+        aliveIndicator.setText(String.valueOf(alive));
+        killsIndicator.setText(String.valueOf(match.getPlayer().getKills()));
+    }
+
     public void updateInventory(float delta) {
         if (match.getPlayer() != null) {
             for (int i = 0; i < 6; i++) {
@@ -310,6 +387,19 @@ public class HUD implements Disposable {
         }
     }
 
+    public void notifyKill(int kills) {
+        killFeedback.setVisible(true);
+        killFeedback.setText(kills + " " + match.getI18n().getBundle().get(kills > 1 ? "kills" : "kill"));
+        this.kills = kills;
+        Timer.schedule(new Timer.Task(){
+            @Override
+            public void run() {
+                killFeedback.setText("");
+                killFeedback.setVisible(false);
+            }
+        }, 2);
+    }
+
     @Override
     public void dispose() {
         stage.dispose();
@@ -321,5 +411,9 @@ public class HUD implements Disposable {
 
     public int getSelectedSlot() {
         return selectedSlot;
+    }
+
+    public int getKills() {
+        return kills;
     }
 }
