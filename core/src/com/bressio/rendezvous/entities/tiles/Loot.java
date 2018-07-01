@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 import com.bressio.rendezvous.entities.Enemy;
+import com.bressio.rendezvous.entities.Lootable;
 import com.bressio.rendezvous.entities.objects.EntityObject;
 import com.bressio.rendezvous.entities.objects.Medkit;
 import com.bressio.rendezvous.entities.objects.ammo.FiveFiveSix;
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
-public abstract class Loot extends InteractiveTile {
+public abstract class Loot extends InteractiveTile implements Lootable {
 
     private SpriteBatch batch;
     private Texture interactionButton;

@@ -182,7 +182,6 @@ public class Match implements Screen {
             world.step(1 / 60f, 6, 2);
             rendezvousController.update(delta);
             player.update(delta);
-            updateEnemies(delta);
             matchMap.update(delta, player.getBody().getPosition());
             updateCamera();
             updateBullets();
@@ -195,6 +194,7 @@ public class Match implements Screen {
         handleMatchMap(delta);
         handleInventoryInput(delta);
         updateLoot(delta);
+        updateEnemies(delta);
     }
 
     private void handlePauseMenu(float delta) {
@@ -399,6 +399,12 @@ public class Match implements Screen {
         }
     }
 
+    private void renderDeadLootInteractionButton() {
+        for (Enemy enemy : worldBuilder.getEnemies()) {
+            enemy.drawInteractionButton();
+        }
+    }
+
     private void renderHud(float delta) {
         batch.setProjectionMatrix(hud.getStage().getCamera().combined);
         hud.drawVignette(delta);
@@ -473,6 +479,7 @@ public class Match implements Screen {
         renderEnemies();
         overRenderer.render();
         renderLootInteractionButton();
+        renderDeadLootInteractionButton();
 //        rendezvousController.render(delta);
         renderHud(delta);
         renderProgressDisplay(delta);

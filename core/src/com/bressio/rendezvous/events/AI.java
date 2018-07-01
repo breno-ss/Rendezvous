@@ -3,6 +3,7 @@ package com.bressio.rendezvous.events;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import com.bressio.rendezvous.entities.Enemy;
+import com.bressio.rendezvous.entities.Lootable;
 import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.entities.objects.Empty;
 import com.bressio.rendezvous.entities.objects.EntityObject;
@@ -12,7 +13,6 @@ import com.bressio.rendezvous.entities.objects.weapons.Weapon;
 import com.bressio.rendezvous.entities.objects.weapons.ars.AssaultRifle;
 import com.bressio.rendezvous.entities.objects.weapons.pistols.Pistol;
 import com.bressio.rendezvous.entities.objects.weapons.srs.SniperRifle;
-import com.bressio.rendezvous.entities.tiles.Loot;
 import com.bressio.rendezvous.forge.WorldBuilder;
 import com.bressio.rendezvous.scenes.Match;
 import com.bressio.rendezvous.scheme.MathUtils;
@@ -79,9 +79,9 @@ public class AI {
     }
 
     private void calculateRoute() {
-        ArrayList<Loot> loot = worldBuilder.getLoot();
+        ArrayList<Lootable> loot = worldBuilder.getAllLoot();
         double nearestLootDistance = 0;
-        Loot nearestLoot = null;
+        Lootable nearestLoot = null;
 
         for (int i = 0; i < loot.size(); i++) {
             if (i == 0 || MathUtils.distance(

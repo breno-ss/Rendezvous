@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.bressio.rendezvous.entities.Enemy;
+import com.bressio.rendezvous.entities.Lootable;
 import com.bressio.rendezvous.entities.tiles.Building;
 import com.bressio.rendezvous.entities.tiles.Chest;
 import com.bressio.rendezvous.entities.tiles.Crate;
@@ -156,6 +157,18 @@ public class WorldBuilder {
 
         int randomIndex = new Random().nextInt(spawnPoints.length);
         return spawnPoints[randomIndex];
+    }
+
+    public ArrayList<Lootable> getAllLoot() {
+        ArrayList<Lootable> loot = new ArrayList<>();
+        loot.addAll(crates);
+        loot.addAll(chests);
+        for (Enemy enemy : enemies) {
+            if (enemy.isDead()) {
+                loot.add(enemy);
+            }
+        }
+        return loot;
     }
 
     public ArrayList<Loot> getLoot() {

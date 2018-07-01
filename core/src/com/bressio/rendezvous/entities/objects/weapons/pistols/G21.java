@@ -13,7 +13,7 @@ public class G21 extends Pistol {
     private void setAttributes() {
         setName(getI18n().getBundle().get("g21"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.G21));
-        setDamage(5);
+        setDamage(10);
         setRateOfFire(.6f);
         setReloadTime(2);
         setMagCapacity(15);

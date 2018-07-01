@@ -13,7 +13,7 @@ public class P26 extends Pistol {
     private void setAttributes() {
         setName(getI18n().getBundle().get("p26"));
         setIcon(getResources().getTexture(ResourceHandler.TexturePath.P26));
-        setDamage(7);
+        setDamage(12);
         setRateOfFire(.4f);
         setReloadTime(1);
         setMagCapacity(17);
