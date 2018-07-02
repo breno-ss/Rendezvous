@@ -19,7 +19,7 @@ public abstract class Helmet extends EntityObject {
     public abstract boolean transformSoldier(Soldier soldier);
 
     public int getArmorPoints() {
-        return 100 - ((damage / armorPoints) * 100);
+        return armorPoints;
     }
 
     void setArmorPoints(int armorPoints) {
@@ -31,6 +31,6 @@ public abstract class Helmet extends EntityObject {
     }
 
     public void takeDamage(int damage) {
-        this.damage += damage;
+        armorPoints -= damage;
     }
 }

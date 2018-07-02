@@ -34,7 +34,7 @@ public class RendezvousController {
     private float damageTimeCount;
 
     private final int SAFEZONE_RANGE = 30;
-    private final int SECONDS_NEXT = 10;
+    private final int SECONDS_NEXT = 60;
 
     public RendezvousController(Match match) {
         this.match = match;

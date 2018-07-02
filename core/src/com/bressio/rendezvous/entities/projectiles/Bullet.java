@@ -40,7 +40,7 @@ public class Bullet extends Sprite {
         setBounds(0, 0, pScale(getWidth()), pScale(getHeight()));
         setOrigin(pScaleCenter(getWidth()) + .1f, pScaleCenter(getHeight()) + .1f);
         velocity = 10;
-        position = match.getPlayer().getBody().getPosition();
+        position = weapon.getLastSoldierToShoot().getBody().getPosition();
         radius = 5;
         categoryBits = BULLET_TAG;
         maskBits =  (short) (DEFAULT_TAG | LOOT_TAG | PLAYER_TAG | ENEMY_TAG);
@@ -64,7 +64,7 @@ public class Bullet extends Sprite {
                 .withSensor(true)
                 .withUserData(this)
                 .build();
-        setRotation(match.getPlayer().getRotation());
+        setRotation(weapon.getLastSoldierToShoot().getRotation());
     }
 
     private void delayTextureAppearance() {
@@ -95,4 +95,6 @@ public class Bullet extends Sprite {
     public boolean isDestroyed() {
         return isDestroyed;
     }
+
+
 }

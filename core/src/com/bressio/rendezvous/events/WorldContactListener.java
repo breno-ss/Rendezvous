@@ -4,10 +4,17 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.entities.projectiles.Bullet;
 import com.bressio.rendezvous.entities.tiles.InteractiveTile;
+import com.bressio.rendezvous.scenes.Match;
 
 import static com.bressio.rendezvous.scheme.PhysicsAdapter.*;
 
 public class WorldContactListener implements ContactListener {
+
+    private Match match;
+
+    public WorldContactListener(Match match) {
+        this.match = match;
+    }
 
     private void sendContactMessage(Contact contact, boolean isEndingContact) {
         Fixture fixtureA = contact.getFixtureA();
@@ -58,12 +65,31 @@ public class WorldContactListener implements ContactListener {
             case ENEMY_TAG | BULLET_TAG:
                 if(fixtureA.getFilterData().categoryBits == ENEMY_TAG) {
                     if (!((Enemy) fixtureA.getUserData()).isDead() && !((Bullet) fixtureB.getUserData()).isDestroyed()) {
-                        ((Enemy) fixtureA.getUserData()).getShot((Bullet)fixtureB.getUserData());
-                        ((Bullet) fixtureB.getUserData()).destroy();
+                        if (((Bullet) fixtureB.getUserData()).getWeapon().getLastSoldierToShoot() != fixtureA.getUserData()) {
+                            ((Enemy) fixtureA.getUserData()).getShot((Bullet)fixtureB.getUserData());
+                            ((Bullet) fixtureB.getUserData()).destroy();
+                        }
                     }
                 } else if (!((Enemy) fixtureB.getUserData()).isDead() && !((Bullet) fixtureA.getUserData()).isDestroyed()) {
-                    ((Enemy) fixtureB.getUserData()).getShot((Bullet)fixtureA.getUserData());
-                    ((Bullet) fixtureA.getUserData()).destroy();
+                    if (((Bullet) fixtureA.getUserData()).getWeapon().getLastSoldierToShoot() != fixtureB.getUserData()) {
+                        ((Enemy) fixtureB.getUserData()).getShot((Bullet)fixtureA.getUserData());
+                        ((Bullet) fixtureA.getUserData()).destroy();
+                    }
+                }
+                break;
+            case PLAYER_TAG | BULLET_TAG:
+                if(fixtureA.getFilterData().categoryBits == PLAYER_TAG) {
+                    if (!match.getPlayer().isDead() && !((Bullet) fixtureB.getUserData()).isDestroyed()) {
+                        if (((Bullet) fixtureB.getUserData()).getWeapon().getLastSoldierToShoot() != fixtureA.getUserData()) {
+                            match.getPlayer().getShot((Bullet)fixtureB.getUserData());
+                            ((Bullet) fixtureB.getUserData()).destroy();
+                        }
+                    }
+                } else if (!match.getPlayer().isDead() && !((Bullet) fixtureA.getUserData()).isDestroyed()) {
+                    if (((Bullet) fixtureA.getUserData()).getWeapon().getLastSoldierToShoot() != fixtureB.getUserData()) {
+                        match.getPlayer().getShot((Bullet)fixtureA.getUserData());
+                        ((Bullet) fixtureA.getUserData()).destroy();
+                    }
                 }
                 break;
             case ENEMY_TAG | PLAYER_TAG:

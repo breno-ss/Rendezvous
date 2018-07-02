@@ -68,9 +68,9 @@ public abstract class Inventory {
         soldier.setArmor(armorPoints);
     }
 
-    public abstract String getBulletsInMagazine();
+    public abstract int getBulletsInMagazine();
 
-    public abstract String getBulletsInAmmoBoxes();
+    public abstract int getBulletsInAmmoBoxes();
 
     public ArrayList<EntityObject> getItems() {
         return items;
@@ -86,5 +86,9 @@ public abstract class Inventory {
 
     public Match getMatch() {
         return match;
+    }
+
+    public Soldier getSoldier() {
+        return soldier;
     }
 }

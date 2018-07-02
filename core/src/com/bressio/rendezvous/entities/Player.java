@@ -20,7 +20,7 @@ public class Player extends Soldier {
 
     public Player(Match match, float radius, float linearDamping, int speed, Vector2 position) {
         super(match, position, radius, linearDamping, speed, AnimationRegion.SOLDIER, PLAYER_TAG,
-                (short) (DEFAULT_TAG | BUILDING_TAG | LOOT_TAG | WATER_TAG | ENEMY_TAG), "player");
+                (short) (DEFAULT_TAG | BUILDING_TAG | LOOT_TAG | WATER_TAG | ENEMY_TAG | BULLET_TAG), "player");
     }
 
     @Override

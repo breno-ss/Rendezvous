@@ -94,6 +94,7 @@ public abstract class Soldier extends Entity {
 
     private void verifyHealth() {
         if (health <= 0) {
+            health = 0;
             die();
         }
     }
@@ -197,11 +198,11 @@ public abstract class Soldier extends Entity {
     public void getShot(Bullet bullet) {
         if (armor > 0) {
             if (getInventory().getEquipmentItems().get(0).getClass() != Empty.class) {
-                ((Helmet)getInventory().getEquipmentItems().get(0)).takeDamage(bullet.getWeapon().getDamage());
+                ((Helmet)getInventory().getEquipmentItems().get(0)).takeDamage(bullet.getWeapon().getDamage() / 2);
                 ((Helmet)getInventory().getEquipmentItems().get(0)).updateName();
             }
             if (getInventory().getEquipmentItems().get(1).getClass() != Empty.class) {
-                ((Armor)getInventory().getEquipmentItems().get(1)).takeDamage(bullet.getWeapon().getDamage());
+                ((Armor)getInventory().getEquipmentItems().get(1)).takeDamage(bullet.getWeapon().getDamage() / 2);
                 ((Armor)getInventory().getEquipmentItems().get(1)).updateName();
             }
         } else {

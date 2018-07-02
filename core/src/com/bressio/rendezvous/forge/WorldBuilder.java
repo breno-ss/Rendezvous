@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.entities.Lootable;
+import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.entities.tiles.Building;
 import com.bressio.rendezvous.entities.tiles.Chest;
 import com.bressio.rendezvous.entities.tiles.Crate;
@@ -137,9 +138,9 @@ public class WorldBuilder {
             Ellipse rect = ((EllipseMapObject) object).getEllipse();
             enemies.add(new Enemy(match, 35, 5, 8, new Vector2(rect.x, rect.y)));
         }
-        // instantiate a single enemy
+//         instantiate a single enemy
 //            Ellipse rect = ((EllipseMapObject) match.getMap().getLayers()
-//                    .get(Layer.ENEMY_SPAWN_POINTS.index).getObjects().getByType(EllipseMapObject.class).get(37)).getEllipse();
+//                    .get(Layer.ENEMY_SPAWN_POINTS.index).getObjects().getByType(EllipseMapObject.class).get(20)).getEllipse();
 //            enemies.add(new Enemy(match, 35, 5, 8, new Vector2(rect.x, rect.y)));
     }
 
@@ -176,6 +177,13 @@ public class WorldBuilder {
         loot.addAll(crates);
         loot.addAll(chests);
         return loot;
+    }
+
+    public ArrayList<Soldier> getSoldiers() {
+        ArrayList<Soldier> soldiers = new ArrayList<>();
+        soldiers.add(match.getPlayer());
+        soldiers.addAll(enemies);
+        return soldiers;
     }
 
     public ArrayList<Enemy> getEnemies() {

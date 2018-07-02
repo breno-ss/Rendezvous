@@ -37,7 +37,7 @@ public abstract class Weapon extends EntityObject {
                 bullets--;
                 bulletTimeCount = 0;
                 isblocked = true;
-                getMatch().getPlayer().setFiring(true);
+                soldier.setFiring(true);
             }
             if (!isUnblocking){
                 isUnblocking = true;
@@ -45,7 +45,7 @@ public abstract class Weapon extends EntityObject {
                 Timer.schedule(new Timer.Task(){
                     @Override
                     public void run() {
-                        getMatch().getPlayer().setFiring(false);
+                        soldier.setFiring(false);
                     }
                 }, .01f);
 

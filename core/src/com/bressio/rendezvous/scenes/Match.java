@@ -132,7 +132,7 @@ public class Match implements Screen {
         for (Enemy enemy : worldBuilder.getEnemies()) {
             enemy.getAi().wakeUp(worldBuilder);
         }
-        world.setContactListener(new WorldContactListener());
+        world.setContactListener(new WorldContactListener(this));
         rendezvousController = new RendezvousController(this);
         bullets = new ArrayList<>();
         waterBackground = resources.getTexture(ResourceHandler.TexturePath.WATER_BACKGROUND);

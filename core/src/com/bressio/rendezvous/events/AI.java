@@ -34,9 +34,10 @@ public class AI {
     private boolean isAltPathTimedOut;
 
     private int selectedInventorySlot;
+    private Soldier enemyOnTarget;
 
     private enum State {
-        IDLE, CALCULATING_ROUTE, SEEKING_LOOT, LOOTING, FINDING_PATH, GOING_TO_RENDEZVOUS
+        IDLE, CALCULATING_ROUTE, SEEKING_LOOT, LOOTING, FINDING_PATH, GOING_TO_RENDEZVOUS, CHASING
     }
 
     private State state;
@@ -55,6 +56,7 @@ public class AI {
     }
 
     public void update(float delta) {
+//        System.out.println(state.name());
         switch (state) {
             case CALCULATING_ROUTE:
                 calculateRoute();
@@ -70,10 +72,15 @@ public class AI {
                 break;
             case GOING_TO_RENDEZVOUS:
                 goToRendezvous();
+                break;
+            case CHASING:
+                chase();
+                break;
         }
 
         checkAvailableWeapons();
         checkRendezvousTime();
+        checkSoldiersAround();
     }
 
     public void wakeUp(WorldBuilder worldBuilder) {
@@ -174,7 +181,21 @@ public class AI {
         ((SteeringBehavior)soldier).seek(target);
 
         if (!match.getRendezvousController().soldierIsInDangerZone(soldier)) {
-            setState(State.IDLE);
+            setState(State.SEEKING_LOOT);
+        }
+    }
+
+    private void chase() {
+        if (MathUtils.distance(soldier.getBody().getPosition(), enemyOnTarget.getBody().getPosition()) > 4) {
+            ((SteeringBehavior)soldier).seek(enemyOnTarget.getBody().getPosition());
+        }
+        checkAvailableWeapons();
+        if (hasWeapon()) {
+            if (soldier.getInventory().getBulletsInMagazine() < 1) {
+                soldier.getInventory().reloadSelectedWeapon();
+            } else {
+                ((Weapon)soldier.getInventory().getItem(selectedInventorySlot)).shoot(soldier);
+            }
         }
     }
 
@@ -318,16 +339,19 @@ public class AI {
         for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
             if (SniperRifle.class.isAssignableFrom(items.get(i).getClass())) {
                 selectedInventorySlot = i;
+                return;
             }
         }
         for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
              if (AssaultRifle.class.isAssignableFrom(items.get(i).getClass())) {
                  selectedInventorySlot = i;
+                 return;
             }
         }
         for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
             if (Pistol.class.isAssignableFrom(items.get(i).getClass())) {
                 selectedInventorySlot = i;
+                return;
             }
         }
     }
@@ -337,6 +361,17 @@ public class AI {
                 match.getRendezvousController().getSECONDS_NEXT() / 2 &&
                 !match.getRendezvousController().isInRendezvous()) {
             setState(State.GOING_TO_RENDEZVOUS);
+        }
+    }
+
+    private void checkSoldiersAround() {
+        for (Soldier enemySoldier : worldBuilder.getSoldiers()) {
+            if (MathUtils.distance(soldier.getBody().getPosition(), enemySoldier.getBody().getPosition()) < 5 &&
+                    hasWeapon()) {
+                enemyOnTarget = enemySoldier;
+                setState(State.CHASING);
+                return;
+            }
         }
     }
 }

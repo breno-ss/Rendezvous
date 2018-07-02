@@ -316,9 +316,9 @@ public class HUD implements Disposable {
     }
 
     public void updateAmmoIndicator(float delta, Inventory inventory) {
-        String bulletsInMagazine = inventory.getBulletsInMagazine();
-        String bulletsInAmmoBoxes = inventory.getBulletsInAmmoBoxes();
-        if (bulletsInMagazine != null && bulletsInAmmoBoxes != null) {
+        int bulletsInMagazine = inventory.getBulletsInMagazine();
+        int bulletsInAmmoBoxes = inventory.getBulletsInAmmoBoxes();
+        if (bulletsInMagazine != -1 && bulletsInAmmoBoxes != -1) {
             ammoIndicator.setText(bulletsInMagazine + " | " + bulletsInAmmoBoxes);
         } else {
             ammoIndicator.setText("");

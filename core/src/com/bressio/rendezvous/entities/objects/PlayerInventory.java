@@ -84,16 +84,16 @@ public class PlayerInventory extends Inventory{
     }
 
     @Override
-    public String getBulletsInMagazine() {
+    public int getBulletsInMagazine() {
         if (Weapon.class.isAssignableFrom(getItem(getMatch().getHud().getSelectedSlot()).getClass())) {
-            return String.valueOf(((Weapon)getItem(getMatch().getHud().getSelectedSlot())).getBullets());
+            return ((Weapon)getItem(getMatch().getHud().getSelectedSlot())).getBullets();
         } else {
-            return null;
+            return -1;
         }
     }
 
     @Override
-    public String getBulletsInAmmoBoxes()  {
+    public int getBulletsInAmmoBoxes()  {
         if (Weapon.class.isAssignableFrom(getItem(getMatch().getHud().getSelectedSlot()).getClass())) {
             int bullets = 0;
             for (EntityObject item : getItems()) {
@@ -102,9 +102,9 @@ public class PlayerInventory extends Inventory{
                     bullets += ((Ammo)item).getAmount();
                 }
             }
-            return String.valueOf(bullets);
+            return bullets;
         } else {
-            return null;
+            return -1;
         }
     }
 }
