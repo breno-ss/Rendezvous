@@ -161,7 +161,7 @@ public class Match implements Screen {
         if (SniperRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 2, .05f);
         } else if (AssaultRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
-            cameraZoom = MathUtils.lerp(cameraZoom, 1.3f, .05f);
+            cameraZoom = MathUtils.lerp(cameraZoom, 6, .05f);
         } else if (Pistol.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 1.1f, .05f);
         } else {
@@ -481,11 +481,9 @@ public class Match implements Screen {
         } else if (state == GameState.LOOTING) {
             renderLootInterface(delta);
             loot.update(delta);
-        }
-//        else if (state == GameState.GAME_OVER) {
+        } else if (state == GameState.GAME_OVER) {
             renderGameOver(delta);
-            gameOver.update(delta);
-//        }
+        }
     }
 
     private void renderDeadLoots(float delta) {
@@ -528,7 +526,7 @@ public class Match implements Screen {
         overRenderer.render();
         renderLootInteractionButton();
         renderDeadLootInteractionButton();
-//        rendezvousController.render(delta);
+        rendezvousController.render(delta);
         renderHud(delta);
         renderProgressDisplay(delta);
         renderInterface(delta);

@@ -34,7 +34,7 @@ public abstract class Soldier extends Entity {
     private Fixture fixture;
 
     private Animator animator;
-    private int health = 0;
+    private int health = 100;
     private int armor = 0;
     private Inventory inventory;
 
@@ -99,6 +99,10 @@ public abstract class Soldier extends Entity {
     }
 
     protected abstract void die();
+
+    public void takeDangerZoneDamage() {
+        changeHealth(-5);
+    }
 
     @Override
     public void draw(Batch batch) {

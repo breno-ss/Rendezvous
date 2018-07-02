@@ -36,7 +36,7 @@ public class AI {
     private int selectedInventorySlot;
 
     private enum State {
-        IDLE, CALCULATING_ROUTE, SEEKING_LOOT, LOOTING, FINDING_PATH
+        IDLE, CALCULATING_ROUTE, SEEKING_LOOT, LOOTING, FINDING_PATH, GOING_TO_RENDEZVOUS
     }
 
     private State state;
@@ -68,9 +68,12 @@ public class AI {
             case FINDING_PATH:
                 findPath();
                 break;
+            case GOING_TO_RENDEZVOUS:
+                goToRendezvous();
         }
 
-        selectedInventorySlot = selectWeapon();
+        checkAvailableWeapons();
+        checkRendezvousTime();
     }
 
     public void wakeUp(WorldBuilder worldBuilder) {
@@ -163,6 +166,18 @@ public class AI {
         }
     }
 
+    private void goToRendezvous() {
+        target = new Vector2(41 + match.getRendezvousController()
+                .getSafezoneOffsets()[match.getRendezvousController().getCurrentOffset()].x,
+                41 + match.getRendezvousController()
+                        .getSafezoneOffsets()[match.getRendezvousController().getCurrentOffset()].y);
+        ((SteeringBehavior)soldier).seek(target);
+
+        if (!match.getRendezvousController().soldierIsInDangerZone(soldier)) {
+            setState(State.IDLE);
+        }
+    }
+
     private void setState(State state) {
         previousState = this.state;
         this.state = state;
@@ -173,7 +188,7 @@ public class AI {
         for (int i = 0; i < items.size(); i++) {
             exchangeItem(items, i);
         }
-        // Print intems of each enemy
+        // Print items of this enemy
 //        System.out.println(" = = = = = = = = = = = = =");
 //        for (EntityObject item : soldier.getInventory().getItems()) {
 //            System.out.println(item.getName());
@@ -298,23 +313,30 @@ public class AI {
         return selectedInventorySlot;
     }
 
-    private int selectWeapon() {
+    private void checkAvailableWeapons() {
         ArrayList<EntityObject> items = soldier.getInventory().getItems();
         for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
             if (SniperRifle.class.isAssignableFrom(items.get(i).getClass())) {
-                return i;
+                selectedInventorySlot = i;
             }
         }
         for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
              if (AssaultRifle.class.isAssignableFrom(items.get(i).getClass())) {
-                 return i;
+                 selectedInventorySlot = i;
             }
         }
         for (int i = 0; i < soldier.getInventory().getItems().size(); i++) {
             if (Pistol.class.isAssignableFrom(items.get(i).getClass())) {
-                return i;
+                selectedInventorySlot = i;
             }
         }
-        return 0;
+    }
+
+    private void checkRendezvousTime() {
+        if (match.getRendezvousController().getSecondsToNextEvent() <
+                match.getRendezvousController().getSECONDS_NEXT() / 2 &&
+                !match.getRendezvousController().isInRendezvous()) {
+            setState(State.GOING_TO_RENDEZVOUS);
+        }
     }
 }

@@ -140,10 +140,6 @@ public class Player extends Soldier {
         return actionsBlocked || actionsSemiBlocked;
     }
 
-    public void takeDangerZoneDamage() {
-        changeHealth(-5);
-    }
-
     private void checkKillCount(float delta) {
         if (getMatch().getHud().getKills() != getKills()) {
             getMatch().getHud().notifyKill(getKills());

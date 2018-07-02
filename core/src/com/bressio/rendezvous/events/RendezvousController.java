@@ -1,13 +1,12 @@
 package com.bressio.rendezvous.events;
 
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.bressio.rendezvous.entities.Enemy;
 import com.bressio.rendezvous.entities.Player;
+import com.bressio.rendezvous.entities.Soldier;
 import com.bressio.rendezvous.graphics.ResourceHandler;
-import com.bressio.rendezvous.gui.HUD;
-import com.bressio.rendezvous.languages.Internationalization;
 import com.bressio.rendezvous.scenes.Match;
 import com.bressio.rendezvous.scheme.PhysicsAdapter;
 
@@ -24,11 +23,8 @@ public class RendezvousController {
     private int event;
     private String rendezvousLabel;
 
-    private Internationalization i18n;
-    private HUD hud;
+    private Match match;
 
-    private ResourceHandler resources;
-    private SpriteBatch batch;
     private Texture safezone;
     private Texture dangerZone;
 
@@ -38,14 +34,11 @@ public class RendezvousController {
     private float damageTimeCount;
 
     private final int SAFEZONE_RANGE = 30;
-    private final int SECONDS_NEXT = 5;
+    private final int SECONDS_NEXT = 10;
 
     public RendezvousController(Match match) {
-        this.batch = match.getBatch();
-        this.i18n = match.getI18n();
-        this.hud = match.getHud();
+        this.match = match;
         this.player = match.getPlayer();
-        this.resources = match.getResources();
         init();
         setupHud();
     }
@@ -53,15 +46,15 @@ public class RendezvousController {
     private void init() {
         secondsToNextEvent = SECONDS_NEXT;
         event = 1;
-        safezone = resources.getTexture(ResourceHandler.TexturePath.SAFEZONE);
-        dangerZone = resources.getTexture(ResourceHandler.TexturePath.DANGER_ZONE);
+        safezone = match.getResources().getTexture(ResourceHandler.TexturePath.SAFEZONE);
+        dangerZone = match.getResources().getTexture(ResourceHandler.TexturePath.DANGER_ZONE);
         safezoneOffsets = generateSafezoneOffsets();
     }
 
     private void setupHud() {
-        rendezvousLabel = i18n.getBundle().get("nextRendezvous");
-        hud.updateEventLabel(rendezvousLabel, isInRendezvous());
-        hud.updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent, false));
+        rendezvousLabel = match.getI18n().getBundle().get("nextRendezvous");
+        match.getHud().updateEventLabel(rendezvousLabel, isInRendezvous());
+        match.getHud().updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent, false));
     }
 
     private Vector2[] generateSafezoneOffsets() {
@@ -81,23 +74,23 @@ public class RendezvousController {
             if (secondsToNextEvent == -1) {
                 event++;
                 if (event == 2) {
-                    rendezvousLabel = i18n.getBundle().get("firstRendezvous");
+                    rendezvousLabel = match.getI18n().getBundle().get("firstRendezvous");
                 } else if (event == 4) {
-                    rendezvousLabel = i18n.getBundle().get("secondRendezvous");
+                    rendezvousLabel = match.getI18n().getBundle().get("secondRendezvous");
                 } else if (event == 6) {
-                    rendezvousLabel = i18n.getBundle().get("thirdRendezvous");
+                    rendezvousLabel = match.getI18n().getBundle().get("thirdRendezvous");
                 } else if (event == 8) {
-                    rendezvousLabel = i18n.getBundle().get("finalRendezvous");
+                    rendezvousLabel = match.getI18n().getBundle().get("finalRendezvous");
                 } else {
-                    rendezvousLabel = i18n.getBundle().get("nextRendezvous");
+                    rendezvousLabel = match.getI18n().getBundle().get("nextRendezvous");
                 }
-                hud.updateEventLabel(rendezvousLabel, isInRendezvous());
+                match.getHud().updateEventLabel(rendezvousLabel, isInRendezvous());
                 secondsToNextEvent = SECONDS_NEXT;
-                hud.updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent, false));
+                match.getHud().updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent, false));
             }
 
             if (rendezvousTimeCount >= 1) {
-                hud.updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent - 1, false));
+                match.getHud().updateTimeLabel(PhysicsAdapter.formatSeconds(secondsToNextEvent - 1, false));
                 secondsToNextEvent--;
                 rendezvousTimeCount = 0;
             }
@@ -108,23 +101,49 @@ public class RendezvousController {
     private void dealDamage(float delta) {
         damageTimeCount += delta;
         if (damageTimeCount >= 1) {
-            if (canDamagePlayer(8, 3, 7.5f) ||
-                    canDamagePlayer(6, 2, 15.3f) ||
-                    canDamagePlayer(4, 1, 22.8f) ||
-                    canDamagePlayer(2, 0, 30.5f)) {
+            if (canDamageSoldier(8, 3, 7.5f, player) ||
+                    canDamageSoldier(6, 2, 15.3f, player) ||
+                    canDamageSoldier(4, 1, 22.8f, player) ||
+                    canDamageSoldier(2, 0, 30.5f, player)) {
                 player.takeDangerZoneDamage();
+            }
+
+            for (Enemy enemy : match.getWorldBuilder().getEnemies()) {
+                if (canDamageSoldier(8, 3, 7.5f, enemy) ||
+                        canDamageSoldier(6, 2, 15.3f, enemy) ||
+                        canDamageSoldier(4, 1, 22.8f, enemy) ||
+                        canDamageSoldier(2, 0, 30.5f, enemy)) {
+                    enemy.takeDangerZoneDamage();
+                }
             }
             damageTimeCount = 0;
         }
     }
 
-    private boolean canDamagePlayer(int event, int offsetIndex, float distance) {
-        return (this.event == event && distance(player.getBody().getPosition(),
+    private boolean canDamageSoldier(int event, int offsetIndex, float distance, Soldier soldier) {
+        return (this.event == event && distance(soldier.getBody().getPosition(),
                 new Vector2(safezoneOffsets[offsetIndex].x + 41, safezoneOffsets[offsetIndex].y + 41)) > distance);
     }
 
+    public boolean soldierIsInDangerZone(Soldier soldier) {
+        if (event == 1 || event == 2) {
+            return (distance(soldier.getBody().getPosition(),
+                    new Vector2(safezoneOffsets[0].x + 41, safezoneOffsets[0].y + 41)) > 30.5f);
+        } else if (event == 3 || event == 4) {
+            return (distance(soldier.getBody().getPosition(),
+                    new Vector2(safezoneOffsets[1].x + 41, safezoneOffsets[1].y + 41)) > 22.8f);
+        } else if (event == 5 || event == 6) {
+            return (distance(soldier.getBody().getPosition(),
+                    new Vector2(safezoneOffsets[2].x + 41, safezoneOffsets[2].y + 41)) > 15.3f);
+        } else if (event == 7 || event == 8) {
+            return (distance(soldier.getBody().getPosition(),
+                    new Vector2(safezoneOffsets[3].x + 41, safezoneOffsets[3].y + 41)) > 7.5f);
+        }
+        return false;
+    }
+
     public void render(float delta) {
-        batch.begin();
+        match.getBatch().begin();
 
         switch (event) {
             case 2:
@@ -140,7 +159,7 @@ public class RendezvousController {
                 drawSafezone(3.5f, .5f, 1.5f, 2.5f, safezoneOffsets[3]);
                 break;
         }
-        batch.end();
+        match.getBatch().end();
     }
 
     private void drawSafezone(float sZXScale, float sZSScale, float dZP1Scale, float dZP2Scale, Vector2 offset) {
@@ -151,27 +170,27 @@ public class RendezvousController {
         int safezoneSize = safezone.getWidth();
         int dangerZoneSize = 1000;
 
-        batch.draw(safezone,
+        match.getBatch().draw(safezone,
                 pScaleCenter(safezoneSize * sZXScale) - safezoneWidth + offset.x,
                 pScaleCenter(safezoneSize * sZXScale) - safezoneWidth + offset.y,
                 safezoneWidth * sZSScale,
                 safezoneWidth * sZSScale);
-        batch.draw(dangerZone,
+        match.getBatch().draw(dangerZone,
                 pScaleCenter(safezoneSize * dZP1Scale) + offset.x,
                 -pScaleCenter(safezoneSize * 2) + offset.y,
                 -dangerZoneWidth * dangerZoneSize,
                 dangerZoneWidth * dangerZoneSize);
-        batch.draw(dangerZone,
+        match.getBatch().draw(dangerZone,
                 pScaleCenter(safezoneSize * dZP2Scale) + offset.x,
                 -pScaleCenter(safezoneSize * 2) + offset.y,
                 dangerZoneWidth * dangerZoneSize,
                 dangerZoneWidth * dangerZoneSize);
-        batch.draw(dangerZone,
+        match.getBatch().draw(dangerZone,
                 pScaleCenter(safezoneSize * dZP1Scale) + offset.x,
                 pScaleCenter(safezoneSize * dZP2Scale) + offset.y,
                 safezoneWidth * sZSScale,
                 dangerZoneWidth * dangerZoneSize);
-        batch.draw(dangerZone,
+        match.getBatch().draw(dangerZone,
                 pScaleCenter(safezoneSize * dZP1Scale) + offset.x,
                 pScaleCenter(safezoneSize * dZP1Scale) + offset.y,
                 safezoneWidth * sZSScale,
@@ -215,5 +234,30 @@ public class RendezvousController {
 
     public boolean isInRendezvous() {
         return event % 2 == 0;
+    }
+
+    public int getSecondsToNextEvent() {
+        return secondsToNextEvent;
+    }
+
+    public Vector2[] getSafezoneOffsets() {
+        return safezoneOffsets;
+    }
+
+    public int getCurrentOffset() {
+        if (event == 1 || event == 2) {
+            return 0;
+        } else if (event == 3 || event == 4) {
+            return 1;
+        } else if (event == 5 || event == 6) {
+            return 2;
+        } else if (event == 7 || event == 8) {
+            return 3;
+        }
+        return 0;
+    }
+
+    public int getSECONDS_NEXT() {
+        return SECONDS_NEXT;
     }
 }

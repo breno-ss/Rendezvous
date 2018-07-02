@@ -117,14 +117,6 @@ public class GameOver implements Disposable {
         stage.addActor(icon);
     }
 
-    public void update(float delta) {
-        handleInput(delta);
-    }
-
-    private void handleInput(float delta) {
-
-    }
-
     @Override
     public void dispose() {
         stage.dispose();
