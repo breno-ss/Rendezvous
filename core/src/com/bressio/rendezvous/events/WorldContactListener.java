@@ -80,13 +80,13 @@ public class WorldContactListener implements ContactListener {
             case PLAYER_TAG | BULLET_TAG:
                 if(fixtureA.getFilterData().categoryBits == PLAYER_TAG) {
                     if (!match.getPlayer().isDead() && !((Bullet) fixtureB.getUserData()).isDestroyed()) {
-                        if (((Bullet) fixtureB.getUserData()).getWeapon().getLastSoldierToShoot() != fixtureA.getUserData()) {
+                        if (((Bullet) fixtureB.getUserData()).getWeapon().getLastSoldierToShoot() != match.getPlayer()) {
                             match.getPlayer().getShot((Bullet)fixtureB.getUserData());
                             ((Bullet) fixtureB.getUserData()).destroy();
                         }
                     }
                 } else if (!match.getPlayer().isDead() && !((Bullet) fixtureA.getUserData()).isDestroyed()) {
-                    if (((Bullet) fixtureA.getUserData()).getWeapon().getLastSoldierToShoot() != fixtureB.getUserData()) {
+                    if (((Bullet) fixtureA.getUserData()).getWeapon().getLastSoldierToShoot() != match.getPlayer()) {
                         match.getPlayer().getShot((Bullet)fixtureA.getUserData());
                         ((Bullet) fixtureA.getUserData()).destroy();
                     }

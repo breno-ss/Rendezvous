@@ -80,7 +80,9 @@ public class AI {
 
         checkAvailableWeapons();
         checkRendezvousTime();
-        checkSoldiersAround();
+        if (state != State.CHASING && state != State.GOING_TO_RENDEZVOUS) {
+            checkSoldiersAround();
+        }
     }
 
     public void wakeUp(WorldBuilder worldBuilder) {
@@ -187,7 +189,11 @@ public class AI {
 
     private void chase() {
         if (MathUtils.distance(soldier.getBody().getPosition(), enemyOnTarget.getBody().getPosition()) > 4) {
-            ((SteeringBehavior)soldier).seek(enemyOnTarget.getBody().getPosition());
+            if (MathUtils.distance(soldier.getBody().getPosition(), enemyOnTarget.getBody().getPosition()) < 7) {
+                ((SteeringBehavior)soldier).seek(enemyOnTarget.getBody().getPosition());
+            } else {
+                setState(State.CALCULATING_ROUTE);
+            }
         }
         checkAvailableWeapons();
         if (hasWeapon()) {
@@ -196,6 +202,9 @@ public class AI {
             } else {
                 ((Weapon)soldier.getInventory().getItem(selectedInventorySlot)).shoot(soldier);
             }
+        }
+        if (enemyOnTarget.isDead()) {
+            setState(State.CALCULATING_ROUTE);
         }
     }
 
@@ -365,13 +374,16 @@ public class AI {
     }
 
     private void checkSoldiersAround() {
+        ArrayList<Soldier> soldiersAround = new ArrayList<>();
         for (Soldier enemySoldier : worldBuilder.getSoldiers()) {
             if (MathUtils.distance(soldier.getBody().getPosition(), enemySoldier.getBody().getPosition()) < 5 &&
-                    hasWeapon()) {
-                enemyOnTarget = enemySoldier;
-                setState(State.CHASING);
-                return;
+                    hasWeapon() && soldier != enemySoldier && !enemySoldier.isDead()) {
+                soldiersAround.add(enemySoldier);
             }
+        }
+        if (soldiersAround.size() > 0) {
+            enemyOnTarget = soldiersAround.get(MathUtils.randomRange(0, soldiersAround.size() - 1));
+            setState(State.CHASING);
         }
     }
 }

@@ -161,7 +161,7 @@ public class Match implements Screen {
         if (SniperRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 2, .05f);
         } else if (AssaultRifle.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
-            cameraZoom = MathUtils.lerp(cameraZoom, 6, .05f);
+            cameraZoom = MathUtils.lerp(cameraZoom, 1.3f, .05f);
         } else if (Pistol.class.isAssignableFrom(player.getInventory().getItem(hud.getSelectedSlot()).getClass())) {
             cameraZoom = MathUtils.lerp(cameraZoom, 1.1f, .05f);
         } else {
@@ -280,6 +280,22 @@ public class Match implements Screen {
             gameOver.setWinner(false);
             gameOver.forgeGameOverScreen();
             setState(GameState.GAME_OVER);
+        } else {
+            int enemiesAlive = 39;
+            for (Enemy enemy: worldBuilder.getEnemies()) {
+                if (enemy.isDead()) {
+                    enemiesAlive--;
+                }
+            }
+            if (enemiesAlive == 0) {
+                gameIsOver = true;
+                input.resetAllKeys();
+                Gdx.input.setInputProcessor(gameOver.getStage());
+                setCursor(resources.getPixmap(ResourceHandler.PixmapPath.MENU_CURSOR), false);
+                gameOver.setWinner(true);
+                gameOver.forgeGameOverScreen();
+                setState(GameState.GAME_OVER);
+            }
         }
     }
 
